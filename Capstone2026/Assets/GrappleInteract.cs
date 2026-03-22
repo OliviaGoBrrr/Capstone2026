@@ -1,4 +1,6 @@
-using StarterAssets;
+// using StarterAssets; 
+// Only while we don't have the Starter Assets package in yet I've just commented this out cuz of compile errors :P
+
 using UnityEngine;
 using UnityEngine.Windows;
 
