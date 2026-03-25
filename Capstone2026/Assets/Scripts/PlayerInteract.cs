@@ -10,15 +10,19 @@ public class PlayerInteract : MonoBehaviour
     private GameObject mainCamera;
     public KeyCode interactKey = KeyCode.E;
     public Lever lever;
+    CapsuleCollider capsuleCollider;
 
     void Start()
     {
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+        capsuleCollider = GetComponent<CapsuleCollider>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        Vector3 endPoint = (mainCamera.transform.forward.normalized * maxDistance) + mainCamera.transform.position;
+        Debug.DrawLine(mainCamera.transform.position, endPoint, Color.green);
         if (Physics.Raycast(mainCamera.transform.position, mainCamera.transform.forward, out RaycastHit hit, maxDistance) // If an interactable is in view
             && hit.transform.gameObject.tag == "Interactable")
         {

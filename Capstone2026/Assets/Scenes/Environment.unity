@@ -514,7 +514,7 @@ GameObject:
   - component: {fileID: 404620392}
   m_Layer: 0
   m_Name: CinemachineBrain
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -676,7 +676,7 @@ GameObject:
   - component: {fileID: 504632787}
   - component: {fileID: 504632786}
   m_Layer: 0
-  m_Name: FreeLook Camera
+  m_Name: cm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -900,12 +900,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 504632785}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.25340134, y: 0.000000018312605, z: 0.0000000066889445, w: 0.9673613}
-  m_LocalPosition: {x: -2.39, y: 3.29, z: -21.87}
+  m_LocalRotation: {x: 0.2534014, y: 0, z: 0, w: 0.9673613}
+  m_LocalPosition: {x: 0, y: 2.25, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1316181213}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &768411746
 GameObject:
@@ -1226,6 +1226,7 @@ GameObject:
   - component: {fileID: 1316181210}
   - component: {fileID: 1316181209}
   - component: {fileID: 1316181208}
+  - component: {fileID: 1316181214}
   m_Layer: 0
   m_Name: CC_Player
   m_TagString: Untagged
@@ -1246,8 +1247,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 10
-  rotationSpeed: 180
+  rotationSpeed: 106
   jumpHeight: 2
+  gravityValue: -9.81
   playerController: {fileID: 1316181209}
   playerCamera: {fileID: 404620393}
   moveAction: {fileID: -1680190386980627800, guid: 052faaac586de48259a63d0c4782560b, type: 3}
@@ -1365,9 +1367,24 @@ Transform:
   m_LocalPosition: {x: -2.39, y: 1.04, z: -17.87}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 504632791}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1316181214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1316181207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4d47bd5b96d63046be32ea9a82de646, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactKey: 101
+  lever: {fileID: 919132149406629346}
 --- !u!1 &1411596388
 GameObject:
   m_ObjectHideFlags: 0
@@ -1710,4 +1727,3 @@ SceneRoots:
   - {fileID: 1411596392}
   - {fileID: 1316181213}
   - {fileID: 404620391}
-  - {fileID: 504632791}

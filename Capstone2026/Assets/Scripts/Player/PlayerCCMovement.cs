@@ -8,22 +8,28 @@ public class PlayerCCMovement : MonoBehaviour
     [Header("Player Movement Values")]
     public float moveSpeed = 10f;
     [Range(0f, 180f)] public float rotationSpeed = 180f;
-    public float jumpHeight = 2f;
+    public float jumpHeight = 0.5f;
+    public float gravityValue = -9.81f;
 
-    public CharacterController playerController;
+
     private Vector3 playerVelocity;
     private Vector3 playerRotation;
     private bool groundedPlayer;
 
     [Header("Player Camera Values")]
+    public CharacterController playerController;
     public Camera playerCamera;
 
     [Header("Input Actions")]
     public InputActionReference moveAction;
     public InputActionReference jumpAction;
 
-    // Constants
-    private const float gravityValue = -9.81f;
+    private void Start()
+    {
+        // Cursor is invisible and is confined to screen
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Confined;
+    }
 
     private void Update()
     {
@@ -77,7 +83,6 @@ public class PlayerCCMovement : MonoBehaviour
         playerController.Move(finalMove * Time.deltaTime);
         this.transform.Rotate(this.playerRotation);
     }
-
 
     private void OnEnable()
     {
