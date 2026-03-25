@@ -11,16 +11,12 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed = 10f;
     public float jumpHeight = 2f;
 
-    private Vector3 move;
     public Vector3 velocity;
     private float gravity = 9.82f;
-    private float jumpTimeOffset = 0.2f;
     CapsuleCollider groundCheckCollider;
     float groundedTimer;
     float jumpTimer;
-    float startHeight;
     public bool isGrounded;
-    bool isJumping;
 
 
     // Components
