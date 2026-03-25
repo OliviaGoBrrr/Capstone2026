@@ -11,6 +11,9 @@ public class PlayerCCMovement : MonoBehaviour
     public float jumpHeight = 0.5f;
     public float gravityValue = -9.81f;
 
+    float turnSpeedVelocity;
+    float turnSmoothTime;
+
 
     private Vector3 playerVelocity;
     private Vector3 playerRotation;
@@ -49,16 +52,23 @@ public class PlayerCCMovement : MonoBehaviour
     private void PlayerMove()
     {
         // Rotate the player with the direction they're walking towards
-        this.playerRotation = new Vector3(0, Input.GetAxisRaw("Horizontal") * rotationSpeed * Time.deltaTime, 0);
+        //this.playerRotation = new Vector3(0, Input.GetAxisRaw("Horizontal") * rotationSpeed * Time.deltaTime, 0);
 
-        // Get the x,z, direction the player is moving
+        // Get the x,z direction the player is inputting
         Vector2 input = moveAction.action.ReadValue<Vector2>();
+
+        Debug.Log(input);
+
         Vector3 move = new Vector3(input.x, 0, input.y);
 
-        // Transforms the direction in regards to direction of the camera
-        move = playerCamera.transform.TransformDirection(move);
-        Vector3 camDirection = playerCamera.transform.forward;
-        camDirection = Vector3.ProjectOnPlane(camDirection, Vector3.up);
+        Vector3 camF = playerCamera.transform.forward;
+        Vector3 camR = playerCamera.transform.right;
+
+        camF.y = 0f;
+        camR.y = 0f;
+
+        camF.Normalize();
+        camR.Normalize();
 
         // Stops the player from moving faster than they should (fixes the diagonal "boost")
         move = Vector3.ClampMagnitude(move, 1f);
@@ -66,7 +76,9 @@ public class PlayerCCMovement : MonoBehaviour
         // If they're inputting a direction, move in relation to the camera direction
         if (move != Vector3.zero)
         {
-            transform.forward = camDirection;
+            Vector3 desiredMove = (camF * input.y + camR * input.x);
+            move = desiredMove;
+            transform.forward = move;
         }
 
         // Jump handling
@@ -81,7 +93,7 @@ public class PlayerCCMovement : MonoBehaviour
         // Calculate where the player is going, then move and rotate them
         Vector3 finalMove = move * moveSpeed + Vector3.up * playerVelocity.y;
         playerController.Move(finalMove * Time.deltaTime);
-        this.transform.Rotate(this.playerRotation);
+        //this.transform.Rotate(this.playerRotation);
     }
 
     private void OnEnable()
