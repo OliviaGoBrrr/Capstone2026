@@ -41,6 +41,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 94deca7ee2a96da4b9d5b572781c893b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Normals_Texture:
+        m_Texture: {fileID: 2800000, guid: 8ac0d9436351578489be999dff755c4c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Surface_Foam_Texture:
         m_Texture: {fileID: 2800000, guid: 5cdd3f63df7b3b94a98a6f3dd84a1c2f, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -60,14 +64,19 @@ Material:
     m_Ints: []
     m_Floats:
     - _Alpha: 0.8
-    - _Depth_Fade_Distance: 0.4
+    - _Depth_Fade_Distance: 0.5
     - _Foam_Blend: 1
-    - _Intersection_Foam_Cutoff: 2
+    - _Intersection_Foam_Cutoff: 0.88
     - _Intersection_Foam_Depth: 1
     - _Intersection_Foam_Direction: 1
     - _Intersection_Foam_Fade: 1.5
     - _Intersection_Foam_Speed: 0.2
     - _Intersection_Foam_Tiling: 4
+    - _Lighting_Hardness: 0
+    - _Lighting_Smoothness: 1
+    - _Normals_Scale: 1
+    - _Normals_Speed: 1
+    - _Normals_Strength: 1
     - _Posterisation_Steps: 3
     - _QueueControl: 1
     - _QueueOffset: 0
@@ -79,9 +88,11 @@ Material:
     - _Surface_Foam_Speed: 0.2
     - _Surface_Foam_Tiling: 10
     m_Colors:
-    - _Deep_Colour: {r: 0.4310151, g: 0.4156862, b: 0.90588236, a: 0}
+    - _Deep_Colour: {r: 0.1544589, g: 0.41788885, b: 0.8396226, a: 1}
     - _Foam_Colour: {r: 0.7311321, g: 0.9773627, b: 1, a: 1}
     - _Intersection_Foam_Colour: {r: 1, g: 1, b: 1, a: 1}
-    - _Shallow_Colour: {r: 0, g: 1, b: 0.9903087, a: 1}
+    - _Shallow_Colour: {r: 0.27058825, g: 0.83137256, b: 0.5504166, a: 1}
+    - _Specular_Colour: {r: 0, g: 0.51799965, b: 1, a: 1}
+    - _Surface_Foam_Colour: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
