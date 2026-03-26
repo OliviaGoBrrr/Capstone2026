@@ -57,8 +57,6 @@ public class PlayerCCMovement : MonoBehaviour
         // Get the x,z direction the player is inputting
         Vector2 input = moveAction.action.ReadValue<Vector2>();
 
-        Debug.Log(input);
-
         Vector3 move = new Vector3(input.x, 0, input.y);
 
         Vector3 camF = playerCamera.transform.forward;
