@@ -6,10 +6,11 @@ using UnityEngine;
 /// </summary>
 public class PlayerInteract : MonoBehaviour
 {
-    private float maxDistance = 5f;
+    private float maxDistance = 10f;
     private GameObject mainCamera;
     public KeyCode interactKey = KeyCode.E;
     public Lever lever;
+    public LayerMask InteractLayerMask;
     CapsuleCollider capsuleCollider;
 
     void Start()
@@ -21,11 +22,19 @@ public class PlayerInteract : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Debugging Player Interact Raycast
         Vector3 endPoint = (mainCamera.transform.forward.normalized * maxDistance) + mainCamera.transform.position;
-        Debug.DrawLine(mainCamera.transform.position, endPoint, Color.green);
-        if (Physics.Raycast(mainCamera.transform.position, mainCamera.transform.forward, out RaycastHit hit, maxDistance) // If an interactable is in view
+        Debug.DrawLine(transform.position, endPoint, Color.green);
+
+        if (Physics.Raycast(transform.position, 
+            mainCamera.transform.forward, 
+            out RaycastHit hit, 
+            maxDistance, 
+            InteractLayerMask) // If an interactable is in view
             && hit.transform.gameObject.tag == "Interactable")
         {
+            Debug.Log("Player can interact with " + hit.collider.gameObject.name);
+
             if (Input.GetKeyDown(interactKey)) // and the player innteracts with it
             {
                 hit.transform.GetComponent<Interactable>().onInteract(); // perform the onInteract() function on the gameobject
