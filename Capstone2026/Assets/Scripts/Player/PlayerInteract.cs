@@ -30,7 +30,7 @@ public class PlayerInteract : MonoBehaviour
 
     /// <summary>
     /// Function that sends a ray out from the player's camera to a distance. 
-    /// If it hits an object, that object can be sent a message to complete event
+    /// If it hits an object, that object can be sent a message to complete an event
     /// </summary>
     private void FindInteractable()
     {
@@ -55,18 +55,16 @@ public class PlayerInteract : MonoBehaviour
             }
 
             // Debugging for when players are able to interact with something
-            if (debug)
-            {
-                Debug.Log("Player can interact with " + hit.collider.gameObject.name);
-                Debug.DrawLine(transform.position, hit.transform.position, Color.blue);
+            if (debug){
+                Debug.Log("Player can interact with " + hit.collider.gameObject.name); // Tells you what the player can interact with
+                Debug.DrawLine(transform.position, hit.transform.position, Color.blue); // Draws a line from the object to the player
             }
         }
 
         // Debugging Player Interact Raycast
-        if (debug)
-        {
-            Debug.DrawLine(transform.position, endPoint, Color.green);
-            Debug.DrawLine(mainCamera.transform.position, endPoint, Color.yellow);
+        if (debug){
+            Debug.DrawLine(transform.position, endPoint, Color.green); // From the player
+            Debug.DrawLine(mainCamera.transform.position, endPoint, Color.yellow); // From the camera
         }
     }
 
