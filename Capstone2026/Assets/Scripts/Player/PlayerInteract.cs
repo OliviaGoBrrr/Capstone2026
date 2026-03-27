@@ -12,6 +12,9 @@ public class PlayerInteract : MonoBehaviour
     public InputActionReference interactAction;
     public LayerMask InteractLayerMask;
 
+    [Header("Debug Options")]
+    public bool debug;
+
     private GameObject mainCamera;
 
     void Start()
@@ -52,14 +55,19 @@ public class PlayerInteract : MonoBehaviour
             }
 
             // Debugging for when players are able to interact with something
-            Debug.Log("Player can interact with " + hit.collider.gameObject.name);
-            Debug.DrawLine(transform.position, hit.transform.position, Color.blue);
-
+            if (debug)
+            {
+                Debug.Log("Player can interact with " + hit.collider.gameObject.name);
+                Debug.DrawLine(transform.position, hit.transform.position, Color.blue);
+            }
         }
 
         // Debugging Player Interact Raycast
-        Debug.DrawLine(transform.position, endPoint, Color.green);
-        Debug.DrawLine(mainCamera.transform.position, endPoint, Color.yellow);
+        if (debug)
+        {
+            Debug.DrawLine(transform.position, endPoint, Color.green);
+            Debug.DrawLine(mainCamera.transform.position, endPoint, Color.yellow);
+        }
     }
 
     private void OnEnable()
