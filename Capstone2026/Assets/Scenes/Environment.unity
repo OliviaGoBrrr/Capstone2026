@@ -1052,7 +1052,7 @@ GameObject:
   - component: {fileID: 1302880938}
   - component: {fileID: 1302880937}
   - component: {fileID: 1302880941}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PushCube
   m_TagString: Interactable
   m_Icon: {fileID: 0}
@@ -1068,7 +1068,7 @@ Transform:
   m_GameObject: {fileID: 1302880935}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -13.288088, y: 1, z: 4.27}
+  m_LocalPosition: {x: 6.63, y: 0.76, z: -10}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1086,31 +1086,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b39d390ddc42ab242a2d507dd3085f86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  duration: 1
+  Player: {fileID: 1316181207}
 --- !u!65 &1302880938
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1208,7 +1184,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -1383,8 +1359,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4d47bd5b96d63046be32ea9a82de646, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactKey: 101
-  lever: {fileID: 919132149406629346}
+  maxDistance: 5
+  interactAction: {fileID: 1781555164194001046, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  InteractLayerMask:
+    serializedVersion: 2
+    m_Bits: 256
+  debug: 0
 --- !u!1 &1411596388
 GameObject:
   m_ObjectHideFlags: 0
@@ -1521,7 +1501,7 @@ GameObject:
   - component: {fileID: 3745622628162387006}
   - component: {fileID: 5334037119576165024}
   - component: {fileID: 4539702727999592063}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1539,7 +1519,7 @@ GameObject:
   - component: {fileID: 543450653347129179}
   - component: {fileID: 386449588}
   - component: {fileID: 919132149406629346}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Lever
   m_TagString: Interactable
   m_Icon: {fileID: 0}
@@ -1708,7 +1688,7 @@ GameObject:
   - component: {fileID: 3260616448857701168}
   - component: {fileID: 7762067042400133793}
   - component: {fileID: 278618462}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
