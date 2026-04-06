@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerState
 {
     protected PlayerCCMovement player;
-    protected PlayerStateMachine stateMachine;
+    protected PlayerStateMachine playerStateMachine;
     protected Animator animationController;
     protected string animationName;
 
@@ -11,32 +11,32 @@ public class PlayerState
     protected bool isAnimationFinished;
     protected float startTime;
 
-    public PlayerState(PlayerCCMovement _player, PlayerStateMachine _stateMachine, Animator _animationController, string _animationName)
+    public PlayerState(PlayerCCMovement player, PlayerStateMachine playerStateMachine, string animationName, Animator animationController)
     {
-        player = _player;
-        stateMachine = _stateMachine;
-        animationController = _animationController;
-        animationName = _animationName;
+        this.player = player;
+        this.playerStateMachine = playerStateMachine;
+        this.animationController = animationController;
+        this.animationName = animationName;
     }
 
-    public virtual void Enter()
+    public virtual void EnterState()
     {
         isAnimationFinished = false;
         isExitingState = false;
         startTime = Time.time;
         animationController.SetBool(animationName, true);
     }
-    public virtual void Exit()
+    public virtual void ExitState()
     {
         isExitingState = true;
         if (!isAnimationFinished) isAnimationFinished = true;
         animationController.SetBool(animationName, false);
     }
-    public virtual void LogicUpdate()
+    public virtual void FrameUpdate()
     {
         TransitionChecks();
     }
-    public virtual void PhysicsUpdate()
+    public virtual void FixedUpdate()
     {
     }
     public virtual void TransitionChecks()
