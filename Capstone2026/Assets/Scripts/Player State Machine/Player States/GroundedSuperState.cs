@@ -34,15 +34,15 @@ public class PlayerGroundedSuperState : PlayerState
     {
         base.TransitionChecks();
 
-        // Dialogue
+        // if interacted with NPC, playerStateMachine.ChangeState(player.DialogueState);
 
-        // Jump
+        // if jump key pressed, playerStateMachine.ChangeState(player.JumpState);
 
-        // Fall
+        // if falling, playerStateMachine.ChangeState(player.FallState);
 
-        // Grapple
+        // if grapple key pressed, playerStateMachine.ChangeState(player.GrappleState);
 
-        // PushPull
+        // if interacted with pushpull object, playerStateMachine.ChangeState(player.PushPullState);
     }
 
 }

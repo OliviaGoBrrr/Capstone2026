@@ -57,6 +57,8 @@ public class PlayerCCMovement : MonoBehaviour
 
     public PlayerPushPullState PushPullState;
 
+    public PlayerDialogueState DialogueState;
+
     public PlayerDeadState DeadState;
 
     #endregion
@@ -78,6 +80,8 @@ public class PlayerCCMovement : MonoBehaviour
         GrappleState = new PlayerGrappleState(this, StateMachine, null, null);
 
         PushPullState = new PlayerPushPullState(this, StateMachine, null, null);
+
+        DialogueState = new PlayerDialogueState(this, StateMachine, null, null);
 
         DeadState = new PlayerDeadState(this, StateMachine, null, null);
 

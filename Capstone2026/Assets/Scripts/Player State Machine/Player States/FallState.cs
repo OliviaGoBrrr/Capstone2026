@@ -30,6 +30,6 @@ public class PlayerFallState : PlayerState
     {
         base.TransitionChecks();
 
-        // Grounded
+        // check if touch ground, playerStateMachine.ChangeState(player.IdleState);
     }
 }

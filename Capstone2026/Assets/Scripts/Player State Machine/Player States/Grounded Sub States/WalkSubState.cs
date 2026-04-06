@@ -26,8 +26,8 @@ public class PlayerWalkSubState : PlayerGroundedSuperState
     {
         base.TransitionChecks();
 
-        // Idle
+        // if no more input, playerStateMachine.ChangeState(player.IdleState);
 
-        // Run
+        // if run key pressed, playerStateMachine.ChangeState(player.RunState);
     }
 }

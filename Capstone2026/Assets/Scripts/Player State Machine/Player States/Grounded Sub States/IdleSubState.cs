@@ -26,7 +26,7 @@ public class PlayerIdleSubState : PlayerGroundedSuperState
     {
         base.TransitionChecks();
 
-        // Walk
+        // if movement input, playerStateMachine.ChangeState(player.WalkState);
     }
 
 }

@@ -31,6 +31,7 @@ public class PlayerDialogueState : PlayerState
     {
         base.TransitionChecks();
 
-        // Grounded
+        // if dialogue done, playerStateMachine.ChangeState(player.IdleState);
+
     }
 }

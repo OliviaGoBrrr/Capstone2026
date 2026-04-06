@@ -30,6 +30,6 @@ public class PlayerJumpState : PlayerState
     {
         base.TransitionChecks();
 
-        // Fall
+        // check if start to fall, playerStateMachine.ChangeState(player.FallState);
     }
 }

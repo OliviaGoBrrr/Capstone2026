@@ -26,8 +26,6 @@ public class PlayerRunSubState : PlayerGroundedSuperState
     {
         base.TransitionChecks();
 
-        // Walk
-
-        // Jump
+        // if run key released, playerStateMachine.ChangeState(player.WalkState);
     }
 }

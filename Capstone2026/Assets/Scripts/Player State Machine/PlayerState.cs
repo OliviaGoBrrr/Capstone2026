@@ -24,13 +24,13 @@ public class PlayerState
         isAnimationFinished = false;
         isExitingState = false;
         startTime = Time.time;
-        animationController.SetBool(animationName, true);
+        //animationController.SetBool(animationName, true);
     }
     public virtual void ExitState()
     {
         isExitingState = true;
-        if (!isAnimationFinished) isAnimationFinished = true;
-        animationController.SetBool(animationName, false);
+        //if (!isAnimationFinished) isAnimationFinished = true;
+        //animationController.SetBool(animationName, false);
     }
     public virtual void FrameUpdate()
     {
@@ -44,6 +44,6 @@ public class PlayerState
     }
     public virtual void AnimationTrigger()
     {
-        isAnimationFinished = true;
+        //isAnimationFinished = true;
     }
 }

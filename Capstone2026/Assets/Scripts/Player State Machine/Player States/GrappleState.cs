@@ -30,8 +30,10 @@ public class PlayerGrappleState : PlayerState
     {
         base.TransitionChecks();
 
-        // Grounded
+        // check if ended then check below
 
-        // Fall
+        // check if ended on ground, playerStateMachine.ChangeState(player.IdleState);
+
+        // check if ended in the air, playerStateMachine.ChangeState(player.FallState);
     }
 }
