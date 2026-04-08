@@ -9,15 +9,21 @@ public class PlayerCCMovement : MonoBehaviour
     public float moveSpeed = 10f;
     [Range(0f, 180f)] public float rotationSpeed = 180f;
     public float jumpHeight = 0.5f;
+    public float jumpHorizontalDampening = 0.7f;
+    public float acceleration = 10f;
+    public float decceleration = 10f;
     public float gravityValue = -9.81f;
+    public bool playerJumpLockout = false;
+
 
     float turnSpeedVelocity;
     float turnSmoothTime;
 
-
-    private Vector3 playerVelocity;
+    private float yAxisVelocity;
+    private float currentSpeed;
+    public Vector3 playerVelocity;
     private Vector3 playerRotation;
-    private bool groundedPlayer;
+    public bool groundedPlayer;
 
     [Header("Player Camera Values")]
     public CharacterController playerController;
@@ -107,15 +113,12 @@ public class PlayerCCMovement : MonoBehaviour
 
         groundedPlayer = playerController.isGrounded;
 
-        if (groundedPlayer)
-        {
-            if(playerVelocity.y < -2f)
-            {
-                playerVelocity.y = -2f;
-            }
-        }
 
         PlayerMove();
+
+        PlayerJump();
+
+        playerController.Move(playerVelocity * Time.deltaTime);
     }
 
     private void PlayerMove()
@@ -124,9 +127,8 @@ public class PlayerCCMovement : MonoBehaviour
         //this.playerRotation = new Vector3(0, Input.GetAxisRaw("Horizontal") * rotationSpeed * Time.deltaTime, 0);
 
         // Get the x,z direction the player is inputting
-        Vector2 input = moveAction.action.ReadValue<Vector2>();
 
-        Debug.Log(input);
+        Vector2 input = moveAction.action.ReadValue<Vector2>();
 
         Vector3 move = new Vector3(input.x, 0, input.y);
 
@@ -139,30 +141,46 @@ public class PlayerCCMovement : MonoBehaviour
         camF.Normalize();
         camR.Normalize();
 
+        Vector3 desiredMove = (camF * input.y + camR * input.x);
+        
+        move = desiredMove;
+
         // Stops the player from moving faster than they should (fixes the diagonal "boost")
-        move = Vector3.ClampMagnitude(move, 1f);
+        move = Vector3.ClampMagnitude(move, moveSpeed);
 
         // If they're inputting a direction, move in relation to the camera direction
         if (move != Vector3.zero)
         {
-            Vector3 desiredMove = (camF * input.y + camR * input.x);
-            move = desiredMove;
-            transform.forward = move;
+            if (!groundedPlayer)
+            {
+                move *= jumpHorizontalDampening;
+            }
         }
 
-        // Jump handling
-        if(groundedPlayer && jumpAction.action.WasPressedThisFrame())
+        float targetVx = moveSpeed * move.x;
+        float targetVz = moveSpeed * move.z;
+
+        playerVelocity.x = Mathf.MoveTowards(playerVelocity.x, targetVx, 10 * Time.deltaTime);
+        playerVelocity.z = Mathf.MoveTowards(playerVelocity.z, targetVz, 10 * Time.deltaTime);
+    }
+
+    private void PlayerJump()
+    {
+        if (groundedPlayer)
         {
-            playerVelocity.y = Mathf.Sqrt(jumpHeight * -2f * gravityValue);
+            if (jumpAction.action.WasPressedThisFrame())
+            {
+                playerVelocity.y = jumpHeight;
+            } 
+            else if(playerVelocity.y < 0f)
+            {
+                playerVelocity.y = 0f;
+            }
         }
-
-        // Gravity enacting on the player
-        playerVelocity.y += gravityValue * Time.deltaTime;
-
-        // Calculate where the player is going, then move and rotate them
-        Vector3 finalMove = move * moveSpeed + Vector3.up * playerVelocity.y;
-        playerController.Move(finalMove * Time.deltaTime);
-        //this.transform.Rotate(this.playerRotation);
+        else
+        {
+            playerVelocity.y += gravityValue * Time.deltaTime;
+        }
     }
 
     private void OnEnable()
