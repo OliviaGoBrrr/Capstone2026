@@ -19,7 +19,7 @@ public class PlayerCCMovement : MonoBehaviour
     float turnSpeedVelocity;
     float turnSmoothTime;
 
-    private float yAxisVelocity;
+    public float yAxisVelocity;
     private float currentSpeed;
     public Vector3 playerVelocity;
     private Vector3 playerRotation;
@@ -32,67 +32,8 @@ public class PlayerCCMovement : MonoBehaviour
     [Header("Input Actions")]
     public InputActionReference moveAction;
     public InputActionReference jumpAction;
-
-    #region State Bools
-
-    public bool canMove = true;
-    public bool isGrounded = false;
-    public bool isDialogue = false;
-    public bool isJumping = false;
-    public bool isPushPulling = false;
-    public bool isGrappling = false;
-    public bool isFalling = false;
-    public bool isDead = false;
-
-    #endregion
-
-    #region State Machine Vars
-
-    public PlayerStateMachine StateMachine;
-
-    public PlayerGroundedSuperState GroundedSuperState;
-
-    public PlayerIdleSubState IdleSubState;
-    public PlayerWalkSubState WalkSubState;
-    public PlayerRunSubState RunSubState;
-
-    public PlayerJumpState JumpState;
-    public PlayerFallState FallState;
-
-    public PlayerGrappleState GrappleState;
-
-    public PlayerPushPullState PushPullState;
-
-    public PlayerDialogueState DialogueState;
-
-    public PlayerDeadState DeadState;
-
-    #endregion
-
-    private void Awake()
-    {
-        // nulls for last 2 arguments is because we dont have animation players set up yet PlayerState(player, statemachine, animationName, animationController)
-        StateMachine = new PlayerStateMachine();
-
-        GroundedSuperState = new PlayerGroundedSuperState(this, StateMachine, null, null);
-
-        IdleSubState = new PlayerIdleSubState(this, StateMachine, null, null);
-        WalkSubState = new PlayerWalkSubState(this, StateMachine, null, null);
-        RunSubState = new PlayerRunSubState(this, StateMachine, null, null);
-
-        JumpState = new PlayerJumpState(this, StateMachine, null, null);
-        FallState = new PlayerFallState(this, StateMachine, null, null);
-
-        GrappleState = new PlayerGrappleState(this, StateMachine, null, null);
-
-        PushPullState = new PlayerPushPullState(this, StateMachine, null, null);
-
-        DialogueState = new PlayerDialogueState(this, StateMachine, null, null);
-
-        DeadState = new PlayerDeadState(this, StateMachine, null, null);
-
-        StateMachine.Initialise(IdleSubState);
-    }
+    public InputActionReference grappleAction;
+    public InputActionReference runAction;
 
     private void Start()
     {
@@ -103,20 +44,14 @@ public class PlayerCCMovement : MonoBehaviour
 
     private void Update()
     {
-        StateMachine.CurrentState.FrameUpdate();
-
-        // Dead State Condition
-        if (isDead)
-        {
-            StateMachine.ChangeState(DeadState);
-        }
-
         groundedPlayer = playerController.isGrounded;
 
 
         PlayerMove();
 
         PlayerJump();
+
+        Debug.Log(playerVelocity.y);
 
         playerController.Move(playerVelocity * Time.deltaTime);
     }
