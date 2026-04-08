@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerPushPullState : PlayerState
 {
-    public PlayerPushPullState(PlayerCCMovement player, PlayerStateMachine playerStateMachine, string animationName, Animator animationController) : base(player, playerStateMachine, animationName, animationController)
+    public PlayerPushPullState(PlayerManager player, PlayerStateMachine playerStateMachine, string animationName, Animator animationController) : base(player, playerStateMachine, animationName, animationController)
     {
     }
 
@@ -11,7 +11,7 @@ public class PlayerPushPullState : PlayerState
         player.isPushPulling = true;
 
         base.EnterState();
-        Debug.Log("Entered PushPull State");
+        //Debug.Log("Entered PushPull State");
     }
 
     public override void ExitState()
@@ -30,6 +30,8 @@ public class PlayerPushPullState : PlayerState
     {
         base.TransitionChecks();
 
-        // if pushpull done, playerStateMachine.ChangeState(player.IdleState);
+        // if pushpull done, IDLE
+
+        // if jumped out of pushpull. JUMP
     }
 }

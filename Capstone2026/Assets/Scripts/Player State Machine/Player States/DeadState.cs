@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerDeadState : PlayerState
 {
-    public PlayerDeadState(PlayerCCMovement player, PlayerStateMachine playerStateMachine, string animationName, Animator animationController) : base(player, playerStateMachine, animationName, animationController)
+    public PlayerDeadState(PlayerManager player, PlayerStateMachine playerStateMachine, string animationName, Animator animationController) : base(player, playerStateMachine, animationName, animationController)
     {
     }
 
@@ -12,7 +12,7 @@ public class PlayerDeadState : PlayerState
         player.canMove = false;
 
         base.EnterState();
-        Debug.Log("Entered Dead State");
+        //Debug.Log("Entered Dead State");
     }
 
     public override void ExitState()

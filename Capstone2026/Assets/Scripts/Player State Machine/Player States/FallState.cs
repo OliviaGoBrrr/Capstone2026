@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerFallState : PlayerState
 {
-    public PlayerFallState(PlayerCCMovement player, PlayerStateMachine playerStateMachine, string animationName, Animator animationController) : base(player, playerStateMachine, animationName, animationController)
+    public PlayerFallState(PlayerManager player, PlayerStateMachine playerStateMachine, string animationName, Animator animationController) : base(player, playerStateMachine, animationName, animationController)
     {
     }
 
@@ -11,7 +11,7 @@ public class PlayerFallState : PlayerState
         player.isFalling = true;
 
         base.EnterState();
-        Debug.Log("Entered Fall State");
+        //Debug.Log("Entered Fall State");
     }
 
     public override void ExitState()
@@ -21,15 +21,19 @@ public class PlayerFallState : PlayerState
         base.ExitState();
     }
 
-    public override void FixedUpdate()
+    public override void FrameUpdate()
     {
-        base.FixedUpdate();
+        base.FrameUpdate();
     }
 
     public override void TransitionChecks()
     {
         base.TransitionChecks();
 
-        // check if touch ground, playerStateMachine.ChangeState(player.IdleState);
+        // GROUNDED STATE
+        if (player.movement.playerController.isGrounded)
+        {
+            playerStateMachine.ChangeState(player.IdleSubState);
+        }
     }
 }

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerJumpState : PlayerState
 {
-    public PlayerJumpState(PlayerCCMovement player, PlayerStateMachine playerStateMachine, string animationName, Animator animationController) : base(player, playerStateMachine, animationName, animationController)
+    public PlayerJumpState(PlayerManager player, PlayerStateMachine playerStateMachine, string animationName, Animator animationController) : base(player, playerStateMachine, animationName, animationController)
     {
     }
 
@@ -11,7 +11,7 @@ public class PlayerJumpState : PlayerState
         player.isJumping = true;
 
         base.EnterState();
-        Debug.Log("Entered Jump State");
+        //Debug.Log("Entered Jump State");
     }
 
     public override void ExitState()
@@ -21,15 +21,19 @@ public class PlayerJumpState : PlayerState
         base.ExitState();
     }
 
-    public override void FixedUpdate()
+    public override void FrameUpdate()
     {
-        base.FixedUpdate();
+        base.FrameUpdate();
     }
 
     public override void TransitionChecks()
     {
         base.TransitionChecks();
 
-        // check if start to fall, playerStateMachine.ChangeState(player.FallState);
+        // FALLING STATE
+        if (player.movement.playerVelocity.y < 0 && !player.movement.playerController.isGrounded)
+        {
+            playerStateMachine.ChangeState(player.FallState);
+        }
     }
 }
