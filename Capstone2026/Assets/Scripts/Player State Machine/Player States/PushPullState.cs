@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerPushPullState : PlayerState
 {
-    public PlayerPushPullState(PlayerCCMovement player, PlayerStateMachine playerStateMachine, string animationName, Animator animationController) : base(player, playerStateMachine, animationName, animationController)
+    public PlayerPushPullState(PlayerManager player, PlayerStateMachine playerStateMachine, string animationName, Animator animationController) : base(player, playerStateMachine, animationName, animationController)
     {
     }
 

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerGroundedSuperState : PlayerState
 {
-    public PlayerGroundedSuperState(PlayerCCMovement player, PlayerStateMachine playerStateMachine, string animationName, Animator animationController) : base(player, playerStateMachine, animationName, animationController)
+    public PlayerGroundedSuperState(PlayerManager player, PlayerStateMachine playerStateMachine, string animationName, Animator animationController) : base(player, playerStateMachine, animationName, animationController)
     {
     }
 
@@ -37,20 +37,20 @@ public class PlayerGroundedSuperState : PlayerState
         // DIALOGUE STATE
         
         // JUMP STATE
-        if (player.jumpAction.action.WasPressedThisFrame())
+        if (player.movement.jumpAction.action.WasPressedThisFrame())
         {
             playerStateMachine.ChangeState(player.JumpState);
         }
 
         // FALLING STATE
-        if (player.playerVelocity.y < 0 && !player.playerController.isGrounded)
+        if (player.movement.playerVelocity.y < 0 && !player.movement.playerController.isGrounded)
         {
             playerStateMachine.ChangeState(player.FallState);
         }
 
         // GRAPPLE STATE
         
-        if (player.grappleAction.action.WasPressedThisFrame())
+        if (player.movement.grappleAction.action.WasPressedThisFrame())
         {
             playerStateMachine.ChangeState(player.GrappleState);
         }

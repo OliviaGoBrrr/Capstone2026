@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerFallState : PlayerState
 {
-    public PlayerFallState(PlayerCCMovement player, PlayerStateMachine playerStateMachine, string animationName, Animator animationController) : base(player, playerStateMachine, animationName, animationController)
+    public PlayerFallState(PlayerManager player, PlayerStateMachine playerStateMachine, string animationName, Animator animationController) : base(player, playerStateMachine, animationName, animationController)
     {
     }
 
@@ -31,7 +31,7 @@ public class PlayerFallState : PlayerState
         base.TransitionChecks();
 
         // GROUNDED STATE
-        if (player.playerController.isGrounded)
+        if (player.movement.playerController.isGrounded)
         {
             playerStateMachine.ChangeState(player.IdleSubState);
         }

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerGrappleState : PlayerState
 {
-    public PlayerGrappleState(PlayerCCMovement player, PlayerStateMachine playerStateMachine, string animationName, Animator animationController) : base(player, playerStateMachine, animationName, animationController)
+    public PlayerGrappleState(PlayerManager player, PlayerStateMachine playerStateMachine, string animationName, Animator animationController) : base(player, playerStateMachine, animationName, animationController)
     {
     }
 
@@ -39,13 +39,13 @@ public class PlayerGrappleState : PlayerState
         */
 
         // check if on ground, IDLE STATE
-        if (player.playerController.isGrounded)
+        if (player.movement.playerController.isGrounded)
         {
             playerStateMachine.ChangeState(player.IdleSubState);
         }
 
         // check if in the air, FALLING STATE
-        if (player.playerVelocity.y < 0 && !player.playerController.isGrounded)
+        if (player.movement.playerVelocity.y < 0 && !player.movement.playerController.isGrounded)
         {
             playerStateMachine.ChangeState(player.FallState);
         }

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerJumpState : PlayerState
 {
-    public PlayerJumpState(PlayerCCMovement player, PlayerStateMachine playerStateMachine, string animationName, Animator animationController) : base(player, playerStateMachine, animationName, animationController)
+    public PlayerJumpState(PlayerManager player, PlayerStateMachine playerStateMachine, string animationName, Animator animationController) : base(player, playerStateMachine, animationName, animationController)
     {
     }
 
@@ -31,7 +31,7 @@ public class PlayerJumpState : PlayerState
         base.TransitionChecks();
 
         // FALLING STATE
-        if (player.playerVelocity.y < 0 && !player.playerController.isGrounded)
+        if (player.movement.playerVelocity.y < 0 && !player.movement.playerController.isGrounded)
         {
             playerStateMachine.ChangeState(player.FallState);
         }

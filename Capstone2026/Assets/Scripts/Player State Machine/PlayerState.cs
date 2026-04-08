@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerState
 {
-    protected PlayerCCMovement player;
+    protected PlayerManager player;
     protected PlayerStateMachine playerStateMachine;
     protected Animator animationController;
     protected string animationName;
@@ -11,7 +11,7 @@ public class PlayerState
     protected bool isAnimationFinished;
     protected float startTime;
 
-    public PlayerState(PlayerCCMovement player, PlayerStateMachine playerStateMachine, string animationName, Animator animationController)
+    public PlayerState(PlayerManager player, PlayerStateMachine playerStateMachine, string animationName, Animator animationController)
     {
         this.player = player;
         this.playerStateMachine = playerStateMachine;
@@ -38,9 +38,25 @@ public class PlayerState
     }
     public virtual void FixedUpdate()
     {
+        // Change battery % regardless of current state
+        if (player.solarPanel.CheckIfInLight() <= 2)
+        {
+            player.solarPanel.ChangeBatteryPercent(player.batteryPercent, 2, 1);
+            player.solarPanel.isInLight = true;
+        }
+        else
+        {
+            player.solarPanel.ChangeBatteryPercent(player.batteryPercent, 2, -1);
+            player.solarPanel.isInLight = false;
+        }
     }
     public virtual void TransitionChecks()
     {
+        // DEAD STATE
+        if (player.batteryPercent < 0)
+        {
+            playerStateMachine.ChangeState(player.DeadState);
+        }
     }
     public virtual void AnimationTrigger()
     {

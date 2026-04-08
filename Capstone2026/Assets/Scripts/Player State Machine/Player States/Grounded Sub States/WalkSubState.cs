@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerWalkSubState : PlayerGroundedSuperState
 {
-    public PlayerWalkSubState(PlayerCCMovement player, PlayerStateMachine playerStateMachine, string animationName, Animator animationController) : base(player, playerStateMachine, animationName, animationController)
+    public PlayerWalkSubState(PlayerManager player, PlayerStateMachine playerStateMachine, string animationName, Animator animationController) : base(player, playerStateMachine, animationName, animationController)
     {
     }
 
@@ -27,13 +27,13 @@ public class PlayerWalkSubState : PlayerGroundedSuperState
         base.TransitionChecks();
 
         // IDLE STATE
-        if (player.moveAction.action.ReadValue<Vector2>() == Vector2.zero)
+        if (player.movement.moveAction.action.ReadValue<Vector2>() == Vector2.zero)
         {
             playerStateMachine.ChangeState(player.IdleSubState);
         }
 
         // RUN STATE
-        if (player.runAction.action.IsPressed())
+        if (player.movement.runAction.action.IsPressed())
         {
             playerStateMachine.ChangeState(player.RunSubState);
         }

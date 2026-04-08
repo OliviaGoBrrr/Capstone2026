@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerDialogueState : PlayerState
 {
-    public PlayerDialogueState(PlayerCCMovement player, PlayerStateMachine playerStateMachine, string animationName, Animator animationController) : base(player, playerStateMachine, animationName, animationController)
+    public PlayerDialogueState(PlayerManager player, PlayerStateMachine playerStateMachine, string animationName, Animator animationController) : base(player, playerStateMachine, animationName, animationController)
     {
     }
 
