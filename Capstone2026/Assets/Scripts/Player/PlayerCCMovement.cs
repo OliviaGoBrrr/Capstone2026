@@ -54,6 +54,10 @@ public class PlayerCCMovement : MonoBehaviour
         Debug.Log(playerVelocity.y);
 
         playerController.Move(playerVelocity * Time.deltaTime);
+
+        playerVelocity.y += gravityValue * Time.deltaTime;
+
+        Mathf.Clamp(playerVelocity.y, -0.1f, jumpHeight);
     }
 
     private void PlayerMove()
@@ -95,8 +99,8 @@ public class PlayerCCMovement : MonoBehaviour
         float targetVx = moveSpeed * move.x;
         float targetVz = moveSpeed * move.z;
 
-        playerVelocity.x = Mathf.MoveTowards(playerVelocity.x, targetVx, 10 * Time.deltaTime);
-        playerVelocity.z = Mathf.MoveTowards(playerVelocity.z, targetVz, 10 * Time.deltaTime);
+        playerVelocity.x = Mathf.MoveTowards(playerVelocity.x, targetVx, 20 * Time.deltaTime);
+        playerVelocity.z = Mathf.MoveTowards(playerVelocity.z, targetVz, 20 * Time.deltaTime);
     }
 
     private void PlayerJump()
@@ -106,15 +110,11 @@ public class PlayerCCMovement : MonoBehaviour
             if (jumpAction.action.WasPressedThisFrame())
             {
                 playerVelocity.y = jumpHeight;
-            } 
-            else if(playerVelocity.y < 0f)
-            {
-                playerVelocity.y = 0f;
             }
-        }
-        else
-        {
-            playerVelocity.y += gravityValue * Time.deltaTime;
+            else if (playerVelocity.y < 0f)
+            {
+                playerVelocity.y = -0.1f;
+            }
         }
     }
 
