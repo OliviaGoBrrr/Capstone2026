@@ -9,7 +9,7 @@ public class PlayerIdleSubState : PlayerGroundedSuperState
     public override void EnterState()
     {
         base.EnterState();
-        Debug.Log("Entered Idle State");
+        //Debug.Log("Entered Idle State");
     }
 
     public override void ExitState()
@@ -17,16 +17,20 @@ public class PlayerIdleSubState : PlayerGroundedSuperState
         base.ExitState();
     }
 
-    public override void FixedUpdate()
+    public override void FrameUpdate()
     {
-        base.FixedUpdate();
+        base.FrameUpdate();
     }
 
     public override void TransitionChecks()
     {
         base.TransitionChecks();
 
-        // if movement input, playerStateMachine.ChangeState(player.WalkState);
+        // WALK STATE
+        if (player.moveAction.action.ReadValue<Vector2>() != Vector2.zero)
+        {
+            playerStateMachine.ChangeState(player.WalkSubState);
+        }
     }
 
 }

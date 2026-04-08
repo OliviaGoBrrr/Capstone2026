@@ -14,8 +14,8 @@ public class PlayerCCMovement : MonoBehaviour
     float turnSpeedVelocity;
     float turnSmoothTime;
 
-
-    private Vector3 playerVelocity;
+    [HideInInspector]
+    public Vector3 playerVelocity;
     private Vector3 playerRotation;
     private bool groundedPlayer;
 
@@ -26,11 +26,14 @@ public class PlayerCCMovement : MonoBehaviour
     [Header("Input Actions")]
     public InputActionReference moveAction;
     public InputActionReference jumpAction;
+    public InputActionReference runAction;
+    public InputActionReference grappleAction;
 
+    [Header("Player State Bools")]
     #region State Bools
 
     public bool canMove = true;
-    public bool isGrounded = false;
+    public bool isCurrentlyGrounded = false;
     public bool isDialogue = false;
     public bool isJumping = false;
     public bool isPushPulling = false;
@@ -169,11 +172,15 @@ public class PlayerCCMovement : MonoBehaviour
     {
         moveAction.action.Enable();
         jumpAction.action.Enable();
+        runAction.action.Enable();
+        grappleAction.action.Enable();
     }
 
     private void OnDisable()
     {
         moveAction.action.Disable();
         jumpAction.action.Disable();
+        runAction.action.Disable();
+        grappleAction.action.Disable();
     }
 }

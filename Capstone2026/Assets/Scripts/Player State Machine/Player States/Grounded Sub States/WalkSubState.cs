@@ -9,7 +9,7 @@ public class PlayerWalkSubState : PlayerGroundedSuperState
     public override void EnterState()
     {
         base.EnterState();
-        Debug.Log("Entered Walk State");
+        //Debug.Log("Entered Walk State");
     }
 
     public override void ExitState()
@@ -17,17 +17,26 @@ public class PlayerWalkSubState : PlayerGroundedSuperState
         base.ExitState();
     }
 
-    public override void FixedUpdate()
+    public override void FrameUpdate()
     {
-        base.FixedUpdate();
+        base.FrameUpdate();
     }
 
     public override void TransitionChecks()
     {
         base.TransitionChecks();
 
-        // if no more input, playerStateMachine.ChangeState(player.IdleState);
+        // IDLE STATE
+        if (player.moveAction.action.ReadValue<Vector2>() == Vector2.zero)
+        {
+            playerStateMachine.ChangeState(player.IdleSubState);
+        }
 
-        // if run key pressed, playerStateMachine.ChangeState(player.RunState);
+        // RUN STATE
+        if (player.runAction.action.IsPressed())
+        {
+            playerStateMachine.ChangeState(player.RunSubState);
+        }
+
     }
 }

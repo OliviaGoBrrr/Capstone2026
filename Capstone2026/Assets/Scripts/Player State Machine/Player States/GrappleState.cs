@@ -11,7 +11,7 @@ public class PlayerGrappleState : PlayerState
         player.isGrappling = true;
 
         base.EnterState();
-        Debug.Log("Entered Grapple State");
+        //Debug.Log("Entered Grapple State");
     }
 
     public override void ExitState()
@@ -30,10 +30,24 @@ public class PlayerGrappleState : PlayerState
     {
         base.TransitionChecks();
 
-        // check if ended then check below
+        // check if grapple ended then check below statements
+        /*
+        if (!grappleEnded)
+        {
+            return;
+        }
+        */
 
-        // check if ended on ground, playerStateMachine.ChangeState(player.IdleState);
+        // check if on ground, IDLE STATE
+        if (player.playerController.isGrounded)
+        {
+            playerStateMachine.ChangeState(player.IdleSubState);
+        }
 
-        // check if ended in the air, playerStateMachine.ChangeState(player.FallState);
+        // check if in the air, FALLING STATE
+        if (player.playerVelocity.y < 0 && !player.playerController.isGrounded)
+        {
+            playerStateMachine.ChangeState(player.FallState);
+        }
     }
 }

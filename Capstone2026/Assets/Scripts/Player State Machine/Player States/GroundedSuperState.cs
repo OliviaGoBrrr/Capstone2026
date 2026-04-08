@@ -11,38 +11,51 @@ public class PlayerGroundedSuperState : PlayerState
 
     public override void EnterState()
     {
-        player.isGrounded = true;
+        player.isCurrentlyGrounded = true;
         player.canMove = true;
 
         base.EnterState();
-        Debug.Log("Entered Grounded State");
+        //Debug.Log("Entered Grounded State");
     }
 
     public override void ExitState()
     {
-        player.isGrounded = false;
+        player.isCurrentlyGrounded = false;
 
         base.ExitState();
     }
 
-    public override void FixedUpdate()
+    public override void FrameUpdate()
     {
-        base.FixedUpdate();
+        base.FrameUpdate();
     }
 
     public override void TransitionChecks()
     {
         base.TransitionChecks();
 
-        // if interacted with NPC, playerStateMachine.ChangeState(player.DialogueState);
+        // DIALOGUE STATE
+        
+        // JUMP STATE
+        if (player.jumpAction.action.WasPressedThisFrame())
+        {
+            playerStateMachine.ChangeState(player.JumpState);
+        }
 
-        // if jump key pressed, playerStateMachine.ChangeState(player.JumpState);
+        // FALLING STATE
+        if (player.playerVelocity.y < 0 && !player.playerController.isGrounded)
+        {
+            playerStateMachine.ChangeState(player.FallState);
+        }
 
-        // if falling, playerStateMachine.ChangeState(player.FallState);
+        // GRAPPLE STATE
+        
+        if (player.grappleAction.action.WasPressedThisFrame())
+        {
+            playerStateMachine.ChangeState(player.GrappleState);
+        }
 
-        // if grapple key pressed, playerStateMachine.ChangeState(player.GrappleState);
-
-        // if interacted with pushpull object, playerStateMachine.ChangeState(player.PushPullState);
+        // PUSHPULL STATE
     }
 
 }
