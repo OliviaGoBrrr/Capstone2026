@@ -1,7 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class SolarDetector : MonoBehaviour
+public class PlayerSolarDetector : MonoBehaviour
 {
     // Script purpose is for a solar panel to detect direct contact with a light source
     // 4 raycasts on the solar panel are sent toward the light source and if 2 do not detect any collisions the object is in light
@@ -18,16 +18,12 @@ public class SolarDetector : MonoBehaviour
 
     [SerializeField] private int sizeOfRayCastBox = 8;
 
-    private MeshRenderer MeshRenderer;
-
     [HideInInspector] public bool isInLight = false;
 
 
     void Awake()
     {
         layerMask = LayerMask.GetMask("Obstacle");
-
-        MeshRenderer = GetComponent<MeshRenderer>();
 
 
         // setting positions for the 4 raycasts
@@ -45,17 +41,19 @@ public class SolarDetector : MonoBehaviour
         if (CheckIfInLight() <= 2)
         {
             isInLight = true;
-            MeshRenderer.material.color = Color.white;
         }
         else
         {
             isInLight = false;
-            MeshRenderer.material.color = Color.red;
         }
     }
 
+    public float ChangeBatteryPercent(float batteryPercent, float ROC, int direction)
+    {
+        return Mathf.Clamp(batteryPercent + ROC * direction * Time.deltaTime, 0f, 100f);
+    }
 
-    int CheckIfInLight()
+    public int CheckIfInLight()
     {
         Vector3 distance = lightSource.transform.position - transform.position;
 

@@ -11,7 +11,7 @@ void MainLighting_float(float3 normalWS, float3 positionWS, float3 viewWS, float
 
 #ifndef SHADERGRAPH_PREVIEW
     smoothness = exp2(10 * smoothness + 1);
-
+        
     normalWS = normalize(normalWS);
     viewWS = SafeNormalize(viewWS);
 
@@ -36,7 +36,7 @@ void AdditionalLighting_float(float3 normalWS, float3 positionWS, float3 viewWS,
     {
         Light light = GetAdditionalLight(i, positionWS);
         float3 attenuatedLight = light.color * light.distanceAttenuation * light.shadowAttenuation;
-
+        
         float specular_soft = LightingSpecular(light.direction, normalWS, viewWS, smoothness);
         float specular_hard = smoothstep(0.005, 0.01, specular_soft);
         float specular_term = lerp(specular_soft, specular_hard, hardness);
