@@ -51,7 +51,7 @@ public class PlayerCCMovement : MonoBehaviour
 
         PlayerJump();
 
-        Debug.Log(playerVelocity.y);
+        //Debug.Log(playerVelocity.y);
 
         playerController.Move(playerVelocity * Time.deltaTime);
 
