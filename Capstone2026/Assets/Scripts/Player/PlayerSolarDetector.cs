@@ -20,11 +20,13 @@ public class PlayerSolarDetector : MonoBehaviour
 
     [HideInInspector] public bool isInLight = false;
 
+    MeshRenderer r;
 
     void Awake()
     {
         layerMask = LayerMask.GetMask("Obstacle");
 
+        r = GetComponent<MeshRenderer>();
 
         // setting positions for the 4 raycasts
         Vector3 solarPanelPos = centreSolarPanel.position;
@@ -41,10 +43,12 @@ public class PlayerSolarDetector : MonoBehaviour
         if (CheckIfInLight() <= 2)
         {
             isInLight = true;
+            r.material.color = Color.grey;
         }
         else
         {
             isInLight = false;
+            r.material.color = Color.red;
         }
     }
 
@@ -61,7 +65,7 @@ public class PlayerSolarDetector : MonoBehaviour
 
         var numberOfCollisions = 0;
 
-        print(numberOfCollisions);
+        //print(numberOfCollisions);
 
         for (int i = 0; i < rayCastPositions.Length; i++)
         {
@@ -71,7 +75,7 @@ public class PlayerSolarDetector : MonoBehaviour
             }
             Debug.DrawRay(rayCastPositions[i].transform.position, transform.TransformDirection(distance), Color.blue);
         }
-        print(numberOfCollisions);
+        //print(numberOfCollisions);
         return (numberOfCollisions);
         
     }
