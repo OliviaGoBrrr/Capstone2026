@@ -22,6 +22,11 @@ public class PlayerDialogueState : PlayerState
         base.ExitState();
     }
 
+    public override void FrameUpdate()
+    {
+        base.FrameUpdate();
+    }
+
     public override void FixedUpdate()
     {
         base.FixedUpdate();

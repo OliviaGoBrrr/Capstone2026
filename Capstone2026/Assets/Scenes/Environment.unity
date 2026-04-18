@@ -1524,6 +1524,7 @@ GameObject:
   - component: {fileID: 1316181208}
   - component: {fileID: 1316181214}
   - component: {fileID: 1316181215}
+  - component: {fileID: 1316181216}
   m_Layer: 7
   m_Name: CC_Player
   m_TagString: Untagged
@@ -1558,8 +1559,8 @@ MonoBehaviour:
   playerCamera: {fileID: 404620393}
   moveAction: {fileID: -1680190386980627800, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   jumpAction: {fileID: -2099379676528639254, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  grappleAction: {fileID: 0}
-  runAction: {fileID: 0}
+  grappleAction: {fileID: 8059889360761068364, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  runAction: {fileID: -7471211009204490832, guid: 052faaac586de48259a63d0c4782560b, type: 3}
 --- !u!143 &1316181209
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1721,6 +1722,29 @@ MonoBehaviour:
   - {fileID: 838088772}
   sizeOfRayCastBox: 8
   isInLight: 0
+--- !u!114 &1316181216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1316181207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d96e8d975d5402f4db8b0ba2a87e853e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movement: {fileID: 1316181208}
+  solarPanel: {fileID: 1316181215}
+  batteryPercent: 100
+  canMove: 1
+  isCurrentlyGrounded: 0
+  isDialogue: 0
+  isJumping: 0
+  isPushPulling: 0
+  isGrappling: 0
+  isFalling: 0
+  isDead: 0
 --- !u!1 &1712267623
 GameObject:
   m_ObjectHideFlags: 0

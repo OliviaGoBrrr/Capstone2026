@@ -42,26 +42,24 @@ public class PlayerSolarDetector : MonoBehaviour
     {
         if (CheckIfInLight() <= 2)
         {
-            isInLight = true;
             r.material.color = Color.grey;
         }
         else
         {
-            isInLight = false;
             r.material.color = Color.red;
         }
     }
 
+    // shifts current battery in either pos+ or neg- depending on if direction is 1 or -1
     public float ChangeBatteryPercent(float batteryPercent, float ROC, int direction)
     {
+        Debug.Log(batteryPercent);
         return Mathf.Clamp(batteryPercent + ROC * direction * Time.deltaTime, 0f, 100f);
     }
 
     public int CheckIfInLight()
     {
         Vector3 distance = lightSource.transform.position - transform.position;
-
-        
 
         var numberOfCollisions = 0;
 
