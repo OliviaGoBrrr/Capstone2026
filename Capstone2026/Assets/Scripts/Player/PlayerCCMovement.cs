@@ -7,23 +7,28 @@ public class PlayerCCMovement : MonoBehaviour
     // Movement Values
     [Header("Player Movement Values")]
     public float moveSpeed = 10f;
-    [Range(0f, 180f)] public float rotationSpeed = 180f;
     public float jumpHeight = 0.5f;
     public float jumpHorizontalDampening = 0.7f;
+
+    // Physics
+    [HideInInspector]
+    public Vector3 playerVelocity;
+    [HideInInspector]
+    public bool groundedPlayer;
     public float acceleration = 10f;
-    public float decceleration = 10f;
+    //public float decceleration = 10f;
     public float gravityValue = -9.81f;
-    public bool playerJumpLockout = false;
 
-
+    // Rotation
+    [Range(0f, 180f)] public float rotationSpeed = 180f;
+    private Vector3 playerRotation;
     float turnSpeedVelocity;
     float turnSmoothTime;
 
-    public float yAxisVelocity;
-    private float currentSpeed;
-    public Vector3 playerVelocity;
-    private Vector3 playerRotation;
-    public bool groundedPlayer;
+    [Header("Grapple Action Values")]
+    public float grappleRange;
+    public LayerMask grappleTargetLayer;
+    bool grappling = false;
 
     [Header("Player Camera Values")]
     public CharacterController playerController;
@@ -40,20 +45,31 @@ public class PlayerCCMovement : MonoBehaviour
         // Cursor is invisible and is confined to screen
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Confined;
+        grappling = false;
     }
 
     private void Update()
     {
         groundedPlayer = playerController.isGrounded;
 
-        playerVelocity.y += gravityValue * Time.deltaTime;
+        if (!grappling)
+        {
+            playerVelocity.y += gravityValue * Time.deltaTime;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            CancelGrapple();
+        }
 
         PlayerJump();
-
         PlayerMove();
         playerController.Move(playerVelocity * Time.deltaTime);
+    }
 
-        //Mathf.Clamp(playerVelocity.y, -0.1f, jumpHeight);
+    private void FixedUpdate()
+    {
+        FindValidGrappleTarget();
     }
 
     private void PlayerMove()
@@ -90,11 +106,44 @@ public class PlayerCCMovement : MonoBehaviour
             {
                 playerVelocity.y = jumpHeight;
             }
-            else if (playerVelocity.y < 0f)
+            else if (playerVelocity.y < 0f && !grappling)
             {
                 playerVelocity.y = -3f;
             }
         }
+        CancelGrapple();
+    }
+
+    private void FindValidGrappleTarget()
+    {
+        RaycastHit hit;
+
+        if(Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hit, grappleRange, grappleTargetLayer))
+        {
+            GrappleableObject target = hit.transform.GetComponent<GrappleableObject>();
+
+            Debug.DrawLine(target.anchorPoint.position, transform.position, Color.magenta);
+
+            if (target != null && Input.GetKeyDown(KeyCode.E))
+            {
+                GrappleToTarget(target);
+            }
+        }
+    }
+
+    private void GrappleToTarget(GrappleableObject grappleTarget)
+    {
+        Debug.Log("Player grappled to: " + grappleTarget.name + " at: " + grappleTarget.transform.position);
+        // Move player to target
+
+        // Player can "cancel" grapple by jumping
+
+        // When the player has reached target, unassign grapple target
+    }
+
+    private void CancelGrapple()
+    {
+        grappling = false;
     }
 
     private void OnEnable()

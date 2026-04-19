@@ -57,6 +57,9 @@ public class PauseMenu : MonoBehaviour
         // replace with exit animation
         HideAllUI();
 
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Confined;
+
         isPaused = false;
     }
 
