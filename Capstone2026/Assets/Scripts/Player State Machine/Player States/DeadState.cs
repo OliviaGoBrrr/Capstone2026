@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerDeadState : PlayerState
 {
@@ -11,6 +12,10 @@ public class PlayerDeadState : PlayerState
         player.isDead = true;
         player.canMove = false;
 
+        // restarts scene when player runs out of power
+        // replace this later with animations and what not
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
         base.EnterState();
         //Debug.Log("Entered Dead State");
     }
@@ -22,10 +27,16 @@ public class PlayerDeadState : PlayerState
         base.ExitState();
     }
 
+    public override void FrameUpdate()
+    {
+        base.FrameUpdate();
+    }
+
     public override void FixedUpdate()
     {
         base.FixedUpdate();
     }
+
 
     public override void TransitionChecks()
     {

@@ -51,7 +51,7 @@ public class PlayerCCMovement : MonoBehaviour
 
         PlayerJump();
 
-        Debug.Log(playerVelocity.y);
+        //Debug.Log(playerVelocity.y);
 
         playerController.Move(playerVelocity * Time.deltaTime);
 
@@ -122,11 +122,15 @@ public class PlayerCCMovement : MonoBehaviour
     {
         moveAction.action.Enable();
         jumpAction.action.Enable();
+        grappleAction.action.Enable();
+        runAction.action.Enable();
     }
 
     private void OnDisable()
     {
         moveAction.action.Disable();
         jumpAction.action.Disable();
+        grappleAction.action.Disable();
+        runAction.action.Disable();
     }
 }

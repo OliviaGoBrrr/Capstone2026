@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
@@ -11,7 +12,9 @@ public class PlayerManager : MonoBehaviour
 
 
     [Header("Player Stats")]
+    public float betteryROC = 5;
     public float batteryPercent = 100;
+    public TMP_Text batteryText;
 
     [Header("Player State Bools")]
     #region State Bools
@@ -85,5 +88,10 @@ public class PlayerManager : MonoBehaviour
     void Update()
     {
         StateMachine.CurrentState.FrameUpdate();
+    }
+
+    private void FixedUpdate()
+    {
+        StateMachine.CurrentState.FixedUpdate();
     }
 }

@@ -30,6 +30,10 @@ public class PlayerGroundedSuperState : PlayerState
         base.FrameUpdate();
     }
 
+    public override void FixedUpdate()
+    {
+        base.FixedUpdate();
+    }
     public override void TransitionChecks()
     {
         base.TransitionChecks();
