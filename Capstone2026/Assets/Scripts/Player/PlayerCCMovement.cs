@@ -28,7 +28,6 @@ public class PlayerCCMovement : MonoBehaviour
     [Header("Grapple Action Values")]
     public float grappleRange;
     public LayerMask grappleTargetLayer;
-    bool grappling = false;
 
     [Header("Player Camera Values")]
     public CharacterController playerController;
@@ -45,17 +44,13 @@ public class PlayerCCMovement : MonoBehaviour
         // Cursor is invisible and is confined to screen
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Confined;
-        grappling = false;
     }
 
     private void Update()
     {
         groundedPlayer = playerController.isGrounded;
 
-        if (!grappling)
-        {
-            playerVelocity.y += gravityValue * Time.deltaTime;
-        }
+        playerVelocity.y += gravityValue * Time.deltaTime;
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -106,7 +101,7 @@ public class PlayerCCMovement : MonoBehaviour
             {
                 playerVelocity.y = jumpHeight;
             }
-            else if (playerVelocity.y < 0f && !grappling)
+            else if (playerVelocity.y < 0f)
             {
                 playerVelocity.y = -3f;
             }
@@ -127,6 +122,8 @@ public class PlayerCCMovement : MonoBehaviour
             if (target != null && Input.GetKeyDown(KeyCode.E))
             {
                 GrappleToTarget(target);
+                // Instead, could store target. then, in update, have something that checks if the target is null
+                // If the target is !null in update, then it moves to the grapple point.
             }
         }
     }
@@ -134,16 +131,21 @@ public class PlayerCCMovement : MonoBehaviour
     private void GrappleToTarget(GrappleableObject grappleTarget)
     {
         Debug.Log("Player grappled to: " + grappleTarget.name + " at: " + grappleTarget.transform.position);
+        
+        // Stop player from entering inputs
+
+        // Calculate where to move for each frame (needs to be calculated in Update/FixedUpdate)
+
         // Move player to target
 
         // Player can "cancel" grapple by jumping
 
-        // When the player has reached target, unassign grapple target
+        // When the player has reached target, or cancelled, unassign target and regain control
     }
 
     private void CancelGrapple()
     {
-        grappling = false;
+
     }
 
     private void OnEnable()
