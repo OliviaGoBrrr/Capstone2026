@@ -46,18 +46,14 @@ public class PlayerCCMovement : MonoBehaviour
     {
         groundedPlayer = playerController.isGrounded;
 
-
-        PlayerMove();
+        playerVelocity.y += gravityValue * Time.deltaTime;
 
         PlayerJump();
 
-        //Debug.Log(playerVelocity.y);
-
+        PlayerMove();
         playerController.Move(playerVelocity * Time.deltaTime);
 
-        playerVelocity.y += gravityValue * Time.deltaTime;
-
-        Mathf.Clamp(playerVelocity.y, -0.1f, jumpHeight);
+        //Mathf.Clamp(playerVelocity.y, -0.1f, jumpHeight);
     }
 
     private void PlayerMove()
@@ -66,10 +62,7 @@ public class PlayerCCMovement : MonoBehaviour
         //this.playerRotation = new Vector3(0, Input.GetAxisRaw("Horizontal") * rotationSpeed * Time.deltaTime, 0);
 
         // Get the x,z direction the player is inputting
-
         Vector2 input = moveAction.action.ReadValue<Vector2>();
-
-        Vector3 move = new Vector3(input.x, 0, input.y);
 
         Vector3 camF = playerCamera.transform.forward;
         Vector3 camR = playerCamera.transform.right;
@@ -77,30 +70,16 @@ public class PlayerCCMovement : MonoBehaviour
         camF.y = 0f;
         camR.y = 0f;
 
-        camF.Normalize();
-        camR.Normalize();
+        Vector3 desiredMove = (camF * input.y + camR * input.x).normalized;
 
-        Vector3 desiredMove = (camF * input.y + camR * input.x);
-        
-        move = desiredMove;
-
-        // Stops the player from moving faster than they should (fixes the diagonal "boost")
-        move = Vector3.ClampMagnitude(move, moveSpeed);
-
-        // If they're inputting a direction, move in relation to the camera direction
-        if (move != Vector3.zero)
+        if (!groundedPlayer)
         {
-            if (!groundedPlayer)
-            {
-                move *= jumpHorizontalDampening;
-            }
+            desiredMove *= jumpHorizontalDampening;
         }
 
-        float targetVx = moveSpeed * move.x;
-        float targetVz = moveSpeed * move.z;
+        Vector3 targetVelcoity = desiredMove * moveSpeed;
 
-        playerVelocity.x = Mathf.MoveTowards(playerVelocity.x, targetVx, 20 * Time.deltaTime);
-        playerVelocity.z = Mathf.MoveTowards(playerVelocity.z, targetVz, 20 * Time.deltaTime);
+        playerVelocity = Vector3.MoveTowards(playerVelocity, new Vector3(targetVelcoity.x, playerVelocity.y, targetVelcoity.z), acceleration * Time.deltaTime);
     }
 
     private void PlayerJump()
@@ -113,7 +92,7 @@ public class PlayerCCMovement : MonoBehaviour
             }
             else if (playerVelocity.y < 0f)
             {
-                playerVelocity.y = -0.1f;
+                playerVelocity.y = -3f;
             }
         }
     }
