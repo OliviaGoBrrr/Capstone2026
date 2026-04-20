@@ -6,7 +6,8 @@ using Vector3 = UnityEngine.Vector3;
 
 public class PushPullObject : Interactable
 {
-    public GameObject Player;
+    public Transform PlayerTransform;
+    public PlayerManager PManager;
     private bool Held = false;
     public bool canBeSetDown;
     public Vector3 setDownLocation;
@@ -15,7 +16,7 @@ public class PushPullObject : Interactable
     {
         if(Held)
         {
-            transform.position = Player.transform.position + (transform.forward * 2);
+            transform.position = PlayerTransform.position + (transform.forward * 2);
         } 
     }
 
@@ -24,12 +25,13 @@ public class PushPullObject : Interactable
         if(Held)
         {
             if(canBeSetDown) transform.position = setDownLocation;
-
             Held = false;
+            PManager.isPushPulling = false;
             return;
         }
 
         Held = true;
+        PManager.isPushPulling = true;
     }
 
     public void OnTriggerEnter(Collider collision)

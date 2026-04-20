@@ -60,6 +60,11 @@ public class PlayerGroundedSuperState : PlayerState
         }
 
         // PUSHPULL STATE
+
+        if (player.isPushPulling == true)
+        {
+            playerStateMachine.ChangeState(player.PushPullState);
+        }
     }
 
 }
