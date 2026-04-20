@@ -42,11 +42,12 @@ public class PlayerPushPullState : PlayerState
         base.TransitionChecks();
 
         // if pushpull done, IDLE
+        
 
         // if jumped out of pushpull. JUMP
-        /*if (player.movement.jumpAction.action.WasPressedThisFrame())
+        if (player.movement.jumpAction.action.WasPressedThisFrame())
         {
             playerStateMachine.ChangeState(player.JumpState);
-        }*/
+        }
     }
 }
