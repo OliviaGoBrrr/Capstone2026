@@ -7,23 +7,27 @@ public class PlayerCCMovement : MonoBehaviour
     // Movement Values
     [Header("Player Movement Values")]
     public float moveSpeed = 10f;
-    [Range(0f, 180f)] public float rotationSpeed = 180f;
     public float jumpHeight = 0.5f;
     public float jumpHorizontalDampening = 0.7f;
+
+    // Physics
+    [HideInInspector]
+    public Vector3 playerVelocity;
+    [HideInInspector]
+    public bool groundedPlayer;
     public float acceleration = 10f;
-    public float decceleration = 10f;
+    //public float decceleration = 10f;
     public float gravityValue = -9.81f;
-    public bool playerJumpLockout = false;
 
-
+    // Rotation
+    [Range(0f, 180f)] public float rotationSpeed = 180f;
+    private Vector3 playerRotation;
     float turnSpeedVelocity;
     float turnSmoothTime;
 
-    public float yAxisVelocity;
-    private float currentSpeed;
-    public Vector3 playerVelocity;
-    private Vector3 playerRotation;
-    public bool groundedPlayer;
+    [Header("Grapple Action Values")]
+    public float grappleRange;
+    public LayerMask grappleTargetLayer;
 
     [Header("Player Camera Values")]
     public CharacterController playerController;
@@ -46,18 +50,21 @@ public class PlayerCCMovement : MonoBehaviour
     {
         groundedPlayer = playerController.isGrounded;
 
-
-        PlayerMove();
-
-        PlayerJump();
-
-        //Debug.Log(playerVelocity.y);
-
-        playerController.Move(playerVelocity * Time.deltaTime);
-
         playerVelocity.y += gravityValue * Time.deltaTime;
 
-        Mathf.Clamp(playerVelocity.y, -0.1f, jumpHeight);
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            CancelGrapple();
+        }
+
+        PlayerJump();
+        PlayerMove();
+        playerController.Move(playerVelocity * Time.deltaTime);
+    }
+
+    private void FixedUpdate()
+    {
+        FindValidGrappleTarget();
     }
 
     private void PlayerMove()
@@ -66,10 +73,7 @@ public class PlayerCCMovement : MonoBehaviour
         //this.playerRotation = new Vector3(0, Input.GetAxisRaw("Horizontal") * rotationSpeed * Time.deltaTime, 0);
 
         // Get the x,z direction the player is inputting
-
         Vector2 input = moveAction.action.ReadValue<Vector2>();
-
-        Vector3 move = new Vector3(input.x, 0, input.y);
 
         Vector3 camF = playerCamera.transform.forward;
         Vector3 camR = playerCamera.transform.right;
@@ -77,30 +81,16 @@ public class PlayerCCMovement : MonoBehaviour
         camF.y = 0f;
         camR.y = 0f;
 
-        camF.Normalize();
-        camR.Normalize();
+        Vector3 desiredMove = (camF * input.y + camR * input.x).normalized;
 
-        Vector3 desiredMove = (camF * input.y + camR * input.x);
-        
-        move = desiredMove;
-
-        // Stops the player from moving faster than they should (fixes the diagonal "boost")
-        move = Vector3.ClampMagnitude(move, moveSpeed);
-
-        // If they're inputting a direction, move in relation to the camera direction
-        if (move != Vector3.zero)
+        if (!groundedPlayer)
         {
-            if (!groundedPlayer)
-            {
-                move *= jumpHorizontalDampening;
-            }
+            desiredMove *= jumpHorizontalDampening;
         }
 
-        float targetVx = moveSpeed * move.x;
-        float targetVz = moveSpeed * move.z;
+        Vector3 targetVelcoity = desiredMove * moveSpeed;
 
-        playerVelocity.x = Mathf.MoveTowards(playerVelocity.x, targetVx, 20 * Time.deltaTime);
-        playerVelocity.z = Mathf.MoveTowards(playerVelocity.z, targetVz, 20 * Time.deltaTime);
+        playerVelocity = Vector3.MoveTowards(playerVelocity, new Vector3(targetVelcoity.x, playerVelocity.y, targetVelcoity.z), acceleration * Time.deltaTime);
     }
 
     private void PlayerJump()
@@ -113,9 +103,49 @@ public class PlayerCCMovement : MonoBehaviour
             }
             else if (playerVelocity.y < 0f)
             {
-                playerVelocity.y = -0.1f;
+                playerVelocity.y = -3f;
             }
         }
+        CancelGrapple();
+    }
+
+    private void FindValidGrappleTarget()
+    {
+        RaycastHit hit;
+
+        if(Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hit, grappleRange, grappleTargetLayer))
+        {
+            GrappleableObject target = hit.transform.GetComponent<GrappleableObject>();
+
+            Debug.DrawLine(target.anchorPoint.position, transform.position, Color.magenta);
+
+            if (target != null && Input.GetKeyDown(KeyCode.E))
+            {
+                GrappleToTarget(target);
+                // Instead, could store target. then, in update, have something that checks if the target is null
+                // If the target is !null in update, then it moves to the grapple point.
+            }
+        }
+    }
+
+    private void GrappleToTarget(GrappleableObject grappleTarget)
+    {
+        Debug.Log("Player grappled to: " + grappleTarget.name + " at: " + grappleTarget.transform.position);
+        
+        // Stop player from entering inputs
+
+        // Calculate where to move for each frame (needs to be calculated in Update/FixedUpdate)
+
+        // Move player to target
+
+        // Player can "cancel" grapple by jumping
+
+        // When the player has reached target, or cancelled, unassign target and regain control
+    }
+
+    private void CancelGrapple()
+    {
+
     }
 
     private void OnEnable()
