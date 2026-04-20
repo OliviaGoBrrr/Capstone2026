@@ -87,12 +87,13 @@ public class PlayerCCMovement : MonoBehaviour
         }
         else if (grappling)
         {
+            GrappleToTarget();
+
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 CancelGrapple();
+                playerVelocity.y = jumpHeight;
             }
-
-            GrappleToTarget();
         }
 
         playerController.Move(playerVelocity * Time.deltaTime);
@@ -209,7 +210,6 @@ public class PlayerCCMovement : MonoBehaviour
         gravityOn = true;
         grappling = false;
 
-        playerVelocity = Vector3.zero;
         grapplePoint = Vector3.zero;
 
         // Linerenderer
