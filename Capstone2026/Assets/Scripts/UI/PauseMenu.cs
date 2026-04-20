@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -84,6 +85,7 @@ public class PauseMenu : MonoBehaviour
 
     public void OnQuitPressed()
     {
-        // go to menu scene (not yet implemented)
+        // need to add animations
+        SceneManager.LoadScene("MainMenu");
     }
 }
