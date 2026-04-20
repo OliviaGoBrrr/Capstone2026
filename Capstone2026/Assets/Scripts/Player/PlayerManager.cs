@@ -53,6 +53,7 @@ public class PlayerManager : MonoBehaviour
 
     #endregion
 
+    // initialising state machine
     private void Awake()
     {
         // nulls for last 2 arguments is because we dont have animation players set up yet PlayerState(player, statemachine, animationName, animationController)

@@ -35,6 +35,7 @@ public class MainMenu : MonoBehaviour
                 DOTween.Kill("Camera");
 
                 mainCamera.transform.DOMove(cameraNormalPos.position, 0.5f);
+                mainCamera.transform.DORotate(new Vector3(cameraNormalPos.rotation.x, cameraNormalPos.rotation.y, cameraNormalPos.rotation.z), 0.5f);
 
                 settingsShown = false;
                 settingsOptions.SetActive(false);
@@ -57,6 +58,7 @@ public class MainMenu : MonoBehaviour
         DOTween.Kill("Camera");
 
         mainCamera.transform.DOMove(cameraSettingsPos.position, 0.5f);
+        mainCamera.transform.DORotate(new Vector3(-12, 0, -5), 0.5f);
 
         settingsShown = true;
         settingsOptions.SetActive(true);
@@ -69,6 +71,7 @@ public class MainMenu : MonoBehaviour
         DOTween.Kill("Camera");
 
         mainCamera.transform.DOMove(cameraNormalPos.position, 0.5f);
+        mainCamera.transform.DORotate(new Vector3(cameraNormalPos.rotation.x, cameraNormalPos.rotation.y, cameraNormalPos.rotation.z), 0.5f);
 
         settingsShown = false;
         settingsOptions.SetActive(false);

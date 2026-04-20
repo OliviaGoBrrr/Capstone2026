@@ -55,6 +55,7 @@ public class PlayerState
             player.solarPanel.isInLight = false;
         }
     }
+
     public virtual void TransitionChecks()
     {
         // DEAD STATE
@@ -63,6 +64,7 @@ public class PlayerState
             playerStateMachine.ChangeState(player.DeadState);
         }
     }
+
     public virtual void AnimationTrigger()
     {
         //isAnimationFinished = true;
