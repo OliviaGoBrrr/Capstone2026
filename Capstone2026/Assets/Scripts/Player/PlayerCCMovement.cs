@@ -200,6 +200,7 @@ public class PlayerCCMovement : MonoBehaviour
         if (Vector3.Distance(transform.position, grapplePoint) < 1.0f)
         {
             transform.position = grapplePoint;
+            playerVelocity = Vector3.zero;
             CancelGrapple();
         }
     }
