@@ -30,10 +30,14 @@ public class PlayerCCMovement : MonoBehaviour
     public bool grappling;
     public float grappleRange;
     public float grappleSpeed;
+    public float grappleLockoutTime;
+    private float grappleLockoutTimer = 0.0f;
     public LayerMask grappleTargetLayer;
     public Vector3 grapplePoint;
     [SerializeField]
     private LineRenderer grappleLine;
+    [SerializeField]
+    private Transform grappleHand;
 
     [Header("Player Camera Values")]
     public CharacterController playerController;
@@ -75,11 +79,6 @@ public class PlayerCCMovement : MonoBehaviour
             playerVelocity.y += gravityValue * Time.deltaTime;
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            CancelGrapple();
-        }
-
         if(grappling == false)
         {
             PlayerJump();
@@ -88,14 +87,22 @@ public class PlayerCCMovement : MonoBehaviour
         }
         else if (grappling)
         {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                CancelGrapple();
+            }
+
             GrappleToTarget();
         }
 
         playerController.Move(playerVelocity * Time.deltaTime);
-    }
 
-    private void FixedUpdate()
-    {
+        // Timers
+
+        if (grappleLockoutTimer > -1.0f)
+        {
+            grappleLockoutTimer -= Time.deltaTime;
+        }
     }
 
     private void PlayerMove()
@@ -149,20 +156,28 @@ public class PlayerCCMovement : MonoBehaviour
 
             Debug.DrawLine(target.anchorPoint.position, transform.position, Color.magenta);
 
-            if (target != null && Input.GetKeyDown(KeyCode.E))
+            if (target != null)
             {
-                StartGrapple(target);
+                if (Input.GetKeyDown(KeyCode.E) && grappleLockoutTimer <= 0)
+                {
+                    StartGrapple(target);
+                }
             }
         }
     }
 
     private void StartGrapple(GrappleableObject grappleTarget)
     {
+        // Turn off physics
         gravityOn = false;
         grappling = true;
 
+        // Reset player velocity
         playerVelocity = Vector3.zero;
+
+        // Set grapple location
         grapplePoint = grappleTarget.anchorPoint.transform.position;
+        grappleLockoutTimer = grappleLockoutTime;
 
         // Linerenderer
         grappleLine.SetPosition(1, grapplePoint);
@@ -171,15 +186,17 @@ public class PlayerCCMovement : MonoBehaviour
 
     private void GrappleToTarget()
     {
+        // Find the distance between player and grapple point
         Vector3 direction = grapplePoint - transform.position;
 
+        // Normalize to translate to velocity
         direction.Normalize();
-
         playerVelocity = direction * grappleSpeed;
 
-        grappleLine.SetPosition(0, transform.position);
+        // LineRenderer
+        grappleLine.SetPosition(0, grappleHand.position);
 
-        if (Vector3.Distance(transform.position, grapplePoint) < 1.0f || Input.GetKeyDown(KeyCode.Space))
+        if (Vector3.Distance(transform.position, grapplePoint) < 1.0f)
         {
             transform.position = grapplePoint;
             CancelGrapple();
@@ -188,6 +205,7 @@ public class PlayerCCMovement : MonoBehaviour
 
     private void CancelGrapple()
     {
+        // Reset and clear everything
         gravityOn = true;
         grappling = false;
 
