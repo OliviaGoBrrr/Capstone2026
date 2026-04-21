@@ -14,7 +14,7 @@ public class PlayerPushPullState : PlayerState
         player.isPushPulling = true;
 
         base.EnterState();
-        Debug.Log("Entered PushPull State");
+        //Debug.Log("Entered PushPull State");
     }
 
     public override void ExitState()
@@ -24,7 +24,7 @@ public class PlayerPushPullState : PlayerState
         player.isPushPulling = false;
 
         base.ExitState();
-        Debug.Log("Exited PushPull State");
+        //Debug.Log("Exited PushPull State");
     }
 
     public override void FrameUpdate()
@@ -42,7 +42,10 @@ public class PlayerPushPullState : PlayerState
         base.TransitionChecks();
 
         // if pushpull done, IDLE
-        
+        if (player.isPushPulling == false)
+        {
+            playerStateMachine.ChangeState(player.IdleSubState);
+        }
 
         // if jumped out of pushpull. JUMP
         if (player.movement.jumpAction.action.WasPressedThisFrame())
