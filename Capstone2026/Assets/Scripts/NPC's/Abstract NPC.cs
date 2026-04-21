@@ -9,17 +9,17 @@ using Unity.VisualScripting;
 /// </summary>
 public abstract class AbstractNPC : Interactable
 {
-    [SerializeField] protected GameObject exclamationMark;
+    //[SerializeField] protected GameObject exclamationMark;
     [Header("Dialogue")]
     [SerializeField] string[] startDialogue;
     protected string[] currentDialogue;
     protected int index = -1; // Current Line being displayed
 
-    /* to be changed when systems are set up
-    protected Player player;
-    */
+    public PlayerInteract playerI;
+    public PlayerManager playerM;
 
-    private TextMeshProUGUI textBox;
+
+    public TextMeshProUGUI textBox;
     private float textSpeed;
     private bool isTyping = false;
     private bool finishTyping = false;
@@ -36,22 +36,21 @@ public abstract class AbstractNPC : Interactable
 
     public virtual void Start()
     {
-        /* to be changed when systems are set up
-        textBox = GameObject.FindGameObjectWithTag("UI Manager").GetComponent<UIManager>().dialogueText;
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
-        */
+        //should probably find a way to set the player scripts and text box without the inspector cuz the inspector is annoyinnngggg
+
         currentDialogue = startDialogue;
-        if (exclamationMark != null)
+
+        /*if (exclamationMark != null)
         {
             exclamationMark = Instantiate(exclamationMark, transform.position + new Vector3(0, 4, 0), Quaternion.identity);
-        }
+        }*/
     }
 
     public virtual void Update()
     {
         // If dialogue is active and typing is not currently happening, then when e is pressed go to next line, else finish the line
         if (index == -1) { return; }
-        // if (!Input.GetKeyDown(player.GetComponent<Interaction>().interactKey)) { return; } needs to be changed for state machine
+        if (!playerI.interactAction.action.WasPressedThisFrame()) { return; } 
         if (isTyping) finishTyping = true;
         else NextLine();
         
@@ -60,20 +59,11 @@ public abstract class AbstractNPC : Interactable
     protected virtual void StartDialogue()
     {
         DialogueBoxState(true);
-        /* to be changed to proper system + state machine
-
-        PlayerCamera cam = player.GetComponentInChildren<PlayerCamera>();
-        if (cam == null)
-        {
-            Debug.LogError("Could not find PlayerCamera in Player children!");
-            return;
-        }
-        cam.DialogueActive = true;
-        player.CanMove = false;
-        StartCoroutine(TurnToPlayer());
+        
+        playerM.DialogueState.EnterState();
+        //StartCoroutine(TurnToPlayer());
         NextLine();
-        player.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-        */
+        
     }
 
     private IEnumerator TypeLine()
@@ -81,7 +71,7 @@ public abstract class AbstractNPC : Interactable
         if (index < 0 || index >= currentDialogue.Length) yield break;
 
         // Set Text Speed
-        //textSpeed = GameManager.instance.textSpeed;
+        // textSpeed = GameManager.instance.textSpeed;
         // Empty text box then type line character by character (makes it look pretty)
         isTyping = true;
         textBox.text = string.Empty;
@@ -110,14 +100,10 @@ public abstract class AbstractNPC : Interactable
 
     private void EndDialogue()
     {
-        /* to be changed to proper system + state machine
         DialogueBoxState(false);
-        player.GetComponentInChildren<PlayerCamera>().DialogueActive = false;
-        player.CanMove = true;
+        playerM.DialogueState.ExitState();
         OnDialogueFinish();
         StartCoroutine(DialogueCooldown());
-        player.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
-        */
     }
 
     protected abstract void OnDialogueFinish(); // Abstract Function for when Dialogue Finishes (For stuff like getting/giving items)
@@ -133,12 +119,11 @@ public abstract class AbstractNPC : Interactable
         textBox.transform.parent.gameObject.SetActive(state); // Set Parent of Text (Dialogue Box) to state
     }
 
-    /*
     private IEnumerator TurnToPlayer()
     {
         
-        Transform target = player.transform;
-        Vector3 direction = player.transform.position - transform.position;
+        Transform target = playerM.transform;
+        Vector3 direction = playerM.transform.position - transform.position;
         direction.y = 0;
 
         Quaternion targetRotation = Quaternion.LookRotation(direction);
@@ -152,5 +137,4 @@ public abstract class AbstractNPC : Interactable
         
         
     }
-    */
 }

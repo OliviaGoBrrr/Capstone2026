@@ -29,11 +29,11 @@ public class NPC : AbstractNPC
         {
             EndQuest();
         }
-        if (exclamationMark == null) return;
+        //if (exclamationMark == null) return;
         if (currentDialogue != repeatedDialogue && currentDialogue != completedRepeatDialogue && index == -1)
         {
-            exclamationMark.SetActive(true);
-        } else { exclamationMark.SetActive(false); }
+            //exclamationMark.SetActive(true);
+        } else { /*exclamationMark.SetActive(false);*/ }
     }
 
     protected override void OnDialogueFinish()
