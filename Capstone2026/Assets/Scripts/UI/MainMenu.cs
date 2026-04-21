@@ -17,11 +17,17 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private Transform cameraSettingsPos;
     [SerializeField] private Transform cameraNormalPos;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        // kill all tweens relating to the camera
+        DOTween.KillAll();
+        settingsShown = false;
+
         settingsOptions.SetActive(false);
         settingsButton.SetActive(true);
+
+        mainCamera.transform.position = cameraNormalPos.position;
+        mainCamera.transform.rotation = cameraNormalPos.rotation;
     }
 
     // Update is called once per frame
@@ -34,8 +40,8 @@ public class MainMenu : MonoBehaviour
                 // kill all tweens relating to the camera
                 DOTween.Kill("Camera");
 
-                mainCamera.transform.DOMove(cameraNormalPos.position, 0.5f);
-                mainCamera.transform.DORotate(new Vector3(cameraNormalPos.rotation.x, cameraNormalPos.rotation.y, cameraNormalPos.rotation.z), 0.5f);
+                mainCamera.transform.DOMove(cameraNormalPos.position, 0.5f).SetId("Camera");
+                mainCamera.transform.DORotate(new Vector3(0, 0, 0), 0.5f).SetId("Camera");
 
                 settingsShown = false;
                 settingsOptions.SetActive(false);
@@ -49,6 +55,7 @@ public class MainMenu : MonoBehaviour
     public void StartButtonPressed()
     {
         // need to add animations
+        DOTween.KillAll();
         SceneManager.LoadScene("Environment");
     }
 
@@ -56,9 +63,8 @@ public class MainMenu : MonoBehaviour
     {
         // kill all tweens relating to the camera
         DOTween.Kill("Camera");
-
-        mainCamera.transform.DOMove(cameraSettingsPos.position, 0.5f);
-        mainCamera.transform.DORotate(new Vector3(-12, 0, -5), 0.5f);
+        mainCamera.transform.DOMove(cameraSettingsPos.position, 0.5f).SetId("Camera");
+        mainCamera.transform.DORotate(new Vector3(-12, 0, -5), 0.5f).SetId("Camera");
 
         settingsShown = true;
         settingsOptions.SetActive(true);
@@ -70,8 +76,8 @@ public class MainMenu : MonoBehaviour
         // kill all tweens relating to the camera
         DOTween.Kill("Camera");
 
-        mainCamera.transform.DOMove(cameraNormalPos.position, 0.5f);
-        mainCamera.transform.DORotate(new Vector3(cameraNormalPos.rotation.x, cameraNormalPos.rotation.y, cameraNormalPos.rotation.z), 0.5f);
+        mainCamera.transform.DOMove(cameraNormalPos.position, 0.5f).SetId("Camera");
+        mainCamera.transform.DORotate(new Vector3(0, 0, 0), 0.5f).SetId("Camera");
 
         settingsShown = false;
         settingsOptions.SetActive(false);

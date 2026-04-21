@@ -90,5 +90,6 @@ public class PauseMenu : MonoBehaviour
     {
         // need to add animations
         SceneManager.LoadScene("MainMenu");
+        Time.timeScale = 1;
     }
 }
