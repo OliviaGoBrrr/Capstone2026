@@ -39,6 +39,10 @@ public class PlayerGroundedSuperState : PlayerState
         base.TransitionChecks();
 
         // DIALOGUE STATE
+        if (player.isDialogue == true)
+        {
+            playerStateMachine.ChangeState(player.DialogueState);
+        }
         
         // JUMP STATE
         if (player.movement.jumpAction.action.WasPressedThisFrame())

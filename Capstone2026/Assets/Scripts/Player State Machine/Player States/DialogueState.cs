@@ -38,5 +38,10 @@ public class PlayerDialogueState : PlayerState
 
         // if dialogue done, playerStateMachine.ChangeState(player.IdleState);
 
+        if(player.isDialogue == false)
+        {
+            playerStateMachine.ChangeState(player.IdleSubState);
+        }
+
     }
 }
