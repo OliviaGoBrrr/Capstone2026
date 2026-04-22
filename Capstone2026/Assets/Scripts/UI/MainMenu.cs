@@ -56,7 +56,7 @@ public class MainMenu : MonoBehaviour
     {
         // need to add animations
         DOTween.KillAll();
-        SceneManager.LoadScene("Environment");
+        SceneManager.LoadScene("SceneSelect");
     }
 
     public void SettingsButtonPressed()
@@ -86,6 +86,6 @@ public class MainMenu : MonoBehaviour
 
     public void ExitButtonPressed()
     {
-
+        Application.Quit();
     }
 }
