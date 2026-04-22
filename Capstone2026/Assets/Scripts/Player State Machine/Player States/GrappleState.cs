@@ -37,14 +37,20 @@ public class PlayerGrappleState : PlayerCanMoveSuperState
     {
         base.TransitionChecks();
 
+        // check if player cancels grapple, JUMP STATE
+        if (player.movement.jumpAction.action.WasPressedThisFrame())
+        {
+            player.movement.CancelGrapple();
+            playerStateMachine.ChangeState(player.JumpState);
+        }
+
         // check if grapple ended then check below statements
-        /*
-        if (!grappleEnded)
+
+        if (player.movement.grappling)
         {
             return;
         }
-        */
-
+        
         // check if on ground, IDLE STATE
         if (player.movement.playerController.isGrounded)
         {
@@ -57,11 +63,6 @@ public class PlayerGrappleState : PlayerCanMoveSuperState
             playerStateMachine.ChangeState(player.FallState);
         }
 
-        // check if player cancels grapple, JUMP STATE
-        if (player.movement.jumpAction.action.WasPressedThisFrame())
-        {
-            player.movement.CancelGrapple();
-            playerStateMachine.ChangeState(player.JumpState);
-        }
+        
     }
 }

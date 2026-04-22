@@ -7,6 +7,7 @@ public class PlayerCCMovement : MonoBehaviour
     // Movement Values
     [Header("Player Movement Values")]
     public float moveSpeed = 10f;
+    public float runSpeed = 15f;
     public float jumpHeight = 0.5f;
     public float jumpHorizontalDampening = 0.7f;
 
@@ -82,29 +83,28 @@ public class PlayerCCMovement : MonoBehaviour
         {
             playerVelocity.y += gravityValue * Time.deltaTime;
         }
-        */
+        
 
-        // Grounded State? DONE
+        // Grounded State
         if(grappling == false)
         {
-            //PlayerJump(); // jump check
-            //PlayerMove(); // move logic
-            //FindValidGrappleTarget(); // grapple check
+            PlayerJump(); // jump check
+            PlayerMove(); // move logic
+            FindValidGrappleTarget(); // grapple check
         }
-        // During Grapple DONE
-        /*
+        
+        // During Grapple
         else if (grappling)
         {
             GrappleToTarget();
 
-            // DONE
             if (jumpAction.action.WasPressedThisFrame())
             {
                 CancelGrapple();
                 playerVelocity.y = jumpHeight;
             }
         }
-        */
+        
 
         /*
         playerController.Move(playerVelocity * Time.deltaTime);
@@ -161,10 +161,12 @@ public class PlayerCCMovement : MonoBehaviour
         desiredMove = (camF * input.y + camR * input.x).normalized;
 
         // Jump & Fall States
+        
         if (!groundedPlayer)
         {
             desiredMove *= jumpHorizontalDampening;
         }
+        
 
         Vector3 targetVelcoity = desiredMove * moveSpeed;
 
@@ -172,7 +174,6 @@ public class PlayerCCMovement : MonoBehaviour
     }
 
 
-    // DONE
     public void PlayerJump()
     {
         if (groundedPlayer)
@@ -188,7 +189,6 @@ public class PlayerCCMovement : MonoBehaviour
         }
     }
 
-    // DONE
     public bool FindValidGrappleTarget() // returns true if valid target selected
     {
         RaycastHit hit;
@@ -229,7 +229,6 @@ public class PlayerCCMovement : MonoBehaviour
         grappleLine.SetPosition(1, grapplePoint);
         grappleLine.enabled = true;
     }
-    // DONE
     public void GrappleToTarget()
     {
         // Find the distance between player and grapple point
@@ -249,7 +248,6 @@ public class PlayerCCMovement : MonoBehaviour
             CancelGrapple();
         }
     }
-    // DONE
     public void CancelGrapple()
     {
         // Reset and clear everything

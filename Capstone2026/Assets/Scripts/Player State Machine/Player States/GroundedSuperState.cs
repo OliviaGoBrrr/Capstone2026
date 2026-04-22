@@ -27,11 +27,12 @@ public class PlayerGroundedSuperState : PlayerCanMoveSuperState
 
     public override void FrameUpdate()
     {
-        if (player.movement.playerVelocity.y < 0f) // caps the falling speed of the player when on the ground
+        // caps the falling speed of the player when on the ground
+        if (player.movement.playerVelocity.y < 0f) 
         {
             player.movement.playerVelocity.y = -3f;
         }
-
+        
         base.FrameUpdate();
     }
 

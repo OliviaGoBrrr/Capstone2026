@@ -13,7 +13,7 @@ public class PlayerManager : MonoBehaviour
 
 
     [Header("Player Stats")]
-    public float betteryROC = 5;
+    public float batteryROC = 5;
     public float batteryPercent = 100;
     public TMP_Text batteryText;
 
