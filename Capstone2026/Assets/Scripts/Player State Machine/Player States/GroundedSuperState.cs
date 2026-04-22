@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerGroundedSuperState : PlayerState
+public class PlayerGroundedSuperState : PlayerCanMoveSuperState
 {
     public PlayerGroundedSuperState(PlayerManager player, PlayerStateMachine playerStateMachine, string animationName, Animator animationController) : base(player, playerStateMachine, animationName, animationController)
     {
@@ -27,6 +27,11 @@ public class PlayerGroundedSuperState : PlayerState
 
     public override void FrameUpdate()
     {
+        if (player.movement.playerVelocity.y < 0f) // caps the falling speed of the player when on the ground
+        {
+            player.movement.playerVelocity.y = -3f;
+        }
+
         base.FrameUpdate();
     }
 
@@ -38,7 +43,7 @@ public class PlayerGroundedSuperState : PlayerState
     {
         base.TransitionChecks();
 
-        // DIALOGUE STATE
+        // DIALOGUE STATE NEED TO FIX THIS
         if (player.isDialogue == true)
         {
             playerStateMachine.ChangeState(player.DialogueState);
@@ -58,12 +63,12 @@ public class PlayerGroundedSuperState : PlayerState
 
         // GRAPPLE STATE
         
-        if (player.movement.grappleAction.action.WasPressedThisFrame())
+        if (player.movement.FindValidGrappleTarget() == true)
         {
             playerStateMachine.ChangeState(player.GrappleState);
         }
 
-        // PUSHPULL STATE
+        // PUSHPULL STATE NEED TO FIX THIS
 
         if (player.isPushPulling == true)
         {
