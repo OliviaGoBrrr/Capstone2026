@@ -45,5 +45,11 @@ public class PlayerJumpState : PlayerCanMoveSuperState
         {
             playerStateMachine.ChangeState(player.FallState);
         }
+
+        // GROUNDED STATE
+        if (player.movement.playerController.isGrounded)
+        {
+            playerStateMachine.ChangeState(player.IdleSubState);
+        }
     }
 }
