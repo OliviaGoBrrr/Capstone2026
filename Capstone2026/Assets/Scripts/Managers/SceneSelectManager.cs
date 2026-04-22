@@ -3,18 +3,20 @@ using UnityEngine.SceneManagement;
 
 public class SceneSelectManager : MonoBehaviour
 {
+    public SceneLoader sceneLoader;
+
     public void GoToLevelA()
     {
-        SceneManager.LoadScene("MVP_Level-A");
+        sceneLoader.LoadNewScene("MVP_Level-A");
     }
 
     public void GoToGym()
     {
-        SceneManager.LoadScene("Environment");
+        sceneLoader.LoadNewScene("Environment");
     }
 
     public void GoToMainMenu()
     {
-        SceneManager.LoadScene("MainMenu");
+        sceneLoader.LoadNewScene("MainMenu");
     }
 }

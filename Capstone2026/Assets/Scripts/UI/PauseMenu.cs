@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
+    public SceneLoader sceneLoader;
+
     private bool isPaused;
     public InputActionReference pauseAction;
 
@@ -88,8 +90,7 @@ public class PauseMenu : MonoBehaviour
 
     public void OnQuitPressed()
     {
-        // need to add animations
-        SceneManager.LoadScene("MainMenu");
-        Time.timeScale = 1;
+        // need to add better animations
+        sceneLoader.LoadNewScene("MainMenu");
     }
 }

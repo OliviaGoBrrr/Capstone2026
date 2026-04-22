@@ -5,6 +5,8 @@ using DG.Tweening;
 
 public class MainMenu : MonoBehaviour
 {
+    public SceneLoader sceneLoader;
+
     public InputActionReference pauseAction;
 
     [SerializeField] private GameObject settingsOptions;
@@ -56,7 +58,7 @@ public class MainMenu : MonoBehaviour
     {
         // need to add animations
         DOTween.KillAll();
-        SceneManager.LoadScene("SceneSelect");
+        sceneLoader.LoadNewScene("SceneSelect");
     }
 
     public void SettingsButtonPressed()
