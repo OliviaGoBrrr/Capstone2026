@@ -36,6 +36,8 @@ public class PlayerState
 
     public virtual void FrameUpdate()
     {
+        player.movement.PlayerMovementLogic();
+
         TransitionChecks();
     }
 

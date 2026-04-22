@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerFallState : PlayerState
+public class PlayerFallState : PlayerCanMoveSuperState
 {
     public PlayerFallState(PlayerManager player, PlayerStateMachine playerStateMachine, string animationName, Animator animationController) : base(player, playerStateMachine, animationName, animationController)
     {
@@ -23,6 +23,8 @@ public class PlayerFallState : PlayerState
 
     public override void FrameUpdate()
     {
+        player.movement.desiredMove *= player.movement.jumpHorizontalDampening;
+
         base.FrameUpdate();
     }
 
@@ -35,7 +37,7 @@ public class PlayerFallState : PlayerState
     {
         base.TransitionChecks();
 
-        // GROUNDED STATE
+        // GROUNDED STATE / IDLE STATE
         if (player.movement.playerController.isGrounded)
         {
             playerStateMachine.ChangeState(player.IdleSubState);
