@@ -3,15 +3,16 @@ using UnityEngine;
 
 public class Mirror_Prism : MonoBehaviour
 {
-    int prismHitCount, hasHit = 0;
+    int prismHitCount;
     public Animator AnimController;
+    public GameObject grapplePoint;
+    bool hasHit;
 
     private void Update()
     {
-
-        if(prismHitCount == 2 && hasHit == 0)
+        if (prismHitCount == 2 && !hasHit)
         {
-            hasHit = 1;
+            hasHit = true;
             AnimController.Play("mirrorLight");
         }
     }
@@ -21,4 +22,10 @@ public class Mirror_Prism : MonoBehaviour
         Debug.Log("Hit");
         prismHitCount++;
     }
+
+    public void spawnGrapple()
+    {
+        grapplePoint.SetActive(true);
+    }
+
 }

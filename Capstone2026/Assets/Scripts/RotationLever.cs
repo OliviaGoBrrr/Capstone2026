@@ -17,3 +17,6 @@ public class RotationLever : Interactable
         rotateCount++;
     }
 }
+
+//if rotating, do not allow input - OnStateEnter
+//if not rotating, allow input - OnStateExit
