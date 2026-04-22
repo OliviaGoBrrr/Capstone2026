@@ -137,13 +137,6 @@ public class PlayerCCMovement : MonoBehaviour
         }
     }
 
-    public void PlayerGroundedLogic()
-    {
-        PlayerJump();
-        PlayerMove();
-        FindValidGrappleTarget();
-    }
-
     public void PlayerMove()
     {
         // Rotate the player with the direction they're walking towards
