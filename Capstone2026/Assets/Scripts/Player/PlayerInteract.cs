@@ -56,7 +56,7 @@ public class PlayerInteract : MonoBehaviour
 
             // Debugging for when players are able to interact with something
             if (debug){
-                Debug.Log("Player can interact with " + hit.collider.gameObject.name); // Tells you what the player can interact with
+                //Debug.Log("Player can interact with " + hit.collider.gameObject.name); // Tells you what the player can interact with
                 Debug.DrawLine(transform.position, hit.transform.position, Color.blue); // Draws a line from the object to the player
             }
         }

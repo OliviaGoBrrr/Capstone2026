@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
@@ -5,13 +6,16 @@ public class PlayerManager : MonoBehaviour
     [Header("Player Scripts")]
     public PlayerCCMovement movement;
     public PlayerSolarDetector solarPanel;
+    //public GrappleInteract grapple;
     // public PlayerDialogueScript dialogue;
     // public PlayerGrappleScript grapple;
     // public PlayerPushPullScript pushPull;
 
 
     [Header("Player Stats")]
+    public float batteryROC = 5;
     public float batteryPercent = 100;
+    public TMP_Text batteryText;
 
     [Header("Player State Bools")]
     #region State Bools
@@ -50,6 +54,7 @@ public class PlayerManager : MonoBehaviour
 
     #endregion
 
+    // initialising state machine
     private void Awake()
     {
         // nulls for last 2 arguments is because we dont have animation players set up yet PlayerState(player, statemachine, animationName, animationController)
@@ -85,5 +90,10 @@ public class PlayerManager : MonoBehaviour
     void Update()
     {
         StateMachine.CurrentState.FrameUpdate();
+    }
+
+    private void FixedUpdate()
+    {
+        StateMachine.CurrentState.FixedUpdate();
     }
 }

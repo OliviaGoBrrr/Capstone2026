@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerGrappleState : PlayerState
+public class PlayerGrappleState : PlayerCanMoveSuperState
 {
     public PlayerGrappleState(PlayerManager player, PlayerStateMachine playerStateMachine, string animationName, Animator animationController) : base(player, playerStateMachine, animationName, animationController)
     {
@@ -21,6 +21,13 @@ public class PlayerGrappleState : PlayerState
         base.ExitState();
     }
 
+    public override void FrameUpdate()
+    {
+        player.movement.GrappleToTarget();
+
+        base.FrameUpdate();
+    }
+
     public override void FixedUpdate()
     {
         base.FixedUpdate();
@@ -30,14 +37,20 @@ public class PlayerGrappleState : PlayerState
     {
         base.TransitionChecks();
 
+        // check if player cancels grapple, JUMP STATE
+        if (player.movement.jumpAction.action.WasPressedThisFrame())
+        {
+            player.movement.CancelGrapple();
+            playerStateMachine.ChangeState(player.JumpState);
+        }
+
         // check if grapple ended then check below statements
-        /*
-        if (!grappleEnded)
+
+        if (player.movement.grappling)
         {
             return;
         }
-        */
-
+        
         // check if on ground, IDLE STATE
         if (player.movement.playerController.isGrounded)
         {
@@ -49,5 +62,7 @@ public class PlayerGrappleState : PlayerState
         {
             playerStateMachine.ChangeState(player.FallState);
         }
+
+        
     }
 }

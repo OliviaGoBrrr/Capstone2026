@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerPushPullState : PlayerState
@@ -8,6 +9,8 @@ public class PlayerPushPullState : PlayerState
 
     public override void EnterState()
     {
+        player.movement.moveSpeed = 5f;
+        
         player.isPushPulling = true;
 
         base.EnterState();
@@ -16,9 +19,17 @@ public class PlayerPushPullState : PlayerState
 
     public override void ExitState()
     {
+        player.movement.moveSpeed = 10f;
+
         player.isPushPulling = false;
 
         base.ExitState();
+        //Debug.Log("Exited PushPull State");
+    }
+
+    public override void FrameUpdate()
+    {
+        base.FrameUpdate();
     }
 
     public override void FixedUpdate()
@@ -31,7 +42,15 @@ public class PlayerPushPullState : PlayerState
         base.TransitionChecks();
 
         // if pushpull done, IDLE
+        if (player.isPushPulling == false)
+        {
+            playerStateMachine.ChangeState(player.IdleSubState);
+        }
 
         // if jumped out of pushpull. JUMP
+        if (player.movement.jumpAction.action.WasPressedThisFrame())
+        {
+            playerStateMachine.ChangeState(player.JumpState);
+        }
     }
 }

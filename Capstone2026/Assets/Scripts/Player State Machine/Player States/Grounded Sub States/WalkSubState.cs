@@ -22,6 +22,11 @@ public class PlayerWalkSubState : PlayerGroundedSuperState
         base.FrameUpdate();
     }
 
+    public override void FixedUpdate()
+    {
+        base.FixedUpdate();
+    }
+
     public override void TransitionChecks()
     {
         base.TransitionChecks();

@@ -22,6 +22,11 @@ public class PlayerDialogueState : PlayerState
         base.ExitState();
     }
 
+    public override void FrameUpdate()
+    {
+        base.FrameUpdate();
+    }
+
     public override void FixedUpdate()
     {
         base.FixedUpdate();
@@ -32,6 +37,11 @@ public class PlayerDialogueState : PlayerState
         base.TransitionChecks();
 
         // if dialogue done, playerStateMachine.ChangeState(player.IdleState);
+
+        if(player.isDialogue == false)
+        {
+            playerStateMachine.ChangeState(player.IdleSubState);
+        }
 
     }
 }

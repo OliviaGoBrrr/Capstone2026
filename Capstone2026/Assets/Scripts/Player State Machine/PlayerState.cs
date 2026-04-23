@@ -26,38 +26,47 @@ public class PlayerState
         startTime = Time.time;
         //animationController.SetBool(animationName, true);
     }
+
     public virtual void ExitState()
     {
         isExitingState = true;
         //if (!isAnimationFinished) isAnimationFinished = true;
         //animationController.SetBool(animationName, false);
     }
+
     public virtual void FrameUpdate()
     {
+        player.movement.PlayerMovementLogic();
+
         TransitionChecks();
     }
+
     public virtual void FixedUpdate()
     {
         // Change battery % regardless of current state
         if (player.solarPanel.CheckIfInLight() <= 2)
         {
-            player.solarPanel.ChangeBatteryPercent(player.batteryPercent, 2, 1);
+            player.batteryPercent = player.solarPanel.ChangeBatteryPercent(player.batteryPercent, player.batteryROC, 1);
+            player.batteryText.text = Mathf.Round(player.batteryPercent).ToString();
             player.solarPanel.isInLight = true;
         }
         else
         {
-            player.solarPanel.ChangeBatteryPercent(player.batteryPercent, 2, -1);
+            player.batteryPercent = player.solarPanel.ChangeBatteryPercent(player.batteryPercent, player.batteryROC, -1);
+            player.batteryText.text = Mathf.Round(player.batteryPercent).ToString();
             player.solarPanel.isInLight = false;
         }
     }
+
     public virtual void TransitionChecks()
     {
         // DEAD STATE
-        if (player.batteryPercent < 0)
+        if (player.batteryPercent <= 0)
         {
             playerStateMachine.ChangeState(player.DeadState);
         }
     }
+
     public virtual void AnimationTrigger()
     {
         //isAnimationFinished = true;
