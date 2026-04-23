@@ -26,8 +26,6 @@ public class PlayerCCMovement : MonoBehaviour
     // Rotation
     [Range(0f, 180f)] public float rotationSpeed = 180f;
     private Vector3 playerRotation;
-    float turnSpeedVelocity;
-    float turnSmoothTime;
 
     [Header("Grapple Action Values")]
     public bool grappling;
@@ -76,46 +74,7 @@ public class PlayerCCMovement : MonoBehaviour
 
     private void Update()
     {
-        /*
-        groundedPlayer = playerController.isGrounded;
 
-        if (gravityOn)
-        {
-            playerVelocity.y += gravityValue * Time.deltaTime;
-        }
-        
-
-        // Grounded State
-        if(grappling == false)
-        {
-            PlayerJump(); // jump check
-            PlayerMove(); // move logic
-            FindValidGrappleTarget(); // grapple check
-        }
-        
-        // During Grapple
-        else if (grappling)
-        {
-            GrappleToTarget();
-
-            if (jumpAction.action.WasPressedThisFrame())
-            {
-                CancelGrapple();
-                playerVelocity.y = jumpHeight;
-            }
-        }
-        
-
-        /*
-        playerController.Move(playerVelocity * Time.deltaTime);
-
-        // Timers
-
-        if (grappleLockoutTimer > -1.0f)
-        {
-            grappleLockoutTimer -= Time.deltaTime;
-        }
-        */
     }
 
     public void PlayerMovementLogic()
@@ -251,7 +210,6 @@ public class PlayerCCMovement : MonoBehaviour
 
         // Linerenderer
         grappleLine.enabled = false;
-
     }
 
     private void OnEnable()
@@ -269,4 +227,48 @@ public class PlayerCCMovement : MonoBehaviour
         grappleAction.action.Disable();
         runAction.action.Disable();
     }
+
+    /* Depreciated Movement Update() code
+
+    /*
+        groundedPlayer = playerController.isGrounded;
+
+        if (gravityOn)
+        {
+            playerVelocity.y += gravityValue * Time.deltaTime;
+        }
+        
+
+        // Grounded State
+        if(grappling == false)
+        {
+            PlayerJump(); // jump check
+            PlayerMove(); // move logic
+            FindValidGrappleTarget(); // grapple check
+        }
+        
+        // During Grapple
+        else if (grappling)
+        {
+            GrappleToTarget();
+
+            if (jumpAction.action.WasPressedThisFrame())
+            {
+                CancelGrapple();
+                playerVelocity.y = jumpHeight;
+            }
+        }
+        
+
+        /*
+        playerController.Move(playerVelocity * Time.deltaTime);
+
+        // Timers
+
+        if (grappleLockoutTimer > -1.0f)
+        {
+            grappleLockoutTimer -= Time.deltaTime;
+        }
+    */
+    
 }
