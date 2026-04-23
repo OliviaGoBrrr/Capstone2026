@@ -17,10 +17,26 @@ public class SceneLoader : MonoBehaviour
     {
         transition.SetTrigger("Start");
 
-        yield return new WaitForSeconds(transitionTime);
+        //yield return StartCoroutine(CoroutineUtil.WaitForRealSeconds(DURATION));
+
+        //yield return new WaitForSeconds(transitionTime);
+
+        //StartCoroutine(WaitForRealSeconds(transitionTime));
+
+        yield return new WaitForSecondsRealtime(transitionTime);
 
         SceneManager.LoadScene(nextScene);
 
         Time.timeScale = 1;
+    }
+
+    IEnumerator WaitForRealSeconds(float seconds)
+    {
+        float startTime = Time.realtimeSinceStartup;
+
+        while (Time.realtimeSinceStartup - startTime < seconds)
+        {
+            yield return null;
+        }
     }
 }
