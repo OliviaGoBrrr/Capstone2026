@@ -44,7 +44,7 @@ public class PlayerGroundedSuperState : PlayerCanMoveSuperState
     {
         base.TransitionChecks();
 
-        // DIALOGUE STATE NEED TO FIX THIS
+        // DIALOGUE STATE 
         if (player.isDialogue == true)
         {
             playerStateMachine.ChangeState(player.DialogueState);
@@ -69,7 +69,7 @@ public class PlayerGroundedSuperState : PlayerCanMoveSuperState
             playerStateMachine.ChangeState(player.GrappleState);
         }
 
-        // PUSHPULL STATE NEED TO FIX THIS
+        // PUSHPULL STATE 
 
         if (player.isPushPulling == true)
         {
