@@ -60,9 +60,6 @@ public class PauseMenu : MonoBehaviour
         // replace with exit animation
         HideAllUI();
 
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Confined;
-
         isPaused = false;
     }
 
@@ -71,6 +68,7 @@ public class PauseMenu : MonoBehaviour
     public void OnResumePressed()
     {
         ResumeLogic();
+        HideCursor();
     }
 
     public void OnSettingsPressed()
@@ -92,5 +90,17 @@ public class PauseMenu : MonoBehaviour
     {
         // need to add better animations
         sceneLoader.LoadNewScene("MainMenu");
+    }
+
+    public void HideCursor()
+    {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Confined;
+    }
+
+    public void ShowCursor()
+    {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 }
