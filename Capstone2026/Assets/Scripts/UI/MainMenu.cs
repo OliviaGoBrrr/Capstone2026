@@ -19,6 +19,10 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private Transform cameraSettingsPos;
     [SerializeField] private Transform cameraNormalPos;
 
+
+    // AUDIO CLIPS
+    [SerializeField] private AudioClip buttonPressedClip;
+
     void Start()
     {
         // kill all tweens relating to the camera
@@ -67,6 +71,8 @@ public class MainMenu : MonoBehaviour
         DOTween.Kill("Camera");
         mainCamera.transform.DOMove(cameraSettingsPos.position, 0.5f).SetId("Camera");
         mainCamera.transform.DORotate(new Vector3(-12, 0, -5), 0.5f).SetId("Camera");
+
+        //AudioManager.Instance.PlaySFX(buttonPressedClip, mainCamera.transform, 1);
 
         settingsShown = true;
         settingsOptions.SetActive(true);

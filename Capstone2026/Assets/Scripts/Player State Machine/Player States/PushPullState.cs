@@ -1,7 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlayerPushPullState : PlayerState
+public class PlayerPushPullState : PlayerCanMoveSuperState
 {
     public PlayerPushPullState(PlayerManager player, PlayerStateMachine playerStateMachine, string animationName, Animator animationController) : base(player, playerStateMachine, animationName, animationController)
     {
