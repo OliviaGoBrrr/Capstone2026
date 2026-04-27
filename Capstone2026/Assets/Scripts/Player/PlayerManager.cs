@@ -13,7 +13,8 @@ public class PlayerManager : MonoBehaviour
 
 
     [Header("Player Stats")]
-    public float batteryROC = 5;
+    public float batteryLightROC = 30; // per second
+    public float batteryShadeROC = 15; // per second
     public float batteryPercent = 100;
     public TMP_Text batteryText;
 

@@ -44,15 +44,15 @@ public class PlayerState
     public virtual void FixedUpdate()
     {
         // Change battery % regardless of current state
-        if (player.solarPanel.CheckIfInLight() <= 2)
+        if (player.solarPanel.CheckIfInLight() <= 2) // in light
         {
-            player.batteryPercent = player.solarPanel.ChangeBatteryPercent(player.batteryPercent, player.batteryROC, 1);
+            player.batteryPercent = player.solarPanel.ChangeBatteryPercent(player.batteryPercent, player.batteryLightROC, 1);
             player.batteryText.text = Mathf.Round(player.batteryPercent).ToString();
             player.solarPanel.isInLight = true;
         }
-        else
+        else // in shade
         {
-            player.batteryPercent = player.solarPanel.ChangeBatteryPercent(player.batteryPercent, player.batteryROC, -1);
+            player.batteryPercent = player.solarPanel.ChangeBatteryPercent(player.batteryPercent, player.batteryShadeROC, -1);
             player.batteryText.text = Mathf.Round(player.batteryPercent).ToString();
             player.solarPanel.isInLight = false;
         }
