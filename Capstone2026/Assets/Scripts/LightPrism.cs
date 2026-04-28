@@ -1,35 +1,29 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class LightPrism : MonoBehaviour
 {
-    public LayerMask InteractLayerMask;
-    public float maxDistance, hasHit = 0;
+    [SerializeField] LayerMask raycastMask;
+    [SerializeField] LayerMask interactMask;
+    public float maxDistance;
     public Mirror_Prism Mirror_Prism;
-    public Transform mirrorPos;
 
     void Update()
     {
         Vector3 endPoint = (transform.forward.normalized * maxDistance) + transform.position;
         float interactDistance = Vector3.Distance(transform.position, endPoint);
 
-        if ((Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, interactDistance, InteractLayerMask)) && hasHit == 0)
+        if ((Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, interactDistance, raycastMask)))
         {
-            //if (Vector3.Distance(hit.point, mirrorPos.transform.position) < 2f)
-            //{
-            //    if ((Physics.Raycast(transform.position, transform.forward, out RaycastHit hit_reflect, interactDistance, InteractLayerMask)) && hasHit == 1)
-            //    {
-            //        hasHit = 2;
-            //        Debug.Log("reflected ray has hit");
-            //    }
-            //}
-            //else
-            //{
-                hasHit = 1;
+            //if is part of the interact layer, and is that the layer the ray has just hit
+            if ((interactMask & (1 << hit.collider.gameObject.layer)) != 0)
+            {
                 Mirror_Prism.PrismHit();
-            //}
-
+                Vector3 incomingVec = hit.point - transform.position;
+                Vector3 reflectVec = Vector3.Reflect(incomingVec, hit.normal);
+                Debug.DrawLine(hit.point, reflectVec, Color.red);
+            }
         }
-
         Debug.DrawLine(transform.position, endPoint, Color.green);
     }
 }

@@ -4,22 +4,26 @@ using UnityEngine;
 public class Mirror_Prism : MonoBehaviour
 {
     int prismHitCount;
+    public bool isReflectMirror;
     public Animator AnimController;
     public GameObject grapplePoint;
-    bool hasHit;
+    [HideInInspector] public bool reflectMode;
 
     private void Update()
     {
-        if (prismHitCount == 2 && !hasHit)
+        if (!isReflectMirror)
         {
-            hasHit = true;
-            AnimController.Play("mirrorLight");
+            if (prismHitCount == 2 && !reflectMode || Input.GetKeyDown(KeyCode.Return) && !reflectMode)
+            {
+                reflectMode = true;
+                AnimController.Play("mirrorLight");
+            }
         }
     }
 
     public void PrismHit()
     {
-        Debug.Log("Hit");
+        Debug.Log("Normal Ray Has Hit");
         prismHitCount++;
     }
 
@@ -27,5 +31,4 @@ public class Mirror_Prism : MonoBehaviour
     {
         grapplePoint.SetActive(true);
     }
-
 }
