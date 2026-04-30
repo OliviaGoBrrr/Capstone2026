@@ -66,7 +66,12 @@ public class MainMenu : MonoBehaviour
         if (!File.Exists(path) && !playerIDExists)
         {
             string playerIDToBeStored = playerID.ToString();
-            File.WriteAllText(path, playerIDToBeStored);
+
+            using (StreamWriter sw = File.AppendText(path))
+            {
+                sw.WriteLine(playerIDToBeStored);
+
+            }
         }
 
         //Retrieve Device Specs
