@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using JetBrains.Annotations;
+using System.Text;
 
 public class FeedbackForm : MonoBehaviour
 {
@@ -10,6 +9,6 @@ public class FeedbackForm : MonoBehaviour
     
     public void OnSubmitPressed ()
     {
-        // Add code here!
+        // Add submit logic here.
     }
 }
