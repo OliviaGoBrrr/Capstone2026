@@ -23,12 +23,6 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private Transform cameraSettingsPos;
     [SerializeField] private Transform cameraNormalPos;
 
-    #region EvelynStuff
-    int playerID;
-    bool playerIDExists;
-    List<string> playerInfo;
-    #endregion
-
     // AUDIO CLIPS
     [SerializeField] private AudioClip buttonPressedClip;
 
@@ -43,60 +37,6 @@ public class MainMenu : MonoBehaviour
 
         mainCamera.transform.position = cameraNormalPos.position;
         mainCamera.transform.rotation = cameraNormalPos.rotation;
-
-        #region EvelynStuff2
-        //Set Up/Create file for keeping playerID's
-        string path = @"../name.txt";
-
-        using (StreamReader sr = new StreamReader(path))
-{
-            while (true)
-            {
-                string? line = sr.ReadLine();
-                if (line == null) break;
-                if (line == playerID.ToString())
-                {
-                    playerIDExists = true;
-                    break;
-                }
-                playerID++;
-            }
-        }
-
-        if (!File.Exists(path) && !playerIDExists)
-        {
-            string playerIDToBeStored = playerID.ToString();
-
-            using (StreamWriter sw = File.AppendText(path))
-            {
-                sw.WriteLine(playerIDToBeStored);
-
-            }
-        }
-
-        //Retrieve Device Specs
-        List<string> deviceInfo = new List<string>
-        {
-            $"SystemSpecs",
-            $"DeviceName: {SystemInfo.deviceUniqueIdentifier}",
-            $"OS: {SystemInfo.operatingSystem}",
-            $"Processor: {SystemInfo.processorModel}",
-            $"Processor Cores: {SystemInfo.processorCount}",
-            $"System Memory: {SystemInfo.systemMemorySize}MB",
-            $"GPU: {SystemInfo.graphicsDeviceName}",
-            $"GPU Memory: {SystemInfo.graphicsMemorySize}MB",
-            $"Graphics Driver Version: {SystemInfo.graphicsDeviceVersion}",
-            $"Screen Resolution {Screen.width} x {Screen.height}",
-            "IsEditor: " + (Application.isEditor ? "Yes" : "No")
-        };
-
-
-        
-
-        string messageToSend = string.Join("\n", deviceInfo);
-            
-        /*if (!Application.isEditor) */DiscordWebhooks.SendMessage(messageToSend, $"PlayerID: {playerID}");
-        #endregion
     }
 
     // Update is called once per frame
@@ -125,7 +65,7 @@ public class MainMenu : MonoBehaviour
     {
         // need to add animations
         DOTween.KillAll();
-        sceneLoader.LoadNewScene("SceneSelect");
+        sceneLoader.LoadNewScene("DataLoggingScene");
     }
 
     public void SettingsButtonPressed()

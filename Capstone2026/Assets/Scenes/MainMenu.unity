@@ -1893,7 +1893,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1765944292}
   - component: {fileID: 1765944293}
-  - component: {fileID: 1765944294}
   m_Layer: 0
   m_Name: Menu Manager
   m_TagString: Untagged
@@ -1936,18 +1935,6 @@ MonoBehaviour:
   cameraSettingsPos: {fileID: 1707032085}
   cameraNormalPos: {fileID: 506755256}
   buttonPressedClip: {fileID: 8300000, guid: b75951898cdbff4489d5f376f1e71689, type: 3}
---- !u!114 &1765944294
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1765944291}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22b1c92cf9fc73c49a249dd62a2db6ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1793574083
 GameObject:
   m_ObjectHideFlags: 0
@@ -2098,6 +2085,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2349598062323113580, guid: 0c26fabce6825674da079068ab1e9179, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 6357512271138617035, guid: 0c26fabce6825674da079068ab1e9179, type: 3}
       propertyPath: m_Name
       value: SceneLoader
