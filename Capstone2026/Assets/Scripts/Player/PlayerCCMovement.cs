@@ -13,9 +13,13 @@ public class PlayerCCMovement : MonoBehaviour
     public float jumpHeight = 0.5f;
     public float jumpHorizontalDampening = 0.7f;
 
+    // Rotation (1 = snap to rotation direction)
+    [Range(0f, 1f)] public float rotationSpeed;
+
     // Physics
-    //[HideInInspector]
+    [HideInInspector]
     public Vector3 playerVelocity;
+    [HideInInspector]
     public Vector3 desiredMove;
 
     [HideInInspector]
@@ -24,8 +28,7 @@ public class PlayerCCMovement : MonoBehaviour
     public float gravityValue = -9.81f;
     public bool gravityOn = true;
 
-    // Rotation (1 = snap to rotation direction)
-    [Range(0f, 1f)] public float rotationSpeed;
+
 
     [Header("Grapple Action Values")]
     public bool grappling;
