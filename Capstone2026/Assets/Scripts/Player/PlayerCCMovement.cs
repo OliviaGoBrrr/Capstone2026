@@ -4,6 +4,8 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerCCMovement : MonoBehaviour
 {
+    [Header("Player Model")]
+    public GameObject playerModel;
     // Movement Values
     [Header("Player Movement Values")]
     public float moveSpeed = 10f;
@@ -19,13 +21,11 @@ public class PlayerCCMovement : MonoBehaviour
     [HideInInspector]
     public bool groundedPlayer;
     public float acceleration = 10f;
-    //public float decceleration = 10f;
     public float gravityValue = -9.81f;
     public bool gravityOn = true;
 
-    // Rotation
-    [Range(0f, 180f)] public float rotationSpeed = 180f;
-    private Vector3 playerRotation;
+    // Rotation (1 = snap to rotation direction)
+    [Range(0f, 1f)] public float rotationSpeed;
 
     [Header("Grapple Action Values")]
     public bool grappling;
@@ -63,6 +63,11 @@ public class PlayerCCMovement : MonoBehaviour
             grappleLine = GetComponent<LineRenderer>();
             grappleLine.enabled = false;
         }
+
+        if(playerModel == null)
+        {
+            Debug.LogError("There is no player model added in the PlayerCCMovement Inspector");
+        }
     }
 
     private void Start()
@@ -96,6 +101,7 @@ public class PlayerCCMovement : MonoBehaviour
         }
     }
 
+
     public void PlayerMove()
     {
         // Rotate the player with the direction they're walking towards
@@ -103,6 +109,11 @@ public class PlayerCCMovement : MonoBehaviour
 
         // Get the x,z direction the player is inputting
         Vector2 input = moveAction.action.ReadValue<Vector2>();
+
+        Vector2 inputNorm = input.normalized;
+
+        // Rotate the player
+
 
         Vector3 camF = playerCamera.transform.forward;
         Vector3 camR = playerCamera.transform.right;
@@ -118,7 +129,17 @@ public class PlayerCCMovement : MonoBehaviour
         {
             desiredMove *= jumpHorizontalDampening;
         }
-        
+
+        // Rotates the player if they're inputting an action
+        if(desiredMove != Vector3.zero)
+        {
+            // Rotation calculation - will look in the direction the input action
+            Quaternion targetRotation = Quaternion.LookRotation(desiredMove);
+
+            // Rotates the model over time
+            playerModel.transform.rotation = Quaternion.Slerp(playerModel.transform.rotation, targetRotation, rotationSpeed);
+        }
+
 
         Vector3 targetVelcoity = desiredMove * moveSpeed;
 
