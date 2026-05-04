@@ -226,10 +226,10 @@ public class PlayerCCMovement : MonoBehaviour
                     // UI Appears
                     if(target.grappleUICanvas != null)
                     {
-                        target.grappleUICanvas.gameObject.SetActive(true);
                         if(currentGrappleUI != target.grappleUICanvas.gameObject)
                         {
                             DisableGrappleUI();
+                            target.grappleUICanvas.gameObject.SetActive(true);
                             currentGrappleUI = target.grappleUICanvas.gameObject;
                         }
                     }
