@@ -29,6 +29,7 @@ public class PlayerCCMovement : MonoBehaviour
     public bool gravityOn = true;
 
     [Header("Grapple Action Values")]
+    [HideInInspector]
     public bool grappling;
     public float grappleAngle;
     public float grappleMaxDistance;
@@ -42,6 +43,9 @@ public class PlayerCCMovement : MonoBehaviour
     private LineRenderer grappleLine;
     [SerializeField]
     private Transform grappleHand;
+
+    [Header("Grapple UI")]
+    private GameObject currentGrappleUI;
 
     [Header("Player Camera Values")]
     public CharacterController playerController;
@@ -178,6 +182,7 @@ public class PlayerCCMovement : MonoBehaviour
     public bool FindValidGrappleTarget() // returns true if valid target selected
     {
         // Checks if theres any grapple points within the player's view, and puts them in an array
+        // *Seperate Note* - This may be an expensive calculation if the grapple point collider meshes are too complex
         Collider[] colliders = Physics.OverlapSphere(playerCamera.transform.forward, grappleMaxDistance, grappleTargetLayer);
 
         // Temporarily saves the direction the closest grapple point
@@ -197,7 +202,6 @@ public class PlayerCCMovement : MonoBehaviour
             {
                 if (dirDot > closestDot) // saves the closest grapple target
                 {
-                    Debug.Log(dirDot);
                     closestDot = dirDot;
                     closestGrapple = direction;
                 }
@@ -219,16 +223,35 @@ public class PlayerCCMovement : MonoBehaviour
                 
                 if (target != null) // If the grapple point isn't disabled
                 {
-                    Debug.Log("Found a target");
+                    // UI Appears
+                    if(target.grappleUICanvas != null)
+                    {
+                        target.grappleUICanvas.gameObject.SetActive(true);
+                        if(currentGrappleUI != target.grappleUICanvas.gameObject)
+                        {
+                            DisableGrappleUI();
+                            currentGrappleUI = target.grappleUICanvas.gameObject;
+                        }
+                    }
+
+                    // Action is taken
                     if (grappleBufferTimer > 0f && grappleLockoutTimer <= 0) // If there was an input buffered
                     {
                         StartGrapple(target);
+
                         return true;
                     }
                 }
+                else
+                {
+                    DisableGrappleUI();
+                }
             }
         }
-
+        else
+        {
+            DisableGrappleUI();
+        }
         return false;
     }
 
@@ -280,6 +303,15 @@ public class PlayerCCMovement : MonoBehaviour
         // Linerenderer
         grappleLine.enabled = false;
     }
+
+    private void DisableGrappleUI()
+    {
+        if(currentGrappleUI != null)
+        {
+            currentGrappleUI.SetActive(false);
+            currentGrappleUI = null;
+        }
+    } 
 
     private void OnEnable()
     {
