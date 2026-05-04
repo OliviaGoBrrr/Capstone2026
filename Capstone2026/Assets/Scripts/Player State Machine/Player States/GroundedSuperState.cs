@@ -32,13 +32,18 @@ public class PlayerGroundedSuperState : PlayerCanMoveSuperState
         {
             player.movement.playerVelocity.y = -3f;
         }
-        
+
         base.FrameUpdate();
     }
 
     public override void FixedUpdate()
     {
         base.FixedUpdate();
+
+        if (player.movement.FindValidGrappleTarget() == true)
+        {
+            playerStateMachine.ChangeState(player.GrappleState);
+        }
     }
     public override void TransitionChecks()
     {
@@ -60,13 +65,6 @@ public class PlayerGroundedSuperState : PlayerCanMoveSuperState
         if (player.movement.playerVelocity.y < 0 && !player.movement.playerController.isGrounded)
         {
             playerStateMachine.ChangeState(player.FallState);
-        }
-
-        // GRAPPLE STATE
-        
-        if (player.movement.FindValidGrappleTarget() == true)
-        {
-            playerStateMachine.ChangeState(player.GrappleState);
         }
 
         // PUSHPULL STATE 

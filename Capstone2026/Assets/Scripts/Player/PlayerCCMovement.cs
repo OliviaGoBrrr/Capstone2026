@@ -28,11 +28,10 @@ public class PlayerCCMovement : MonoBehaviour
     public float gravityValue = -9.81f;
     public bool gravityOn = true;
 
-
-
     [Header("Grapple Action Values")]
     public bool grappling;
-    public float grappleRange;
+    public float grappleAngle;
+    public float grappleMaxDistance;
     public float grappleSpeed;
     public float grappleLockoutTime;
     [HideInInspector]
@@ -54,6 +53,10 @@ public class PlayerCCMovement : MonoBehaviour
     public InputActionReference grappleAction;
     public InputActionReference runAction;
 
+    // Input buffers
+    private float grappleBuffer = 0.1f;
+    private float grappleBufferTimer = 0f;
+
     private void Awake()
     {
         if(playerController == null)
@@ -73,16 +76,22 @@ public class PlayerCCMovement : MonoBehaviour
         }
     }
 
-    private void Start()
+    private void LateUpdate()
     {
-        // Cursor is invisible and is confined to screen
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Confined;
+        InputBuffers();
     }
 
-    private void Update()
+    private void InputBuffers()
     {
+        if (grappleBufferTimer > 0)
+        {
+            grappleBufferTimer -= Time.deltaTime;
+        }
 
+        if (grappleAction.action.WasPressedThisFrame())
+        {
+            grappleBufferTimer = grappleBuffer;
+        }
     }
 
     public void PlayerMovementLogic()
@@ -165,25 +174,61 @@ public class PlayerCCMovement : MonoBehaviour
         }
     }
 
+
     public bool FindValidGrappleTarget() // returns true if valid target selected
     {
-        RaycastHit hit;
+        // Checks if theres any grapple points within the player's view, and puts them in an array
+        Collider[] colliders = Physics.OverlapSphere(playerCamera.transform.forward, grappleMaxDistance, grappleTargetLayer);
 
-        if(Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hit, grappleRange, grappleTargetLayer))
+        // Temporarily saves the direction the closest grapple point
+        Vector3 closestGrapple = Vector3.zero;
+        float closestDot = 0f;
+
+
+        // Checks all colliders (within the grapple target layer) if they're within the grapple angle...
+        foreach (var collider in colliders)
         {
-            GrappleableObject target = hit.transform.GetComponent<GrappleableObject>();
+            Vector3 direction = (collider.transform.position - playerCamera.transform.position).normalized;
 
-            Debug.DrawLine(target.anchorPoint.position, transform.position, Color.magenta);
+            float dirDot = Vector3.Dot(playerCamera.transform.forward, direction);
 
-            if (target != null)
+            // ... and which one is closest to what the player is looking at.
+            if (dirDot >= Mathf.Cos(Mathf.Deg2Rad * grappleAngle)) // if its within the search angle
             {
-                if (grappleAction.action.WasPressedThisFrame() && grappleLockoutTimer <= 0)
+                if (dirDot > closestDot) // saves the closest grapple target
                 {
-                    StartGrapple(target);
-                    return true;
+                    Debug.Log(dirDot);
+                    closestDot = dirDot;
+                    closestGrapple = direction;
                 }
             }
         }
+
+        // If there was a valid grapple target found, throw a ray in its a direction to graaple to
+        if (closestGrapple != Vector3.zero)
+        {
+            RaycastHit hit;
+
+            // Sends a ray towards the closest grapple point
+            if (Physics.Raycast(playerCamera.transform.position, closestGrapple, out hit, grappleMaxDistance, grappleTargetLayer))
+            {
+                // It should find a target, but it allows the disabling of the grapple point
+                GrappleableObject target = hit.transform.GetComponent<GrappleableObject>();
+
+                Debug.DrawLine(target.anchorPoint.position, transform.position, Color.magenta);
+                
+                if (target != null) // If the grapple point isn't disabled
+                {
+                    Debug.Log("Found a target");
+                    if (grappleBufferTimer > 0f && grappleLockoutTimer <= 0) // If there was an input buffered
+                    {
+                        StartGrapple(target);
+                        return true;
+                    }
+                }
+            }
+        }
+
         return false;
     }
 
