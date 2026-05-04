@@ -2111,8 +2111,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 404620389}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.06691452, y: 1.7654096e-15, z: -1.183969e-16, w: 0.99775875}
-  m_LocalPosition: {x: -2.39, y: 2.543529, z: -22.638586}
+  m_LocalRotation: {x: 0.075799786, y: -0.020070184, z: 0.0015260156, w: 0.99691993}
+  m_LocalPosition: {x: -2.39, y: 3.04, z: -22.37}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4243,10 +4243,11 @@ GameObject:
   m_Component:
   - component: {fileID: 799784696}
   - component: {fileID: 799784695}
-  - component: {fileID: 799784698}
-  - component: {fileID: 799784697}
+  - component: {fileID: 799784701}
+  - component: {fileID: 799784700}
   - component: {fileID: 799784692}
   - component: {fileID: 799784691}
+  - component: {fileID: 799784699}
   m_Layer: 0
   m_Name: FreeLook Camera
   m_TagString: Untagged
@@ -4272,7 +4273,7 @@ MonoBehaviour:
   m_ControllerManager:
     Controllers:
     - Name: Look Orbit X
-      Owner: {fileID: 799784698}
+      Owner: {fileID: 799784701}
       Enabled: 1
       Input:
         InputAction: {fileID: -5630151704836100654, guid: 1d6e640e716dc4ff6989b73d02023f2b, type: 3}
@@ -4285,7 +4286,7 @@ MonoBehaviour:
         AccelTime: 0.2
         DecelTime: 0.2
     - Name: Look Orbit Y
-      Owner: {fileID: 799784698}
+      Owner: {fileID: 799784701}
       Enabled: 1
       Input:
         InputAction: {fileID: -5630151704836100654, guid: 1d6e640e716dc4ff6989b73d02023f2b, type: 3}
@@ -4298,7 +4299,7 @@ MonoBehaviour:
         AccelTime: 0.2
         DecelTime: 0.2
     - Name: Orbit Scale
-      Owner: {fileID: 799784698}
+      Owner: {fileID: 799784701}
       Enabled: 1
       Input:
         InputAction: {fileID: 5082991133974614888, guid: 1d6e640e716dc4ff6989b73d02023f2b, type: 3}
@@ -4380,14 +4381,30 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 799784690}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.06691451, y: 1.7599572e-15, z: -3.709755e-17, w: 0.99775875}
-  m_LocalPosition: {x: -2.39, y: 2.543529, z: -22.638586}
+  m_LocalRotation: {x: 0.07579976, y: -0.020070178, z: 0.0015260148, w: 0.99691993}
+  m_LocalPosition: {x: -2.39, y: 3.04, z: -22.37}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &799784697
+--- !u!114 &799784699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 799784690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7362d5a2f8ea3347bfcc808a1e9290e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FocusTarget: 2
+  CustomTarget: {fileID: 0}
+  FocusDepthOffset: 0
+  Damping: 0.2
+--- !u!114 &799784700
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4400,7 +4417,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Composition:
-    ScreenPosition: {x: 0, y: 0.15}
+    ScreenPosition: {x: 0.01963371, y: 0.039535224}
     DeadZone:
       Enabled: 0
       Size: {x: 0.2, y: 0.2}
@@ -4409,14 +4426,14 @@ MonoBehaviour:
       Size: {x: 0.8, y: 0.8}
       Offset: {x: 0, y: 0}
   CenterOnActivate: 1
-  TargetOffset: {x: 0, y: 0, z: 0}
-  Damping: {x: 0, y: 4}
+  TargetOffset: {x: 0, y: 1.1, z: 0}
+  Damping: {x: 0.5, y: 0.5}
   Lookahead:
-    Enabled: 1
-    Time: 0.01
+    Enabled: 0
+    Time: 0
     Smoothing: 0
-    IgnoreY: 1
---- !u!114 &799784698
+    IgnoreY: 0
+--- !u!114 &799784701
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4430,24 +4447,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TargetOffset: {x: 0, y: 0, z: 0}
   TrackerSettings:
-    BindingMode: 3
-    PositionDamping: {x: 1, y: 0.7, z: 1}
+    BindingMode: 1
+    PositionDamping: {x: 0.8, y: 0.8, z: 0.8}
     AngularDampingMode: 0
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
-  OrbitStyle: 0
+  OrbitStyle: 1
   Radius: 5
   Orbits:
     Top:
       Radius: 2
-      Height: 5
+      Height: 4.5
     Center:
-      Radius: 4
-      Height: 2.25
+      Radius: 4.5
+      Height: 2
     Bottom:
       Radius: 2.5
       Height: 0.1
-    SplineCurvature: 0.5
+    SplineCurvature: 0
   RecenteringTarget: 2
   HorizontalAxis:
     Value: 0
@@ -7337,7 +7354,7 @@ MonoBehaviour:
   runSpeed: 15
   jumpHeight: 6
   jumpHorizontalDampening: 0.8
-  rotationSpeed: 0.2
+  rotationSpeed: 0.1
   playerVelocity: {x: 0, y: 0, z: 0}
   desiredMove: {x: 0, y: 0, z: 0}
   groundedPlayer: 0
@@ -7347,7 +7364,7 @@ MonoBehaviour:
   grappling: 0
   grappleAngle: 35
   grappleMaxDistance: 20
-  grappleSpeed: 30
+  grappleSpeed: 25
   grappleLockoutTime: 1
   grappleLockoutTimer: 0
   grappleTargetLayer:

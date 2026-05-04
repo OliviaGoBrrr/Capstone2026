@@ -58,8 +58,11 @@ public class PlayerCCMovement : MonoBehaviour
     public InputActionReference runAction;
 
     // Input buffers
-    private float grappleBuffer = 0.1f;
-    private float grappleBufferTimer = 0f;
+    private const float grappleBuffer = 0.1f;
+    private float grappleBufferTimer;
+
+    private const float jumpBuffer = 0.2f;
+    private float jumpBufferTimer;
 
     private void Awake()
     {
@@ -87,15 +90,20 @@ public class PlayerCCMovement : MonoBehaviour
 
     private void InputBuffers()
     {
-        if (grappleBufferTimer > 0)
-        {
-            grappleBufferTimer -= Time.deltaTime;
-        }
+        if (grappleBufferTimer > 0) { grappleBufferTimer -= Time.deltaTime; }
+
+        if (jumpBufferTimer > 0) { jumpBufferTimer -= Time.deltaTime; }
 
         if (grappleAction.action.WasPressedThisFrame())
         {
             grappleBufferTimer = grappleBuffer;
         }
+
+        if (jumpAction.action.WasPressedThisFrame())
+        {
+            jumpBufferTimer = jumpBuffer;
+        }
+        
     }
 
     public void PlayerMovementLogic()
@@ -149,11 +157,7 @@ public class PlayerCCMovement : MonoBehaviour
         // Rotates the player if they're inputting an action
         if(desiredMove != Vector3.zero)
         {
-            // Rotation calculation - will look in the direction the input action
-            Quaternion targetRotation = Quaternion.LookRotation(desiredMove);
-
-            // Rotates the model over time
-            playerModel.transform.rotation = Quaternion.Slerp(playerModel.transform.rotation, targetRotation, rotationSpeed);
+            RotatePlayer(desiredMove);
         }
 
 
@@ -167,7 +171,7 @@ public class PlayerCCMovement : MonoBehaviour
     {
         if (groundedPlayer)
         {
-            if (jumpAction.action.WasPressedThisFrame())
+            if (jumpBufferTimer > 0f)
             {
                 playerVelocity.y = jumpHeight;
             }
@@ -178,6 +182,14 @@ public class PlayerCCMovement : MonoBehaviour
         }
     }
 
+    public void RotatePlayer(Vector3 targetRotation)
+    {
+        // Rotation calculation - will look in the direction the input action
+        Quaternion target = Quaternion.LookRotation(desiredMove);
+
+        // Rotates the model over time
+        playerModel.transform.rotation = Quaternion.Slerp(playerModel.transform.rotation, target, rotationSpeed);
+    }
 
     public bool FindValidGrappleTarget() // returns true if valid target selected
     {
