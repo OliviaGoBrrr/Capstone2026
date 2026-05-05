@@ -200,15 +200,11 @@ public class PlayerCCMovement : MonoBehaviour
     {
         // Checks if theres any grapple points within the player's view, and puts them in an array
         // *Seperate Note* - This may be an expensive calculation if the grapple point collider meshes are too complex
-        //Collider[] colliders = Physics.OverlapSphere(playerCamera.transform.position, grappleMaxDistance, grappleTargetLayer);
-
         int numColliders = Physics.OverlapSphereNonAlloc(playerCamera.transform.position, grappleMaxDistance, grappleColliders, grappleTargetLayer);
 
         // Temporarily saves the direction the closest grapple point
         Vector3 closestGrapple = Vector3.zero;
         float closestDot = 0f;
-
-        Debug.Log(numColliders);
 
         if(numColliders > 0)
         {
