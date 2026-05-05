@@ -2111,7 +2111,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 404620389}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.07579971, y: -0.020104807, z: 0.0015286482, w: 0.9969192}
+  m_LocalRotation: {x: 0.07579972, y: -0.020106278, z: 0.0015287603, w: 0.99691916}
   m_LocalPosition: {x: -2.39, y: 3.04, z: -22.37}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4381,7 +4381,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 799784690}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.07579971, y: -0.020104805, z: 0.0015286478, w: 0.9969193}
+  m_LocalRotation: {x: 0.07579971, y: -0.020106278, z: 0.00152876, w: 0.99691916}
   m_LocalPosition: {x: -2.39, y: 3.04, z: -22.37}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -7358,12 +7358,13 @@ MonoBehaviour:
   playerVelocity: {x: 0, y: 0, z: 0}
   desiredMove: {x: 0, y: 0, z: 0}
   groundedPlayer: 0
+  prevFrameGrounded: 0
   acceleration: 60
   gravityValue: -18
   gravityOn: 1
   grappling: 0
   grappleAngle: 35
-  grappleMaxDistance: 20
+  grappleMaxDistance: 15
   grappleSpeed: 25
   grappleLockoutTime: 1
   grappleLockoutTimer: 0
@@ -7379,6 +7380,9 @@ MonoBehaviour:
   jumpAction: {fileID: -2099379676528639254, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   grappleAction: {fileID: 8059889360761068364, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   runAction: {fileID: -7471211009204490832, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  coyoteTimer: 0
+  grappleBufferTimer: 0
+  jumpBufferTimer: 0
 --- !u!143 &1316181209
 CharacterController:
   m_ObjectHideFlags: 0

@@ -25,7 +25,12 @@ public class PlayerFallState : PlayerCanMoveSuperState
     {
         player.movement.desiredMove *= player.movement.jumpHorizontalDampening;
 
-        if(player.movement.coyoteTimer > 0)
+        if (player.movement.FindValidGrappleTarget() == true)
+        {
+            playerStateMachine.ChangeState(player.GrappleState);
+        }
+
+        if (player.movement.coyoteTimer > 0)
         {
             player.movement.PlayerJump();
         }
