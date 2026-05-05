@@ -11,7 +11,7 @@ public class PlayerJumpState : PlayerCanMoveSuperState
         player.isJumping = true;
 
         // jump logic
-        player.movement.playerVelocity.y = player.movement.jumpHeight;
+        player.movement.PlayerJump();
 
         base.EnterState();
         //Debug.Log("Entered Jump State");

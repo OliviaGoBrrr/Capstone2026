@@ -24,6 +24,7 @@ public class PlayerCCMovement : MonoBehaviour
 
     [HideInInspector]
     public bool groundedPlayer;
+    public bool prevFrameGrounded;
     public float acceleration = 10f;
     public float gravityValue = -9.81f;
     public bool gravityOn = true;
@@ -59,11 +60,14 @@ public class PlayerCCMovement : MonoBehaviour
     public InputActionReference runAction;
 
     // Input buffers
+    private const float coyoteTime = 0.1f;
+    public float coyoteTimer;
+
     private const float grappleBuffer = 0.1f;
-    private float grappleBufferTimer;
+    public float grappleBufferTimer;
 
     private const float jumpBuffer = 0.2f;
-    private float jumpBufferTimer;
+    public float jumpBufferTimer;
 
     private void Awake()
     {
@@ -96,6 +100,16 @@ public class PlayerCCMovement : MonoBehaviour
         if (grappleBufferTimer > 0) { grappleBufferTimer -= Time.deltaTime; }
 
         if (jumpBufferTimer > 0) { jumpBufferTimer -= Time.deltaTime; }
+
+        if (coyoteTimer > 0) { coyoteTimer -= Time.deltaTime; }
+
+        if (!groundedPlayer && prevFrameGrounded)
+        {
+            coyoteTimer = coyoteTime;
+            Debug.Log("Coyote Time!");
+        }
+
+        prevFrameGrounded = groundedPlayer;
 
         if (grappleAction.action.WasPressedThisFrame())
         {
@@ -172,10 +186,11 @@ public class PlayerCCMovement : MonoBehaviour
 
     public void PlayerJump()
     {
-        if (groundedPlayer)
+        if (groundedPlayer || coyoteTimer > 0f)
         {
-            if (jumpBufferTimer > 0f)
+            if (jumpBufferTimer > 0f || jumpAction.action.WasPressedThisFrame())
             {
+                Debug.Log("Player Jumped!");
                 playerVelocity.y = jumpHeight;
             }
             else if (playerVelocity.y < 0f) // caps the falling speed of the player when on the ground
@@ -354,48 +369,4 @@ public class PlayerCCMovement : MonoBehaviour
         grappleAction.action.Disable();
         runAction.action.Disable();
     }
-
-    /* Depreciated Movement Update() code
-
-    /*
-        groundedPlayer = playerController.isGrounded;
-
-        if (gravityOn)
-        {
-            playerVelocity.y += gravityValue * Time.deltaTime;
-        }
-        
-
-        // Grounded State
-        if(grappling == false)
-        {
-            PlayerJump(); // jump check
-            PlayerMove(); // move logic
-            FindValidGrappleTarget(); // grapple check
-        }
-        
-        // During Grapple
-        else if (grappling)
-        {
-            GrappleToTarget();
-
-            if (jumpAction.action.WasPressedThisFrame())
-            {
-                CancelGrapple();
-                playerVelocity.y = jumpHeight;
-            }
-        }
-        
-
-        /*
-        playerController.Move(playerVelocity * Time.deltaTime);
-
-        // Timers
-
-        if (grappleLockoutTimer > -1.0f)
-        {
-            grappleLockoutTimer -= Time.deltaTime;
-        }
-    */
-    
 }
