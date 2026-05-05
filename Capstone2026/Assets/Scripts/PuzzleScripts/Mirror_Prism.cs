@@ -23,8 +23,8 @@ public class Mirror_Prism : MonoBehaviour
 
     public void PrismHit()
     {
-        Debug.Log("Normal Ray Has Hit");
         prismHitCount++;
+        Debug.Log("Count = " + prismHitCount);
     }
 
     public void spawnGrapple()

@@ -3,6 +3,7 @@ using System.Collections;
 public class RotationLever : /*MonoBehaviour, IInteractable,*/ Interactable
 {
     Animator AnimController;
+    public bool isMoving;
 
     public void Start()
     {
@@ -16,7 +17,7 @@ public class RotationLever : /*MonoBehaviour, IInteractable,*/ Interactable
 
     public override void onInteract()
     {
-        AnimController.Play("rotatePrism");
+        if (!isMoving) AnimController.Play("rotatePrism");
     }
 }
 
