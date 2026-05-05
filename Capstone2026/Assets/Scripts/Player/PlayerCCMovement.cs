@@ -14,7 +14,7 @@ public class PlayerCCMovement : MonoBehaviour
     public float jumpHorizontalDampening = 0.7f;
 
     // Rotation (1 = snap to rotation direction)
-    [Range(0f, 1f)] public float rotationSpeed;
+    [Range(0f, 180f)] public float rotationSpeed;
 
     // Physics
     [HideInInspector]
@@ -28,15 +28,16 @@ public class PlayerCCMovement : MonoBehaviour
     public float gravityValue = -9.81f;
     public bool gravityOn = true;
 
+    [HideInInspector] public bool grappling;
     [Header("Grapple Action Values")]
-    [HideInInspector]
-    public bool grappling;
     public float grappleAngle;
     public float grappleMaxDistance;
     public float grappleSpeed;
     public float grappleLockoutTime;
     [HideInInspector]
     public float grappleLockoutTimer = 0.0f;
+    private Collider[] grappleColliders;
+    private const int maxGrappleColliders = 10;
     public LayerMask grappleTargetLayer;
     public Vector3 grapplePoint;
     [SerializeField]
@@ -81,6 +82,8 @@ public class PlayerCCMovement : MonoBehaviour
         {
             Debug.LogError("There is no player model added in the PlayerCCMovement Inspector");
         }
+
+        grappleColliders = new Collider[maxGrappleColliders];
     }
 
     private void LateUpdate()
@@ -185,40 +188,53 @@ public class PlayerCCMovement : MonoBehaviour
     public void RotatePlayer(Vector3 targetRotation)
     {
         // Rotation calculation - will look in the direction the input action
-        Quaternion target = Quaternion.LookRotation(desiredMove);
+        Vector3 adjustedTarget = new Vector3(targetRotation.x, 0, targetRotation.z);
+
+        Quaternion target = Quaternion.LookRotation(adjustedTarget);
 
         // Rotates the model over time
-        playerModel.transform.rotation = Quaternion.Slerp(playerModel.transform.rotation, target, rotationSpeed);
+        playerModel.transform.rotation = Quaternion.Slerp(playerModel.transform.rotation, target, rotationSpeed * Time.deltaTime);
     }
 
     public bool FindValidGrappleTarget() // returns true if valid target selected
     {
         // Checks if theres any grapple points within the player's view, and puts them in an array
         // *Seperate Note* - This may be an expensive calculation if the grapple point collider meshes are too complex
-        Collider[] colliders = Physics.OverlapSphere(playerCamera.transform.forward, grappleMaxDistance, grappleTargetLayer);
+        //Collider[] colliders = Physics.OverlapSphere(playerCamera.transform.position, grappleMaxDistance, grappleTargetLayer);
+
+        int numColliders = Physics.OverlapSphereNonAlloc(playerCamera.transform.position, grappleMaxDistance, grappleColliders, grappleTargetLayer);
 
         // Temporarily saves the direction the closest grapple point
         Vector3 closestGrapple = Vector3.zero;
         float closestDot = 0f;
 
+        Debug.Log(numColliders);
 
-        // Checks all colliders (within the grapple target layer) if they're within the grapple angle...
-        foreach (var collider in colliders)
+        if(numColliders > 0)
         {
-            Vector3 direction = (collider.transform.position - playerCamera.transform.position).normalized;
-
-            float dirDot = Vector3.Dot(playerCamera.transform.forward, direction);
-
-            // ... and which one is closest to what the player is looking at.
-            if (dirDot >= Mathf.Cos(Mathf.Deg2Rad * grappleAngle)) // if its within the search angle
+            // Checks all colliders (within the grapple target layer) if they're within the grapple angle...
+            for(int i = 0; i < numColliders; i++)
             {
-                if (dirDot > closestDot) // saves the closest grapple target
+                Vector3 direction = (grappleColliders[i].transform.position - playerCamera.transform.position).normalized;
+
+                float dirDot = Vector3.Dot(playerCamera.transform.forward, direction);
+
+                // ... and which one is closest to what the player is looking at.
+                if (dirDot >= Mathf.Cos(Mathf.Deg2Rad * grappleAngle)) // if its within the search angle
                 {
-                    closestDot = dirDot;
-                    closestGrapple = direction;
+                    if (dirDot > closestDot) // saves the closest grapple target
+                    {
+                        closestDot = dirDot;
+                        closestGrapple = direction;
+                    }
                 }
             }
         }
+        else // Disables any grapple UI if the player runs out of range
+        {
+            DisableGrappleUI();
+        }
+
 
         // If there was a valid grapple target found, throw a ray in its a direction to graaple to
         if (closestGrapple != Vector3.zero)
@@ -256,13 +272,13 @@ public class PlayerCCMovement : MonoBehaviour
                 }
                 else
                 {
-                    DisableGrappleUI();
+                    DisableGrappleUI(); // Disables UI if player looks at another target
                 }
             }
         }
         else
         {
-            DisableGrappleUI();
+            DisableGrappleUI(); // Disables UI if player looks away from any target
         }
         return false;
     }
@@ -292,6 +308,8 @@ public class PlayerCCMovement : MonoBehaviour
 
         // Normalize to translate to velocity
         direction.Normalize();
+        RotatePlayer(direction);
+
         playerVelocity = direction * grappleSpeed;
 
         // LineRenderer
