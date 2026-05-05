@@ -7,6 +7,7 @@ public class LightPrism : MonoBehaviour
     [SerializeField] LayerMask interactMask;
     public float maxDistance;
     public Mirror_Prism Mirror_Prism;
+    bool hasHit;
 
     void Update()
     {
@@ -18,10 +19,18 @@ public class LightPrism : MonoBehaviour
             //if is part of the interact layer, and is that the layer the ray has just hit
             if ((interactMask & (1 << hit.collider.gameObject.layer)) != 0)
             {
-                Mirror_Prism.PrismHit();
-                Vector3 incomingVec = hit.point - transform.position;
-                Vector3 reflectVec = Vector3.Reflect(incomingVec, hit.normal);
-                Debug.DrawLine(hit.point, reflectVec, Color.red);
+
+                if (!Mirror_Prism.reflectMode && !hasHit)
+                {
+                    Mirror_Prism.PrismHit();
+                    hasHit = true;
+                }
+                else
+                {
+                    Vector3 incomingVec = hit.point - transform.position;
+                    Vector3 reflectVec = Vector3.Reflect(incomingVec, hit.normal);
+                    Debug.DrawLine(hit.point, reflectVec, Color.red);
+                }
             }
         }
         Debug.DrawLine(transform.position, endPoint, Color.green);
