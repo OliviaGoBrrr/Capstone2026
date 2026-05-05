@@ -27,7 +27,7 @@ public class PauseMenu : MonoBehaviour
     {
         pauseMenu.SetActive(false);
         settingsOptions.SetActive(false);
-
+        HideCursor();
         currentlyShownOptions = null;
     }
 
@@ -43,7 +43,7 @@ public class PauseMenu : MonoBehaviour
             {
                 Time.timeScale = 0;
 
-                Cursor.visible = true;
+                ShowCursor();
 
                 // replace with exit animation
                 pauseMenu.SetActive(true);
@@ -95,12 +95,12 @@ public class PauseMenu : MonoBehaviour
     public void HideCursor()
     {
         Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void ShowCursor()
     {
         Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
+        Cursor.lockState = CursorLockMode.Confined;
     }
 }
