@@ -8,6 +8,7 @@ public class PauseMenu : MonoBehaviour
 
     private bool isPaused;
     public InputActionReference pauseAction;
+    public InputActionAsset playerInputMap;
 
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private GameObject settingsOptions;
@@ -41,22 +42,27 @@ public class PauseMenu : MonoBehaviour
             }
             else
             {
-                Time.timeScale = 0;
-
-                ShowCursor();
-
-                // replace with exit animation
-                pauseMenu.SetActive(true);
-
-                isPaused = true;
+                PauseLogic();
             }
         }
+    }
+
+    private void PauseLogic()
+    {
+        Time.timeScale = 0;
+        playerInputMap.FindActionMap("Player").Disable();
+        ShowCursor();
+
+        // replace with exit animation
+        pauseMenu.SetActive(true);
+
+        isPaused = true;
     }
 
     private void ResumeLogic()
     {
         Time.timeScale = 1;
-
+        playerInputMap.FindActionMap("Player").Enable();
         // replace with exit animation
         HideAllUI();
 
