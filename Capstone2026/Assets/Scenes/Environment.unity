@@ -2003,8 +2003,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 404620389}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.058244746, y: -0.020108808, z: 0.0011734632, w: 0.9980991}
-  m_LocalPosition: {x: -2.39, y: 3.04, z: -23.37}
+  m_LocalRotation: {x: 0.0000000037180916, y: -0.000000012344531, z: 4.5898095e-17, w: 1}
+  m_LocalPosition: {x: -2.39, y: 1.77, z: -22.37}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4140,6 +4140,7 @@ GameObject:
   - component: {fileID: 799784692}
   - component: {fileID: 799784691}
   - component: {fileID: 799784699}
+  - component: {fileID: 799784702}
   m_Layer: 0
   m_Name: FreeLook Camera
   m_TagString: Untagged
@@ -4242,7 +4243,7 @@ MonoBehaviour:
   m_StreamingVersion: 20241001
   m_LegacyPriority: 0
   Target:
-    TrackingTarget: {fileID: 1316181213}
+    TrackingTarget: {fileID: 487010147}
     LookAtTarget: {fileID: 0}
     CustomLookAtTarget: 0
   Lens:
@@ -4273,8 +4274,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 799784690}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.058244746, y: -0.020108808, z: 0.0011734632, w: 0.9980991}
-  m_LocalPosition: {x: -2.39, y: 3.04, z: -23.37}
+  m_LocalRotation: {x: 0.0000000037180916, y: -0.000000012344531, z: 1.1418842e-16, w: 1}
+  m_LocalPosition: {x: -2.39, y: 1.77, z: -22.37}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4309,7 +4310,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Composition:
-    ScreenPosition: {x: 0.01963371, y: 0.039535224}
+    ScreenPosition: {x: 0, y: 0}
     DeadZone:
       Enabled: 0
       Size: {x: 0.2, y: 0.2}
@@ -4317,9 +4318,9 @@ MonoBehaviour:
       Enabled: 0
       Size: {x: 0.8, y: 0.8}
       Offset: {x: 0, y: 0}
-  CenterOnActivate: 1
-  TargetOffset: {x: 0, y: 1.1, z: 0}
-  Damping: {x: 0.5, y: 0.5}
+  CenterOnActivate: 0
+  TargetOffset: {x: 0, y: 1.5, z: 0}
+  Damping: {x: 0, y: 0}
   Lookahead:
     Enabled: 0
     Time: 0
@@ -4339,8 +4340,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TargetOffset: {x: 0, y: 0, z: 0}
   TrackerSettings:
-    BindingMode: 1
-    PositionDamping: {x: 0.5, y: 0.8, z: 0.5}
+    BindingMode: 4
+    PositionDamping: {x: 0.3, y: 0.8, z: 0.3}
     AngularDampingMode: 0
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
@@ -4348,15 +4349,15 @@ MonoBehaviour:
   Radius: 5
   Orbits:
     Top:
-      Radius: 1.56
-      Height: 4.02
+      Radius: 1
+      Height: 3.5
     Center:
-      Radius: 5.5
-      Height: 2
+      Radius: 4.5
+      Height: 1.5
     Bottom:
-      Radius: 1.09
-      Height: -0.5
-    SplineCurvature: 0.3
+      Radius: 1
+      Height: -0.7
+    SplineCurvature: 1
   RecenteringTarget: 2
   HorizontalAxis:
     Value: 0
@@ -4388,6 +4389,45 @@ MonoBehaviour:
       Wait: 1
       Time: 2
     Restrictions: 0
+--- !u!114 &799784702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 799784690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe43d662878a7c43bcd44d43c9e2094, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollideAgainst:
+    serializedVersion: 2
+    m_Bits: 1
+  IgnoreTag: Player
+  TransparentLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  MinimumDistanceFromTarget: 0.3
+  AvoidObstacles:
+    Enabled: 1
+    DistanceLimit: 0
+    MinimumOcclusionTime: 0
+    CameraRadius: 0.3
+    UseFollowTarget:
+      Enabled: 0
+      YOffset: 0
+    Strategy: 0
+    MaximumEffort: 4
+    SmoothingTime: 0
+    Damping: 0.4
+    DampingWhenOccluded: 0.2
+  ShotQualityEvaluation:
+    Enabled: 0
+    OptimalDistance: 10
+    NearLimit: 5
+    FarLimit: 30
+    MaxQualityBoost: 0.2
 --- !u!1 &815115154
 GameObject:
   m_ObjectHideFlags: 0
@@ -7245,7 +7285,7 @@ MonoBehaviour:
   moveSpeed: 10
   runSpeed: 15
   jumpHeight: 6
-  rotationSpeed: 20
+  rotationSpeed: 10
   playerVelocity: {x: 0, y: 0, z: 0}
   desiredMove: {x: 0, y: 0, z: 0}
   groundedPlayer: 0
@@ -7255,7 +7295,7 @@ MonoBehaviour:
   gravityValue: -18
   gravityOn: 1
   grappling: 0
-  grappleAngle: 35
+  grappleAngle: 30
   grappleMaxDistance: 15
   grappleSpeed: 25
   grappleLockoutTime: 1
@@ -7385,7 +7425,7 @@ Transform:
   m_GameObject: {fileID: 1316181207}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.39, y: 1.04, z: -17.87}
+  m_LocalPosition: {x: -2.39, y: 0.27, z: -17.87}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
