@@ -17,6 +17,7 @@ public class PlayerManager : MonoBehaviour
     public float batteryShadeROC = 15; // per second
     public float batteryPercent = 100;
     public TMP_Text batteryText;
+    public Vector3 lastCheckpoint;
 
     [Header("Player State Bools")]
     #region State Bools
@@ -85,6 +86,7 @@ public class PlayerManager : MonoBehaviour
     void Start()
     {
         batteryPercent = 100;
+        lastCheckpoint = transform.position;
     }
 
     // Update is called once per frame

@@ -19,6 +19,7 @@ public class PlayerSolarDetector : MonoBehaviour
     [SerializeField] private int sizeOfRayCastBox = 8;
 
     [HideInInspector] public bool isInLight = false;
+    [HideInInspector] public Transform lastCheckpoint;
 
     MeshRenderer r;
 
