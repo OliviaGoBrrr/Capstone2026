@@ -11,13 +11,12 @@ public class PlayerCCMovement : MonoBehaviour
     public float moveSpeed = 10f;
     public float runSpeed = 15f;
     public float jumpHeight = 0.5f;
-    public float jumpHorizontalDampening = 0.7f;
+   
 
     // Rotation (1 = snap to rotation direction)
     [Range(0f, 180f)] public float rotationSpeed;
 
     // Physics
-    [HideInInspector]
     public Vector3 playerVelocity;
     [HideInInspector]
     public Vector3 desiredMove;
@@ -26,6 +25,7 @@ public class PlayerCCMovement : MonoBehaviour
     public bool groundedPlayer;
     public bool prevFrameGrounded;
     public float acceleration = 10f;
+    public float deccceleration = 45f;
     public float gravityValue = -9.81f;
     public bool gravityOn = true;
 
@@ -145,17 +145,12 @@ public class PlayerCCMovement : MonoBehaviour
 
     public void PlayerMove()
     {
-        // Rotate the player with the direction they're walking towards
-        //this.playerRotation = new Vector3(0, Input.GetAxisRaw("Horizontal") * rotationSpeed * Time.deltaTime, 0);
-
         // Get the x,z direction the player is inputting
         Vector2 input = moveAction.action.ReadValue<Vector2>();
 
         Vector2 inputNorm = input.normalized;
 
         // Rotate the player
-
-
         Vector3 camF = playerCamera.transform.forward;
         Vector3 camR = playerCamera.transform.right;
 
@@ -165,18 +160,12 @@ public class PlayerCCMovement : MonoBehaviour
         desiredMove = (camF * input.y + camR * input.x).normalized;
 
         // Jump & Fall States
-        
-        if (!groundedPlayer)
-        {
-            desiredMove *= jumpHorizontalDampening;
-        }
 
         // Rotates the player if they're inputting an action
         if(desiredMove != Vector3.zero)
         {
             RotatePlayer(desiredMove);
         }
-
 
         Vector3 targetVelcoity = desiredMove * moveSpeed;
 
@@ -314,23 +303,26 @@ public class PlayerCCMovement : MonoBehaviour
     }
     public void GrappleToTarget()
     {
-        // Find the distance between player and grapple point
-        Vector3 direction = grapplePoint - transform.position;
-
-        // Normalize to translate to velocity
-        direction.Normalize();
-        RotatePlayer(direction);
-
-        playerVelocity = direction * grappleSpeed;
-
-        // LineRenderer
-        grappleLine.SetPosition(0, grappleHand.position);
-
-        if (Vector3.Distance(transform.position, grapplePoint) < 1.0f)
+        if (grappling)
         {
-            transform.position = grapplePoint;
-            playerVelocity = Vector3.zero;
-            CancelGrapple();
+            // Find the distance between player and grapple point
+            Vector3 direction = grapplePoint - transform.position;
+
+            // Normalize to translate to velocity
+            direction.Normalize();
+            RotatePlayer(direction);
+
+            playerVelocity = direction * grappleSpeed;
+
+            // LineRenderer
+            grappleLine.SetPosition(0, grappleHand.position);
+
+            if (Vector3.Distance(transform.position, grapplePoint) < 1.0f)
+            {
+                transform.position = grapplePoint;
+
+                CancelGrapple();
+            }
         }
     }
     public void CancelGrapple()
@@ -339,6 +331,7 @@ public class PlayerCCMovement : MonoBehaviour
         gravityOn = true;
         grappling = false;
 
+        playerVelocity.y = playerVelocity.y * 0.5f;
         grapplePoint = Vector3.zero;
 
         // Linerenderer

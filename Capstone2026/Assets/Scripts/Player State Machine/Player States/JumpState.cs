@@ -26,7 +26,11 @@ public class PlayerJumpState : PlayerCanMoveSuperState
 
     public override void FrameUpdate()
     {
-        player.movement.desiredMove *= player.movement.jumpHorizontalDampening;
+
+        if (player.movement.FindValidGrappleTarget() == true)
+        {
+            playerStateMachine.ChangeState(player.GrappleState);
+        }
 
         base.FrameUpdate();
     }
