@@ -28,14 +28,14 @@ public class InteractHoverUI : MonoBehaviour
 
         grappleUICanvas.gameObject.SetActive(true);
 
-        interactText.DOFade(1f, 1f).SetEase(Ease.OutCubic).SetId("InteractTextFade");
+        interactText.DOFade(1f, 0.25f).SetEase(Ease.OutCubic).SetId("InteractTextFade");
     }
 
     private void OnTriggerExit(Collider other) // fade out
     {
         DOTween.Kill("InteractTextFade");
 
-        interactText.DOFade(0f, 1f).SetEase(Ease.OutCubic).SetId("InteractTextFade").OnComplete(() =>
+        interactText.DOFade(0f, 0.25f).SetEase(Ease.OutCubic).SetId("InteractTextFade").OnComplete(() =>
         {
             grappleUICanvas.gameObject.SetActive(false);
         });
