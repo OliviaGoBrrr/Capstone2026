@@ -9,10 +9,48 @@ public class DataLogging : MonoBehaviour
     string playerName;
     bool playerIDExists;
     List<string> deviceInfo;
+    Color defaultColour;
     public TMP_InputField nameField;
     public Button startPlaying;
 
-    public void SaveDeviceInfo()
+    private void Start()
+    {
+        nameField.textComponent.text = "";
+        if (nameField.textComponent.text.Length > 1)
+        {
+            startPlaying.interactable = true;
+            if (!startPlaying.IsActive()) SaveDeviceInfo();
+        }
+        else
+        {
+            startPlaying.interactable = false;
+        }
+    }
+
+    public void checkIfNameInputted()
+    {
+        TextMeshProUGUI placeholder = (TextMeshProUGUI)nameField.placeholder;
+        placeholder.text = "Enter name...";
+
+        if (nameField.textComponent.text.Length > 1 && nameField.textComponent.text.Length < 32)
+        {
+            startPlaying.interactable = true;
+            SaveDeviceInfo();
+        }
+        else if (nameField.textComponent.text.Length > 32)
+        {
+            Debug.Log(nameField.textComponent.text.Length);
+            nameField.text = "";
+            placeholder.text = "Exceeded Char Limit";
+        }
+        else
+        {
+            startPlaying.interactable = false;
+            placeholder.text = "Enter name...";
+        }
+    }
+
+    void SaveDeviceInfo()
     {
         playerName = nameField.text;
 
@@ -36,10 +74,9 @@ public class DataLogging : MonoBehaviour
 
         /*if (!Application.isEditor) */
         DiscordWebhooks.SendMessage(messageToSend, playerName);
-        startPlaying.gameObject.SetActive(true);
     }
 
-    public void ActuallyStartTheGameNow()
+    void ActuallyStartTheGameNow()
     {
         SceneManager.LoadScene("SceneSelect");
     }
