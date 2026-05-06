@@ -17,12 +17,13 @@ public class PauseMenu : MonoBehaviour
 
     // settings panels
     [SerializeField] private GameObject settingsOptions;
-    [SerializeField] private GameObject audioOptions;
+    [SerializeField] private GameObject audioSettingsOptions;
+    [SerializeField] private GameObject videoSettingsOptions;
+    [SerializeField] private GameObject gameSettingsOptions;
+    [SerializeField] private GameObject controlsSettingsOptions;
     // video
     // game
     // controls
-
-    private GameObject currentlyShownOptions;
 
     private int layersOfUI = 0;
     private GameObject currentWindow;
@@ -41,9 +42,12 @@ public class PauseMenu : MonoBehaviour
     {
         pauseMenu.SetActive(false);
         settingsOptions.SetActive(false);
-        audioOptions.SetActive(false);
+        audioSettingsOptions.SetActive(false);
+        videoSettingsOptions.SetActive(false);
+        gameSettingsOptions.SetActive(false);
+        controlsSettingsOptions.SetActive(false);
+
         HideCursor();
-        currentlyShownOptions = null;
     }
 
     void Update()
@@ -52,14 +56,7 @@ public class PauseMenu : MonoBehaviour
         {
             if (isPaused)
             {
-                if (layersOfUI >= 1) // checks if there are any panels open and closes them
-                {
-                    OnBackPressed();
-                }
-                else
-                {
-                    ResumeLogic();
-                }
+                OnBackPressed();
             }
             else
             {
@@ -91,6 +88,8 @@ public class PauseMenu : MonoBehaviour
         HideAllUI();
 
         isPaused = false;
+
+        previousWindows.Remove(pauseMenu);
     }
 
     // ---------- Button Press Logic ----------
@@ -104,37 +103,28 @@ public class PauseMenu : MonoBehaviour
     public void OnWindowButtonPressed(GameObject window)
     {
         window.SetActive(true);
-        layersOfUI += 1;
+
         currentWindow = window;
         previousWindows.Add(window);
-        print(currentWindow);
-    }
 
-    public void OnSettingsPressed()
-    {
-        settingsOptions.SetActive(true);
-        layersOfUI += 1;
-        currentWindow = settingsOptions;
-        previousWindows.Add(settingsOptions);
-        print(currentWindow);
-    }
-
-    public void OnAudioPressed()
-    {
-        audioOptions.SetActive(true);
-        layersOfUI += 1;
-        currentWindow = audioOptions;
-        previousWindows.Add(audioOptions);
         print(currentWindow);
     }
 
     public void OnBackPressed()
     {
-        currentWindow.SetActive(false);
-        layersOfUI -= 1;
-        currentWindow = previousWindows[previousWindows.Count-2]; // go back to last window
-        previousWindows.Remove(previousWindows[previousWindows.Count - 1]); // delete most recently visited window
-        print(currentWindow);
+        if (previousWindows.Count > 1) // more than the initial window when esc or back button
+        {
+            currentWindow.SetActive(false);
+
+            currentWindow = previousWindows[previousWindows.Count - 2]; // go back to last window
+            previousWindows.Remove(previousWindows[previousWindows.Count - 1]); // delete most recently visited window
+
+            print(currentWindow);
+        }
+        else
+        {
+            ResumeLogic();
+        }
     }
 
     public void OnQuitPressed()
