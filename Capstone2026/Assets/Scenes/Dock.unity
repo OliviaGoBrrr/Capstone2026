@@ -953,12 +953,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4599646055438819905, guid: c1743b4e68a98964bbf0720b4d638489, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5715229391563871041, guid: c1743b4e68a98964bbf0720b4d638489, type: 3}
+      propertyPath: pauseAction
+      value: 
+      objectReference: {fileID: 8308814115262126707, guid: 052faaac586de48259a63d0c4782560b, type: 3}
     - target: {fileID: 5715229391563871041, guid: c1743b4e68a98964bbf0720b4d638489, type: 3}
       propertyPath: sceneLoader
       value: 
       objectReference: {fileID: 1009909837}
+    - target: {fileID: 5715229391563871041, guid: c1743b4e68a98964bbf0720b4d638489, type: 3}
+      propertyPath: playerInputMap
+      value: 
+      objectReference: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
     - target: {fileID: 5883500099681792076, guid: c1743b4e68a98964bbf0720b4d638489, type: 3}
       propertyPath: m_AnchorMax.x
       value: 1
@@ -1057,7 +1065,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8158645026630238387, guid: c1743b4e68a98964bbf0720b4d638489, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2955,7 +2963,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 0
+    m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -3502,12 +3510,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 828420044}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 078238705b450a941a5d74e8f507bff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lightSource: {fileID: 731772628}
+  lightSource: {fileID: 1805233031}
   centreSolarPanel: {fileID: 1112592986}
   lengthSolarPanel: 1
   rayCastPositions:
@@ -4174,7 +4182,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6357512271138617035, guid: 0c26fabce6825674da079068ab1e9179, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8462452706859203697, guid: 0c26fabce6825674da079068ab1e9179, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6135,6 +6143,37 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c0edde5229f4480469ab0b6d373fea25, type: 3}
+--- !u!1 &1805233031
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1805233032}
+  m_Layer: 0
+  m_Name: SUN
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1805233032
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1805233031}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1171, y: 2753, z: -2029}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1859959007
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7151,6 +7190,7 @@ SceneRoots:
   - {fileID: 1758441667}
   - {fileID: 494726227}
   - {fileID: 731772631}
+  - {fileID: 1805233032}
   - {fileID: 828420054}
   - {fileID: 2084567517}
   - {fileID: 173423069}
