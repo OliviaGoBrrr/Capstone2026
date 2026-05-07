@@ -11,6 +11,10 @@ public class GrappleableObject : MonoBehaviour
         if (grappleUICanvas == null)
         {
             grappleUICanvas = GetComponentInChildren<Canvas>();
+        }
+
+        if (grappleUICanvas != null)
+        {
             grappleUICanvas.gameObject.SetActive(false);
         }
     }
