@@ -12,7 +12,7 @@ public class DeathFade : MonoBehaviour
         StartCoroutine(deathFadeCoroutine());
     }
 
-    IEnumerator deathFadeCoroutine()
+    IEnumerator deathFadeCoroutine() // this needs to be improved a little bit but whatever
     {
         transition.SetTrigger("Start");
 

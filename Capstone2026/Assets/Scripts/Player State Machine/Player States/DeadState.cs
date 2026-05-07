@@ -19,8 +19,6 @@ public class PlayerDeadState : PlayerState
         player.deathfade.deathFade();
 
         base.EnterState();
-        
-        // playerStateMachine.ChangeState(player.IdleSubState); just adding this in for now so that the player can move and such, later on animations and etc will be added here
     }
 
     public override void ExitState()
