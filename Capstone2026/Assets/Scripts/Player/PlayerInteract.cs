@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -20,7 +21,7 @@ public class PlayerInteract : MonoBehaviour
 
     private void Awake()
     {
-        interactColliders = new Collider[10];
+        interactColliders = new Collider[10]; // Necessary for NonAlloc OverlapSphere
     }
 
     void Start()
@@ -42,7 +43,7 @@ public class PlayerInteract : MonoBehaviour
 
     private void FindIntertactable()
     {
-        int numColliders = Physics.OverlapSphereNonAlloc(transform.position, maxDistance, interactColliders, InteractLayerMask);
+        int numColliders = Physics.OverlapSphereNonAlloc(playerCamera.transform.position, maxDistance, interactColliders, InteractLayerMask);
 
         Vector3 closestInteraction = Vector3.zero;
         float closestDot = 0f;
@@ -73,7 +74,7 @@ public class PlayerInteract : MonoBehaviour
             RaycastHit hit;
 
             // Sends a ray towards the closest grapple point
-            if (Physics.Raycast(transform.position, closestInteraction, out hit, maxDistance, InteractLayerMask))
+            if (Physics.Raycast(playerCamera.transform.position, closestInteraction, out hit, maxDistance, InteractLayerMask))
             {
                 // It should find a target, but it allows the disabling of the grapple point
                 IInteractable target = hit.transform.GetComponent<IInteractable>();
@@ -97,6 +98,8 @@ public class PlayerInteract : MonoBehaviour
                     if (interactAction.action.WasPressedThisFrame()) // If there was an input buffered
                     {
                         target.OnInteract();
+                        // Clears interact colliders (doesn't save on memory, just worried it'll be funky)
+                        Array.Clear(interactColliders,0, interactColliders.Length);
                     }
                 }
             }

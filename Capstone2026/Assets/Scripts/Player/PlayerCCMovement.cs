@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -200,84 +201,93 @@ public class PlayerCCMovement : MonoBehaviour
 
     public bool FindValidGrappleTarget() // returns true if valid target selected
     {
-        // Checks if theres any grapple points within the player's view, and puts them in an array
-        // *Seperate Note* - This may be an expensive calculation if the grapple point collider meshes are too complex
-        int numColliders = Physics.OverlapSphereNonAlloc(transform.position, grappleMaxDistance, grappleColliders, grappleTargetLayer);
-
-        // Temporarily saves the direction the closest grapple point
-        Vector3 closestGrapple = Vector3.zero;
-        float closestDot = 0f;
-
-        if(numColliders > 0)
+        // Doesn't find another target if the player is locked out from grappling
+        if(grappleLockoutTimer < 0f)
         {
-            // Checks all colliders (within the grapple target layer) if they're within the grapple angle...
-            for(int i = 0; i < numColliders; i++)
+            // Checks if theres any grapple points within the player's view, and puts them in an array
+            // *Seperate Note* - This may be an expensive calculation if the grapple point collider meshes are too complex
+            int numColliders = Physics.OverlapSphereNonAlloc(playerCamera.transform.position, grappleMaxDistance, grappleColliders, grappleTargetLayer);
+
+            // Temporarily saves the direction the closest grapple point
+            Vector3 closestGrapple = Vector3.zero;
+            float closestDot = 0f;
+
+            if (numColliders > 0)
             {
-                Vector3 direction = (grappleColliders[i].transform.position - playerCamera.transform.position).normalized;
-
-                float dirDot = Vector3.Dot(playerCamera.transform.forward, direction);
-
-                // ... and which one is closest to what the player is looking at.
-                if (dirDot >= Mathf.Cos(Mathf.Deg2Rad * grappleAngle)) // if its within the search angle
+                // Checks all colliders (within the grapple target layer) if they're within the grapple angle...
+                for (int i = 0; i < numColliders; i++)
                 {
-                    if (dirDot > closestDot) // saves the closest grapple target
+                    Vector3 direction = (grappleColliders[i].transform.position - playerCamera.transform.position).normalized;
+
+                    float dirDot = Vector3.Dot(playerCamera.transform.forward, direction);
+
+                    // ... and which one is closest to what the player is looking at.
+                    if (dirDot >= Mathf.Cos(Mathf.Deg2Rad * grappleAngle)) // if its within the search angle
                     {
-                        closestDot = dirDot;
-                        closestGrapple = direction;
+                        if (dirDot > closestDot) // saves the closest grapple target
+                        {
+                            closestDot = dirDot;
+                            closestGrapple = direction;
+                        }
                     }
                 }
             }
-        }
-        else // Disables any grapple UI if the player runs out of range
-        {
-            DisableGrappleUI();
-        }
-
-
-        // If there was a valid grapple target found, throw a ray in its a direction to graaple to
-        if (closestGrapple != Vector3.zero)
-        {
-            RaycastHit hit;
-
-            // Sends a ray towards the closest grapple point
-            if (Physics.Raycast(transform.position, closestGrapple, out hit, grappleMaxDistance, grappleTargetLayer))
+            else // Disables any grapple UI if the player runs out of range
             {
-                // It should find a target, but it allows the disabling of the grapple point
-                GrappleableObject target = hit.transform.GetComponent<GrappleableObject>();
+                DisableGrappleUI();
+            }
 
-                Debug.DrawLine(target.anchorPoint.position, transform.position, Color.magenta);
-                
-                if (target != null) // If the grapple point isn't disabled
+
+            // If there was a valid grapple target found, throw a ray in its a direction to graaple to
+            if (closestGrapple != Vector3.zero)
+            {
+                RaycastHit hit;
+
+                // Sends a ray towards the closest grapple point
+                if (Physics.Raycast(playerCamera.transform.position, closestGrapple, out hit, grappleMaxDistance, grappleTargetLayer))
                 {
-                    // UI Appears
-                    if(target.grappleUICanvas != null)
+                    // It should find a target, but it allows the disabling of the grapple point
+                    GrappleableObject target = hit.transform.GetComponent<GrappleableObject>();
+
+                    Debug.DrawLine(target.anchorPoint.position, transform.position, Color.magenta);
+
+                    if (target != null) // If the grapple point isn't disabled
                     {
-                        if(currentGrappleUI != target.grappleUICanvas.gameObject)
+                        // UI Appears
+                        if (target.grappleUICanvas != null)
                         {
-                            DisableGrappleUI();
-                            target.grappleUICanvas.gameObject.SetActive(true);
-                            currentGrappleUI = target.grappleUICanvas.gameObject;
+                            if (currentGrappleUI != target.grappleUICanvas.gameObject)
+                            {
+                                DisableGrappleUI();
+                                target.grappleUICanvas.gameObject.SetActive(true);
+                                currentGrappleUI = target.grappleUICanvas.gameObject;
+                            }
+                        }
+
+                        // Action is taken
+                        if (grappleBufferTimer > 0f && grappleLockoutTimer <= 0) // If there was an input buffered
+                        {
+                            StartGrapple(target);
+                            Array.Clear(grappleColliders, 0, grappleColliders.Length);
+                            return true;
                         }
                     }
-
-                    // Action is taken
-                    if (grappleBufferTimer > 0f && grappleLockoutTimer <= 0) // If there was an input buffered
+                    else
                     {
-                        StartGrapple(target);
-
-                        return true;
+                        DisableGrappleUI(); // Disables UI if player looks at another target
                     }
                 }
-                else
-                {
-                    DisableGrappleUI(); // Disables UI if player looks at another target
-                }
+            }
+            else
+            {
+                DisableGrappleUI(); // Disables UI if player looks away from any target
             }
         }
         else
         {
-            DisableGrappleUI(); // Disables UI if player looks away from any target
+            DisableGrappleUI(); // Disables UI if player grapples, and is in grapple lockout
         }
+
         return false;
     }
 
@@ -329,7 +339,7 @@ public class PlayerCCMovement : MonoBehaviour
         gravityOn = true;
         grappling = false;
 
-        playerVelocity.y = playerVelocity.y * 0.5f;
+        playerVelocity.y += gravityValue * 0.6f;
         grapplePoint = Vector3.zero;
 
         // Linerenderer

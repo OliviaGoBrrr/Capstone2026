@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Text;
-using UnityEditor.Search;
 using UnityEngine;
 
 public class GameEventLog : MonoBehaviour
