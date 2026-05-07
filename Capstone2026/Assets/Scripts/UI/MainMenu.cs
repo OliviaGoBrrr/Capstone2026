@@ -7,6 +7,7 @@ using System;
 using System.IO;
 using System.Text;
 using UnityEngine.UI;
+using TMPro;
 
 public class MainMenu : MonoBehaviour
 {
@@ -14,19 +15,36 @@ public class MainMenu : MonoBehaviour
 
     public InputActionReference pauseAction;
 
-    [SerializeField] private GameObject settingsOptions;
-    [SerializeField] private GameObject settingsButton;
-
     [SerializeField] private GameObject mainCamera;
-
-    private bool settingsShown = false;
-    [SerializeField] private GameObject settingsBg;
-    [SerializeField] private GameObject turnOnEffect;
 
     [SerializeField] private Transform cameraSettingsPos;
     [SerializeField] private Transform cameraNormalPos;
 
-    private bool currentlyAnimating = false;
+    #region Options Screen
+
+    private bool optionsShown = false;
+
+    [SerializeField] private GameObject optionsContents;
+    [SerializeField] private GameObject optionsButton;
+    [SerializeField] private GameObject settingsButton;
+
+    [SerializeField] private GameObject optionsBg;
+    [SerializeField] private GameObject turnOnEffect;
+
+    [SerializeField] private GameObject titleText;
+
+    // window navigation in settings
+    private GameObject currentWindow;
+    private List<GameObject> previousWindows = new List<GameObject>();
+
+    // settings panels
+    [SerializeField] private GameObject settingsOptions;
+    [SerializeField] private GameObject audioSettingsOptions;
+    [SerializeField] private GameObject videoSettingsOptions;
+    [SerializeField] private GameObject gameSettingsOptions;
+    [SerializeField] private GameObject controlsSettingsOptions;
+
+    #endregion
 
     // AUDIO CLIPS
     [SerializeField] private AudioClip buttonPressedClip;
@@ -35,17 +53,19 @@ public class MainMenu : MonoBehaviour
     {
         // kill all tweens relating to the camera
         DOTween.KillAll();
-        settingsShown = false;
+        optionsShown = false;
 
-        settingsOptions.SetActive(false);
-        settingsButton.SetActive(true);
-        
+        optionsContents.SetActive(false);
+        optionsButton.SetActive(false);
+        settingsButton.SetActive(false);
 
         mainCamera.transform.position = cameraNormalPos.position;
         mainCamera.transform.rotation = cameraNormalPos.rotation;
 
-        settingsBg.SetActive(false);
+        optionsBg.SetActive(false);
         turnOnEffect.SetActive(false);
+
+        HideAllWindows();
     }
 
     // Update is called once per frame
@@ -53,11 +73,21 @@ public class MainMenu : MonoBehaviour
     {
         if (pauseAction.action.WasPressedThisFrame())
         {
-            if (settingsShown)
+            if (optionsShown)
             {
-                SettingsBackButtonPressed();
+
+                OnBackPressed();
             }
         }
+    }
+
+    private void HideAllWindows()
+    {
+        settingsOptions.SetActive(false);
+        audioSettingsOptions.SetActive(false);
+        videoSettingsOptions.SetActive(false);
+        gameSettingsOptions.SetActive(false);
+        controlsSettingsOptions.SetActive(false);
     }
 
     // ---------- Button Press Logic ----------
@@ -69,14 +99,19 @@ public class MainMenu : MonoBehaviour
         sceneLoader.LoadNewScene("DataLoggingScene");
     }
 
-    public void SettingsButtonPressed()
+    public void OptionsButtonPressed()
     {
+        if (optionsShown) return; // dont animate again if its already shown
+
         // kill all tweens relating to the camera
         DOTween.Kill("Camera");
         DOTween.Kill("ScreenOnOff");
-        currentlyAnimating = true;
+
+        // animations
+        titleText.GetComponent<TMP_Text>().DOFade(0f, 0.2f);
+
         mainCamera.transform.DOMove(cameraSettingsPos.position, 0.5f).SetId("Camera");
-        mainCamera.transform.DORotate(new Vector3(-12, 0, -5), 0.5f).SetId("Camera").OnComplete(() =>
+        mainCamera.transform.DORotate(new Vector3(6.5f, 0, -5), 0.5f).SetId("Camera").OnComplete(() =>
         {
             turnOnEffect.SetActive(true);
             turnOnEffect.GetComponent<Image>().color = Color.white;
@@ -85,36 +120,75 @@ public class MainMenu : MonoBehaviour
             {
                 turnOnEffect.transform.DOScale(new Vector3(1f, 1f, 1f), 0.05f).SetId("ScreenOnOff").OnComplete(() =>
                 {
-                    settingsBg.SetActive(true);
+                    optionsBg.SetActive(true);
+                    optionsButton.SetActive(true);
+                    settingsButton.SetActive(true);
                     turnOnEffect.GetComponent<Image>().DOFade(0f, 0.2f);
-                    currentlyAnimating = false;
                 });
             });
-
         });
-
+        
         AudioManager.Instance.PlaySFX(buttonPressedClip, mainCamera.transform, 1);
 
-        settingsShown = true;
-        settingsOptions.SetActive(true);
-        settingsButton.SetActive(false);
-
+        optionsShown = true;
+        optionsContents.SetActive(true);
         
     }
 
-    public void SettingsBackButtonPressed()
+    public void OnWindowButtonPressed(GameObject window)
+    {
+        window.SetActive(true);
+
+        currentWindow = window;
+        previousWindows.Add(window);
+
+        print(previousWindows.Count);
+    }
+
+
+    public void OnBackPressed()
+    {
+        if (previousWindows.Count > 0) // more than the options screen displayed
+        {
+            currentWindow.SetActive(false);
+
+            if (previousWindows.Count == 1) // if only 1 window up, itll go back to the base screen which isnt a window so set current to null
+            {
+                currentWindow = null;
+            }
+            else
+            {
+                currentWindow = previousWindows[previousWindows.Count - 2]; // go back to last window
+            }
+                
+            previousWindows.Remove(previousWindows[previousWindows.Count - 1]); // delete most recently visited window
+
+            print(previousWindows.Count);
+        }
+        else
+        {
+            OptionsBackButtonPressed();
+        }
+    }
+
+
+    public void OptionsBackButtonPressed()
     {
         // kill all tweens relating to the camera
         DOTween.Kill("Camera");
         DOTween.Kill("ScreenOnOff");
 
         mainCamera.transform.DOMove(cameraNormalPos.position, 0.5f).SetId("Camera");
-        mainCamera.transform.DORotate(new Vector3(0, 0, 0), 0.5f).SetId("Camera");
+        mainCamera.transform.DORotate(new Vector3(0, 0, 0), 0.5f).SetId("Camera").OnComplete(() =>
+        {
+            titleText.GetComponent<TMP_Text>().DOFade(1f, 0.2f);
+        });
 
-        settingsShown = false;
-        settingsOptions.SetActive(false);
-        settingsButton.SetActive(true);
-        settingsBg.SetActive(false);
+        optionsShown = false;
+        optionsContents.SetActive(false);
+        optionsButton.SetActive(false);
+        settingsButton.SetActive(false);
+        optionsBg.SetActive(false);
         turnOnEffect.SetActive(false);
     }
 

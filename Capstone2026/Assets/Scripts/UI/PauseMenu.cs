@@ -21,11 +21,7 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] private GameObject videoSettingsOptions;
     [SerializeField] private GameObject gameSettingsOptions;
     [SerializeField] private GameObject controlsSettingsOptions;
-    // video
-    // game
-    // controls
 
-    private int layersOfUI = 0;
     private GameObject currentWindow;
     private List<GameObject> previousWindows = new List<GameObject>();
 
