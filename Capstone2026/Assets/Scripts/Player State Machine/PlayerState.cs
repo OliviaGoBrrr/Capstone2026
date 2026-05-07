@@ -49,6 +49,7 @@ public class PlayerState
             player.batteryPercent = player.solarPanel.ChangeBatteryPercent(player.batteryPercent, player.batteryLightROC, 1);
             player.batteryText.text = Mathf.Round(player.batteryPercent).ToString();
             player.batteryText.color = Color.green;
+            UpdateBatteryUI();
             player.solarPanel.isInLight = true;
         }
         else // in shade
@@ -56,8 +57,14 @@ public class PlayerState
             player.batteryPercent = player.solarPanel.ChangeBatteryPercent(player.batteryPercent, player.batteryShadeROC, -1);
             player.batteryText.text = Mathf.Round(player.batteryPercent).ToString();
             player.batteryText.color = Color.red;
+            UpdateBatteryUI();
             player.solarPanel.isInLight = false;
         }
+    }
+
+    public void UpdateBatteryUI()
+    {
+        player.batteryImage.fillAmount = player.batteryPercent / 100;
     }
 
     public virtual void TransitionChecks()

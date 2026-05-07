@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class PlayerManager : MonoBehaviour
     public float batteryShadeROC = 15; // per second
     public float batteryPercent = 100;
     public TMP_Text batteryText;
+    public Image batteryImage;
     public Vector3 lastCheckpoint;
 
     [Header("References")] //remove this if i've done it wrong, this is just the solution im thinking of rn
@@ -101,5 +103,10 @@ public class PlayerManager : MonoBehaviour
     private void FixedUpdate()
     {
         StateMachine.CurrentState.FixedUpdate();
+    }
+
+    public void BatteryBarUI()
+    {
+
     }
 }
