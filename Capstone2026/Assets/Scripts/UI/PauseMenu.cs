@@ -103,7 +103,7 @@ public class PauseMenu : MonoBehaviour
         currentWindow = window;
         previousWindows.Add(window);
 
-        print(currentWindow);
+        print(previousWindows.Count);
     }
 
     public void OnBackPressed()
@@ -115,7 +115,7 @@ public class PauseMenu : MonoBehaviour
             currentWindow = previousWindows[previousWindows.Count - 2]; // go back to last window
             previousWindows.Remove(previousWindows[previousWindows.Count - 1]); // delete most recently visited window
 
-            print(currentWindow);
+            print(previousWindows.Count);
         }
         else
         {
