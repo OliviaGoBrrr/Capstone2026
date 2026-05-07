@@ -1,7 +1,7 @@
 using UnityEngine;
 
 /// <summary>
-/// Interfact for an interactable.
+/// Interface for an interactable.
 /// </summary>
 public interface IInteractable
 {

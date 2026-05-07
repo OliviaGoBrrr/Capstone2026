@@ -106,7 +106,6 @@ public class PlayerCCMovement : MonoBehaviour
         if (!groundedPlayer && prevFrameGrounded)
         {
             coyoteTimer = coyoteTime;
-            Debug.Log("Coyote Time!");
         }
 
         prevFrameGrounded = groundedPlayer;
@@ -179,7 +178,6 @@ public class PlayerCCMovement : MonoBehaviour
         {
             if (jumpBufferTimer > 0f || jumpAction.action.WasPressedThisFrame())
             {
-                Debug.Log("Player Jumped!");
                 playerVelocity.y = jumpHeight;
             }
             else if (playerVelocity.y < 0f) // caps the falling speed of the player when on the ground

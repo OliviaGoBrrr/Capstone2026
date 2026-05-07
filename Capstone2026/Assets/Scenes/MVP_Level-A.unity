@@ -549,11 +549,11 @@ Transform:
   m_GameObject: {fileID: 50004675}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -20, y: 0, z: 0}
+  m_LocalPosition: {x: -15, y: 0, z: 40}
   m_LocalScale: {x: 30, y: 1, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 324768861}
+  m_Father: {fileID: 1440980242}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &50004677
 BoxCollider:
@@ -1323,8 +1323,8 @@ GameObject:
   - component: {fileID: 138846714}
   - component: {fileID: 138846713}
   - component: {fileID: 138846712}
-  - component: {fileID: 138846716}
-  m_Layer: 0
+  - component: {fileID: 138846717}
+  m_Layer: 8
   m_Name: Switch A
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1341,10 +1341,10 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1791
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
@@ -1420,7 +1420,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1211312455}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &138846716
+--- !u!114 &138846717
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1429,15 +1429,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 138846711}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 718e3b5fa2685b4489f89508f0f96bc6, type: 3}
+  m_Script: {fileID: 11500000, guid: 3553c17d23701554e97a6bd08f822aec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BluePlatform_A: {fileID: 1440980241}
-  BluePlatform_B: {fileID: 604537378}
-  BluePlatform_B_Blocker: {fileID: 50004675}
-  RedPlatform_Blocker: {fileID: 941513381}
-  RedPlatform: {fileID: 2073352307}
-  Switch_B: {fileID: 1998742629}
+  platforms:
+  - {fileID: 1440980241}
+  - {fileID: 604537378}
+  - {fileID: 1998742629}
+  flipOnAwake:
+  - {fileID: 604537378}
+  - {fileID: 1998742629}
 --- !u!1001 &145806364
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1853,8 +1854,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 156268665}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.044313442, y: 0.00000003068936, z: -0.0000000013612882, w: 0.9990177}
-  m_LocalPosition: {x: 2.2, y: 5.1400003, z: -112.4}
+  m_LocalRotation: {x: 0.04431317, y: 0, z: 0, w: 0.9990177}
+  m_LocalPosition: {x: 2.2, y: 5.1400003, z: -106.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3021,8 +3022,6 @@ Transform:
   - {fileID: 1263008334}
   - {fileID: 693589243}
   - {fileID: 934219252}
-  - {fileID: 941513382}
-  - {fileID: 50004676}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &338262929
@@ -6827,11 +6826,11 @@ Transform:
   m_GameObject: {fileID: 941513381}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -15, y: 0, z: -20}
+  m_LocalPosition: {x: -10, y: 0, z: 20}
   m_LocalScale: {x: 10, y: 1, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 324768861}
+  m_Father: {fileID: 2073352308}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &941513383
 BoxCollider:
@@ -8254,7 +8253,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2513902909373232566, guid: f441403b77cac574ea9d327083463cf2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -107.9
+      value: -102
       objectReference: {fileID: 0}
     - target: {fileID: 2513902909373232566, guid: f441403b77cac574ea9d327083463cf2, type: 3}
       propertyPath: m_LocalRotation.w
@@ -8806,7 +8805,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3123042871201746332, guid: c7f1f44794c64de42a65856632c638b1, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -112.4
+      value: -106.5
       objectReference: {fileID: 0}
     - target: {fileID: 3123042871201746332, guid: c7f1f44794c64de42a65856632c638b1, type: 3}
       propertyPath: m_LocalRotation.w
@@ -8814,15 +8813,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3123042871201746332, guid: c7f1f44794c64de42a65856632c638b1, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.044313435
+      value: 0.044313163
       objectReference: {fileID: 0}
     - target: {fileID: 3123042871201746332, guid: c7f1f44794c64de42a65856632c638b1, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000030689357
+      value: -3.5039334e-18
       objectReference: {fileID: 0}
     - target: {fileID: 3123042871201746332, guid: c7f1f44794c64de42a65856632c638b1, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.000000001361288
+      value: -4.6861472e-17
       objectReference: {fileID: 0}
     - target: {fileID: 3123042871201746332, guid: c7f1f44794c64de42a65856632c638b1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -9631,10 +9630,11 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 106020442}
+  - {fileID: 50004676}
   - {fileID: 1620207969}
   - {fileID: 899288094}
   - {fileID: 1241600817}
-  - {fileID: 106020442}
   - {fileID: 2131940198}
   m_Father: {fileID: 1675835336}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -12203,7 +12203,7 @@ GameObject:
   - component: {fileID: 1998742632}
   - component: {fileID: 1998742631}
   - component: {fileID: 1998742634}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Switch B
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12235,10 +12235,10 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1791
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
@@ -12308,12 +12308,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1998742629}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04a3bc6f48c003e419b79741141cf2d5, type: 3}
+  m_Script: {fileID: 11500000, guid: 3553c17d23701554e97a6bd08f822aec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RedPlatform: {fileID: 2073352307}
-  RedPlatform_Blocker: {fileID: 941513381}
-  BluePlatform_B_Blocker: {fileID: 50004675}
+  platforms:
+  - {fileID: 844548357}
+  - {fileID: 941513381}
+  flipOnAwake:
+  - {fileID: 844548357}
 --- !u!1 &2034354381
 GameObject:
   m_ObjectHideFlags: 0
@@ -12669,6 +12671,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 844548358}
+  - {fileID: 941513382}
   m_Father: {fileID: 1675835336}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2082016093
