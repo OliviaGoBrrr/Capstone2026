@@ -13,7 +13,13 @@ public class PullPuzzleObject : Interactable
     
     void Start()
     {
-        startPosition = transform.position;
+        if (startPosition == null)
+        {
+            startPosition = transform.localPosition;
+        }
+        Debug.Log(startPosition);
+        Debug.Log(endPosition);
+       
     }
     public override void onInteract()
     {
@@ -27,13 +33,13 @@ public class PullPuzzleObject : Interactable
     public IEnumerator MoveOverTime() 
     {
         float elapsed = 0;
-        while (elapsed < .5f) 
+        while (elapsed < 1f) 
         {
-            transform.position = Vector3.Lerp(startPosition, endPosition, elapsed / .5f);
+            transform.localPosition = Vector3.Lerp(startPosition, endPosition, elapsed / 1f);
             elapsed += Time.deltaTime;
             yield return null;
         }
-        transform.position = endPosition;
+        transform.localPosition = endPosition;
     }
 
 }
