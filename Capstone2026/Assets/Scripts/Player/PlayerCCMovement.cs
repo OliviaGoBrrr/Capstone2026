@@ -240,7 +240,7 @@ public class PlayerCCMovement : MonoBehaviour
             RaycastHit hit;
 
             // Sends a ray towards the closest grapple point
-            if (Physics.Raycast(playerCamera.transform.position, closestGrapple, out hit, grappleMaxDistance, grappleTargetLayer))
+            if (Physics.Raycast(transform.position, closestGrapple, out hit, grappleMaxDistance, grappleTargetLayer))
             {
                 // It should find a target, but it allows the disabling of the grapple point
                 GrappleableObject target = hit.transform.GetComponent<GrappleableObject>();

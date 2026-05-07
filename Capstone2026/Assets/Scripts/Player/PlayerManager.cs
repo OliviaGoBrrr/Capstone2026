@@ -104,9 +104,4 @@ public class PlayerManager : MonoBehaviour
     {
         StateMachine.CurrentState.FixedUpdate();
     }
-
-    public void BatteryBarUI()
-    {
-
-    }
 }
