@@ -14,12 +14,13 @@ public class PlayerDeadState : PlayerState
 
         // restarts scene when player runs out of power
         // replace this later with animations and what not
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        player.transform.position = player.lastCheckpoint;
+        // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+        player.deathfade.deathFade();
 
         base.EnterState();
         
-        playerStateMachine.ChangeState(player.IdleSubState); // just adding this in for now so that the player can move and such, later on animations and etc will be added here
+        // playerStateMachine.ChangeState(player.IdleSubState); just adding this in for now so that the player can move and such, later on animations and etc will be added here
     }
 
     public override void ExitState()
@@ -43,5 +44,10 @@ public class PlayerDeadState : PlayerState
     public override void TransitionChecks()
     {
         base.TransitionChecks();
+
+        if(player.isDead == false)
+        {
+            playerStateMachine.ChangeState(player.IdleSubState);
+        }
     }
 }

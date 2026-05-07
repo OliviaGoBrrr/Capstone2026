@@ -19,6 +19,9 @@ public class PlayerManager : MonoBehaviour
     public TMP_Text batteryText;
     public Vector3 lastCheckpoint;
 
+    [Header("References")] //remove this if i've done it wrong, this is just the solution im thinking of rn
+    public DeathFade deathfade;
+
     [Header("Player State Bools")]
     #region State Bools
 

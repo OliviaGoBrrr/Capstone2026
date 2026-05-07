@@ -576,6 +576,11 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 10, z: 1}
   m_Center: {x: 0, y: 5, z: 0}
+--- !u!95 &54040872 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 3609741337077563472, guid: 0c26fabce6825674da079068ab1e9179, type: 3}
+  m_PrefabInstance: {fileID: 1885107703}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &77834688
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3103,6 +3108,53 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1209961346}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &345052745
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 345052747}
+  - component: {fileID: 345052746}
+  m_Layer: 0
+  m_Name: DeathFade
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &345052746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 345052745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af2009937a3639d448a1af55a46efe4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transition: {fileID: 54040872}
+  playerM: {fileID: 2048883067}
+  transitionTime: 0.75
+--- !u!4 &345052747
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 345052745}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.7049112, y: 31.990807, z: -79.573654}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &403987498
 GameObject:
@@ -8115,6 +8167,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1392271387}
     - target: {fileID: 5499503082993355082, guid: f441403b77cac574ea9d327083463cf2, type: 3}
+      propertyPath: deathfade
+      value: 
+      objectReference: {fileID: 345052746}
+    - target: {fileID: 5499503082993355082, guid: f441403b77cac574ea9d327083463cf2, type: 3}
       propertyPath: batteryText
       value: 
       objectReference: {fileID: 1906741117}
@@ -12024,6 +12080,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2886341711323706782, guid: 0660b8c31ba863d44b16b437086b0188, type: 3}
   m_PrefabInstance: {fileID: 1809496044}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2048883067 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5499503082993355082, guid: f441403b77cac574ea9d327083463cf2, type: 3}
+  m_PrefabInstance: {fileID: 1209505065}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d96e8d975d5402f4db8b0ba2a87e853e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2057247604
 GameObject:
   m_ObjectHideFlags: 0
@@ -13196,6 +13263,7 @@ SceneRoots:
   - {fileID: 1836101841}
   - {fileID: 1338479408}
   - {fileID: 1885107703}
+  - {fileID: 345052747}
   - {fileID: 2123483208}
   - {fileID: 1209505065}
   - {fileID: 1287951020}
