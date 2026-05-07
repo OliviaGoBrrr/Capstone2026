@@ -7,6 +7,7 @@ using System;
 using System.IO;
 using System.Text;
 using UnityEngine.UI;
+using TMPro;
 
 public class MainMenu : MonoBehaviour
 {
@@ -29,6 +30,8 @@ public class MainMenu : MonoBehaviour
 
     [SerializeField] private GameObject optionsBg;
     [SerializeField] private GameObject turnOnEffect;
+
+    [SerializeField] private GameObject titleText;
 
     // window navigation in settings
     private GameObject currentWindow;
@@ -105,8 +108,10 @@ public class MainMenu : MonoBehaviour
         DOTween.Kill("ScreenOnOff");
 
         // animations
+        titleText.GetComponent<TMP_Text>().DOFade(0f, 0.2f);
+
         mainCamera.transform.DOMove(cameraSettingsPos.position, 0.5f).SetId("Camera");
-        mainCamera.transform.DORotate(new Vector3(-12, 0, -5), 0.5f).SetId("Camera").OnComplete(() =>
+        mainCamera.transform.DORotate(new Vector3(6.5f, 0, -5), 0.5f).SetId("Camera").OnComplete(() =>
         {
             turnOnEffect.SetActive(true);
             turnOnEffect.GetComponent<Image>().color = Color.white;
@@ -122,7 +127,7 @@ public class MainMenu : MonoBehaviour
                 });
             });
         });
-
+        
         AudioManager.Instance.PlaySFX(buttonPressedClip, mainCamera.transform, 1);
 
         optionsShown = true;
@@ -174,7 +179,10 @@ public class MainMenu : MonoBehaviour
         DOTween.Kill("ScreenOnOff");
 
         mainCamera.transform.DOMove(cameraNormalPos.position, 0.5f).SetId("Camera");
-        mainCamera.transform.DORotate(new Vector3(0, 0, 0), 0.5f).SetId("Camera");
+        mainCamera.transform.DORotate(new Vector3(0, 0, 0), 0.5f).SetId("Camera").OnComplete(() =>
+        {
+            titleText.GetComponent<TMP_Text>().DOFade(1f, 0.2f);
+        });
 
         optionsShown = false;
         optionsContents.SetActive(false);
