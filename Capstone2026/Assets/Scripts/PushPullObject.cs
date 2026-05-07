@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
 
-public class PushPullObject : Interactable
+public class PushPullObject : MonoBehaviour, IInteractable
 {
     public Transform PlayerTransform;
     public PlayerManager PManager;
@@ -45,7 +45,7 @@ public class PushPullObject : Interactable
         } 
     }
 
-    public override void onInteract()
+    public void OnInteract()
     {
         if(Held)
         {

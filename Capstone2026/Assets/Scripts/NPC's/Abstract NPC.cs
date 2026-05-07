@@ -8,7 +8,7 @@ using UnityEngine.UI;
 /// this entire thing is pretty much copy pasted from my IGB200 project.
 /// everything that's commented out basically just needs to be swapped over to our current systems, i.e. state machine.
 /// </summary>
-public abstract class AbstractNPC : Interactable
+public abstract class AbstractNPC : MonoBehaviour, IInteractable
 {
     //[SerializeField] protected GameObject exclamationMark;
     [Header("Dialogue")]
@@ -29,7 +29,7 @@ public abstract class AbstractNPC : Interactable
     private const string HTML_ALPHA = "<color=#00000000>";
     
 
-    public override void onInteract()
+    public void OnInteract()
     {
         // If no line has been displayed, start dialogue
         if (index == -1) StartDialogue();

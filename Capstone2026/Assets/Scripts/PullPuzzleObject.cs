@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// Hoping to eventually implement script with grappling mechanics (only visually) 
 /// </summary>
-public class PullPuzzleObject : Interactable
+public class PullPuzzleObject : MonoBehaviour, IInteractable
 {
     public Vector3 startPosition;
     public Vector3 endPosition;
@@ -21,7 +21,7 @@ public class PullPuzzleObject : Interactable
         Debug.Log(endPosition);
        
     }
-    public override void onInteract()
+    public void OnInteract()
     {
         if(!hasBeenMoved)
         {

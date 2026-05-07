@@ -9,8 +9,8 @@ public class blueSwitchTrigger_LightMaze : MonoBehaviour
     {
         BluePlatform_B.SetActive(false);
         BluePlatform_A.SetActive(true);
-	RedPlatform.SetActive(false);
-	Switch_B.SetActive(false);
+	    RedPlatform.SetActive(false);
+	    Switch_B.SetActive(false);
     }
 
     void OnTriggerExit(Collider other)

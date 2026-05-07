@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public class Lever : Interactable
+public class Lever : MonoBehaviour, IInteractable
 {
     public Animator DoorAnim;
     public Animator LeverAnim;
 
-    public override void onInteract()
+    public void OnInteract()
     {
         DoorAnim.SetBool("LeverTrigger", true);
         LeverAnim.SetBool("doorOpen", true);

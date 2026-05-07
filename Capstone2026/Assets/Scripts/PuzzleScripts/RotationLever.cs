@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-public class RotationLever : /*MonoBehaviour, IInteractable,*/ Interactable
+public class RotationLever : MonoBehaviour, IInteractable
 {
     Animator AnimController;
     public bool isMoving;
@@ -15,7 +15,7 @@ public class RotationLever : /*MonoBehaviour, IInteractable,*/ Interactable
     //    AnimController.Play("rotatePrism");
     //}
 
-    public override void onInteract()
+    public void OnInteract()
     {
         if (!isMoving) AnimController.Play("rotatePrism");
     }

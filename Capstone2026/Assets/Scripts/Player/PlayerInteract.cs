@@ -50,7 +50,7 @@ public class PlayerInteract : MonoBehaviour
             
             if (interactAction.action.WasPressedThisFrame()) // and the player innteracts with it
             {
-                hit.transform.GetComponent<Interactable>().onInteract(); // perform the onInteract() function on the gameobject
+                hit.transform.GetComponent<IInteractable>().OnInteract(); // perform the onInteract() function on the gameobject
                 Debug.Log("yayy clicked");
             }
 
