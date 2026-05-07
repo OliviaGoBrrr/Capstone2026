@@ -59,15 +59,15 @@ public class PlayerCCMovement : MonoBehaviour
     public InputActionReference grappleAction;
     public InputActionReference runAction;
 
-    // Input buffers
-    private const float coyoteTime = 0.1f;
-    public float coyoteTimer;
+    [Header("Input Buffer Times")]
+    public float coyoteTime = 0.1f;
+    [HideInInspector] public float coyoteTimer;
 
-    private const float grappleBuffer = 0.1f;
-    public float grappleBufferTimer;
+    public float grappleBuffer = 0.1f;
+    [HideInInspector] public float grappleBufferTimer;
 
-    private const float jumpBuffer = 0.2f;
-    public float jumpBufferTimer;
+    public float jumpBuffer = 0.2f;
+    [HideInInspector] public float jumpBufferTimer;
 
     private void Awake()
     {

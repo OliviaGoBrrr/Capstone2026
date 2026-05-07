@@ -13,6 +13,12 @@ public class PushPullObject : Interactable
     private bool Held = false;
     public bool canBeSetDown;
     public Vector3 setDownLocation;
+    [HideInInspector] float initialYPos;
+
+    void Start()
+    {
+        initialYPos = transform.position.y;
+    }
 
     void Update()
     {
@@ -21,12 +27,14 @@ public class PushPullObject : Interactable
             if(PManager.isPushPulling == true)
             {
                 transform.position = PlayerTransform.position + (transform.forward * 2);
+                
+                transform.position = new Vector3 (transform.position.x, initialYPos, transform.position.z); //for objects on flat ground
 
-                //have object always be on ground
-                if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit ground))
+                // for objects on changing ground
+                /*if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit ground))
                 {
                     transform.up = ground.normal;
-                }
+                }*/
             }
 
             else
