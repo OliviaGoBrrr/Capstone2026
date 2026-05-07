@@ -9,6 +9,7 @@ public class blueSwitchTrigger_LightMaze : MonoBehaviour
     {
         BluePlatform_B.SetActive(false);
         BluePlatform_A.SetActive(true);
+	Switch_B.SetActive(state);
     }
 
     void OnTriggerExit(Collider other)
@@ -16,7 +17,8 @@ public class blueSwitchTrigger_LightMaze : MonoBehaviour
         state = !state;
         BluePlatform_A.SetActive(!state);
         BluePlatform_B.SetActive(state);
-        if (!RedPlatform.activeSelf) BluePlatform_B_Blocker.SetActive(!state);
+        if (!RedPlatform.activeSelf) BluePlatform_B_Blocker.SetActive(true);
+	else BluePlatform_B_Blocker.SetActive(false);
         Switch_B.SetActive(state);
     }
 }
