@@ -11,6 +11,7 @@ using TMPro;
 
 public class MainMenu : MonoBehaviour
 {
+
     public SceneLoader sceneLoader;
 
     public InputActionReference pauseAction;
@@ -20,16 +21,16 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private Transform cameraSettingsPos;
     [SerializeField] private Transform cameraNormalPos;
 
-    #region Options Screen
 
-    private bool optionsShown = false;
-
+    [Header("Options Screen")]
+    // buttons!
     [SerializeField] private GameObject optionsContents;
     [SerializeField] private GameObject optionsButton;
     [SerializeField] private GameObject settingsButton;
 
     [SerializeField] private GameObject optionsBg;
-    [SerializeField] private GameObject turnOnEffect;
+    [SerializeField] private GameObject turnOnEffect; // used for animating the turn on animation
+    [SerializeField] private GameObject blackScreen; // shown when the tv is off
 
     [SerializeField] private GameObject titleText;
 
@@ -44,8 +45,10 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private GameObject gameSettingsOptions;
     [SerializeField] private GameObject controlsSettingsOptions;
 
-    #endregion
+    private bool optionsShown = false;
 
+
+    [Header("Audio")]
     // AUDIO CLIPS
     [SerializeField] private AudioClip buttonPressedClip;
 
@@ -114,16 +117,26 @@ public class MainMenu : MonoBehaviour
         mainCamera.transform.DORotate(new Vector3(6.5f, 0, -5), 0.5f).SetId("Camera").OnComplete(() =>
         {
             turnOnEffect.SetActive(true);
+
             turnOnEffect.GetComponent<Image>().color = Color.white;
-            turnOnEffect.transform.localScale = new Vector3(0f, 0.01f, 0f);
+
+            turnOnEffect.transform.localScale = new Vector3(0f, 0.01f, 1f);
+
             turnOnEffect.transform.DOScale(new Vector3(1f, 0.01f, 1f), 0.05f).SetId("ScreenOnOff").OnComplete(() =>
             {
                 turnOnEffect.transform.DOScale(new Vector3(1f, 1f, 1f), 0.05f).SetId("ScreenOnOff").OnComplete(() =>
                 {
+                    // turn on everything to be displayed
                     optionsBg.SetActive(true);
                     optionsButton.SetActive(true);
                     settingsButton.SetActive(true);
-                    turnOnEffect.GetComponent<Image>().DOFade(0f, 0.2f);
+
+                    blackScreen.SetActive(false); // hide the black screen
+
+                    turnOnEffect.GetComponent<Image>().DOFade(0f, 0.2f).SetId("ScreenOnOff").OnComplete(() =>
+                    {
+                        turnOnEffect.SetActive(false);
+                    });
                 });
             });
         });
@@ -134,6 +147,41 @@ public class MainMenu : MonoBehaviour
         optionsContents.SetActive(true);
         
     }
+
+    public void OptionsBackButtonPressed()
+    {
+        // kill all tweens relating to the camera
+        DOTween.Kill("Camera");
+        DOTween.Kill("ScreenOnOff");
+
+        turnOnEffect.SetActive(true);
+        blackScreen.SetActive(true);
+
+        turnOnEffect.GetComponent<Image>().color = Color.white;
+
+        turnOnEffect.transform.localScale = new Vector3(1f, 1f, 1f);
+
+        turnOnEffect.transform.DOScale(new Vector3(1f, 0.01f, 1f), 0.075f).SetId("ScreenOnOff").OnComplete(() =>
+        {
+            turnOnEffect.transform.DOScale(new Vector3(0f, 0f, 1f), 0.075f).SetId("ScreenOnOff").OnComplete(() =>
+            {
+                turnOnEffect.SetActive(false);
+            });
+        });
+
+        mainCamera.transform.DOMove(cameraNormalPos.position, 0.5f).SetId("Camera");
+        mainCamera.transform.DORotate(new Vector3(0, 0, 0), 0.5f).SetId("Camera").OnComplete(() =>
+        {
+            titleText.GetComponent<TMP_Text>().DOFade(1f, 0.2f);
+        });
+
+        optionsShown = false;
+        optionsContents.SetActive(false);
+        optionsButton.SetActive(false);
+        settingsButton.SetActive(false);
+        optionsBg.SetActive(false);
+    }
+
 
     public void OnWindowButtonPressed(GameObject window)
     {
@@ -159,8 +207,7 @@ public class MainMenu : MonoBehaviour
             else
             {
                 currentWindow = previousWindows[previousWindows.Count - 2]; // go back to last window
-            }
-                
+            }   
             previousWindows.Remove(previousWindows[previousWindows.Count - 1]); // delete most recently visited window
 
             print(previousWindows.Count);
@@ -172,25 +219,7 @@ public class MainMenu : MonoBehaviour
     }
 
 
-    public void OptionsBackButtonPressed()
-    {
-        // kill all tweens relating to the camera
-        DOTween.Kill("Camera");
-        DOTween.Kill("ScreenOnOff");
-
-        mainCamera.transform.DOMove(cameraNormalPos.position, 0.5f).SetId("Camera");
-        mainCamera.transform.DORotate(new Vector3(0, 0, 0), 0.5f).SetId("Camera").OnComplete(() =>
-        {
-            titleText.GetComponent<TMP_Text>().DOFade(1f, 0.2f);
-        });
-
-        optionsShown = false;
-        optionsContents.SetActive(false);
-        optionsButton.SetActive(false);
-        settingsButton.SetActive(false);
-        optionsBg.SetActive(false);
-        turnOnEffect.SetActive(false);
-    }
+    
 
     public void ExitButtonPressed()
     {
