@@ -1641,7 +1641,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7b726cb542aaa5d438c26085b63bfbfa, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 139.98001
+      value: 138.93
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7b726cb542aaa5d438c26085b63bfbfa, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1671,17 +1671,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 697058255860056870, guid: 7b726cb542aaa5d438c26085b63bfbfa, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 34f792b544a7461459977f411645f6d0, type: 2}
     - target: {fileID: 919132149155446097, guid: 7b726cb542aaa5d438c26085b63bfbfa, type: 3}
       propertyPath: m_Name
       value: boat
       objectReference: {fileID: 0}
+    - target: {fileID: 1340521503495128456, guid: 7b726cb542aaa5d438c26085b63bfbfa, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 34f792b544a7461459977f411645f6d0, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1341259845690771196, guid: 7b726cb542aaa5d438c26085b63bfbfa, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1946285572}
+      addedObject: {fileID: 1946285576}
   m_SourcePrefab: {fileID: 100100000, guid: 7b726cb542aaa5d438c26085b63bfbfa, type: 3}
 --- !u!1001 &365231764
 PrefabInstance:
@@ -2066,7 +2074,7 @@ Transform:
   m_GameObject: {fileID: 494726223}
   serializedVersion: 2
   m_LocalRotation: {x: 0.011109046, y: 0, z: 0, w: 0.9999383}
-  m_LocalPosition: {x: 137.6, y: 2.3, z: -173.9}
+  m_LocalPosition: {x: 130.9, y: 2.3, z: -160.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3584,7 +3592,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3123042871201746332, guid: c7f1f44794c64de42a65856632c638b1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 137.6
+      value: 130.9
       objectReference: {fileID: 0}
     - target: {fileID: 3123042871201746332, guid: c7f1f44794c64de42a65856632c638b1, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3592,7 +3600,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3123042871201746332, guid: c7f1f44794c64de42a65856632c638b1, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -173.9
+      value: -160.9
       objectReference: {fileID: 0}
     - target: {fileID: 3123042871201746332, guid: c7f1f44794c64de42a65856632c638b1, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3783,7 +3791,7 @@ PrefabInstance:
       objectReference: {fileID: 494726225}
     - target: {fileID: 2513902909373232566, guid: f441403b77cac574ea9d327083463cf2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 137.6
+      value: 130.9
       objectReference: {fileID: 0}
     - target: {fileID: 2513902909373232566, guid: f441403b77cac574ea9d327083463cf2, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3791,7 +3799,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2513902909373232566, guid: f441403b77cac574ea9d327083463cf2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -169.4
+      value: -156.4
       objectReference: {fileID: 0}
     - target: {fileID: 2513902909373232566, guid: f441403b77cac574ea9d327083463cf2, type: 3}
       propertyPath: m_LocalRotation.w
@@ -5605,8 +5613,8 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1341259845690771196, guid: 7b726cb542aaa5d438c26085b63bfbfa, type: 3}
   m_PrefabInstance: {fileID: 348275185}
   m_PrefabAsset: {fileID: 0}
---- !u!64 &1946285572
-MeshCollider:
+--- !u!65 &1946285576
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -5623,10 +5631,9 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
+  serializedVersion: 3
+  m_Size: {x: 0.010671207, y: 0.010301697, z: 0.0153311975}
+  m_Center: {x: -0.000000012555428, y: 0.00015082145, z: -0.0013349882}
 --- !u!4 &1971817500 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c0edde5229f4480469ab0b6d373fea25, type: 3}
