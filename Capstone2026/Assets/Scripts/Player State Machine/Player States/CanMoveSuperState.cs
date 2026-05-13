@@ -23,6 +23,7 @@ public class PlayerCanMoveSuperState : PlayerState
     public override void FrameUpdate()
     {
         player.movement.PlayerMove();
+        player.movement.IsPlayerRunning();
         base.FrameUpdate();
     }
 

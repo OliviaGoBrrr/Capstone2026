@@ -10,6 +10,7 @@ public class PlayerCCMovement : MonoBehaviour
     // Movement Values
     [Header("Player Movement Values")]
     public float moveSpeed = 10f;
+    public float walkSpeed = 10f;
     public float runSpeed = 15f;
     public float jumpHeight = 0.5f;
    
@@ -185,6 +186,18 @@ public class PlayerCCMovement : MonoBehaviour
             {
                 playerVelocity.y = -3f;
             }
+        }
+    }
+
+    public void IsPlayerRunning()
+    {
+        if (runAction.action.IsPressed())
+        {
+            moveSpeed = runSpeed;
+        }
+        else
+        {
+            moveSpeed = walkSpeed;
         }
     }
 
