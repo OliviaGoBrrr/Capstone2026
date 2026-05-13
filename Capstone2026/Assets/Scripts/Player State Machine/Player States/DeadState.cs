@@ -12,6 +12,8 @@ public class PlayerDeadState : PlayerState
         player.isDead = true;
         player.canMove = false;
 
+        player.movement.playerVelocity = new Vector3(0, 0, 0);
+
         // restarts scene when player runs out of power
         // replace this later with animations and what not
         // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
