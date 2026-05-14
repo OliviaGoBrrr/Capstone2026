@@ -9,6 +9,7 @@ public class PlayerSolarDetector : MonoBehaviour
 
     // raycast only detects objects in this layermask
     private int layerMask;
+    private int interactLayerMask;
 
     [SerializeField] private GameObject lightSource;
     [SerializeField] private Transform centreSolarPanel;
@@ -26,6 +27,7 @@ public class PlayerSolarDetector : MonoBehaviour
     void Awake()
     {
         layerMask = 6;
+        interactLayerMask = 8;
 
         r = GetComponent<MeshRenderer>();
 
@@ -69,7 +71,8 @@ public class PlayerSolarDetector : MonoBehaviour
         for (int i = 0; i < rayCastPositions.Length; i++)
         {
             RaycastHit hit;
-            if (Physics.Raycast(rayCastPositions[i].transform.position, Vector3.Normalize(distance), out hit, Vector3.Magnitude(distance)) && hit.transform.gameObject.layer != layerMask)
+
+            if (Physics.Raycast(rayCastPositions[i].transform.position, Vector3.Normalize(distance), out hit, Vector3.Magnitude(distance)) && hit.transform.gameObject.layer != layerMask && hit.transform.gameObject.layer != interactLayerMask)
             {
                 numberOfCollisions += 1;
             }
