@@ -7,6 +7,7 @@ public class PlayerManager : MonoBehaviour
     [Header("Player Scripts")]
     public PlayerCCMovement movement;
     public PlayerSolarDetector solarPanel;
+    public PauseMenu pauseMenu;
     //public GrappleInteract grapple;
     // public PlayerDialogueScript dialogue;
     // public PlayerGrappleScript grapple;

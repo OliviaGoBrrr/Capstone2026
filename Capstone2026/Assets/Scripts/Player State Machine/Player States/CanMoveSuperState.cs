@@ -24,6 +24,8 @@ public class PlayerCanMoveSuperState : PlayerState
     {
         player.movement.PlayerMove();
         player.movement.IsPlayerRunning();
+        player.pauseMenu.WasPausePressed();
+
         base.FrameUpdate();
     }
 

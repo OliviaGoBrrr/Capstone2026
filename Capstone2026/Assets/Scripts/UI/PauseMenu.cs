@@ -46,7 +46,7 @@ public class PauseMenu : MonoBehaviour
         HideCursor();
     }
 
-    void Update()
+    public void WasPausePressed()
     {
         if (pauseAction.action.WasPressedThisFrame())
         {
