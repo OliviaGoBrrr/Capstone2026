@@ -51,7 +51,7 @@ public abstract class AbstractNPC : MonoBehaviour, IInteractable
     {
         // If dialogue is active and typing is not currently happening, then when e is pressed go to next line, else finish the line
         if (index == -1) { return; }
-        if (!playerI.interactAction.action.WasPressedThisFrame()) { return; } 
+        if (!playerI.interactAction.action.WasReleasedThisFrame()) { return; } 
         if (isTyping) finishTyping = true;
         else NextLine();
         
