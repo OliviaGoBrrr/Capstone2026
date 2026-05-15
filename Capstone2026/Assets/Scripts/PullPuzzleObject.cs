@@ -13,7 +13,7 @@ public class PullPuzzleObject : MonoBehaviour, IInteractable
     
     void Start()
     {
-        if (startPosition == null)
+        if (startPosition == new Vector3(0,0,0))
         {
             startPosition = transform.localPosition;
         }

@@ -38,7 +38,8 @@ public class PushPullObject : MonoBehaviour, IInteractable
                 
                 if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit ground))
                 {
-                    transform.position = new Vector3(transform.position.x, ground.normal.y - .99f, transform.position.z); // the little ground.normal.y will probably need to be changed cuz its not the best way to do it but whatever
+                    transform.position = new Vector3(transform.position.x, ground.normal.y - 1, transform.position.z); // the little ground.normal.y will probably need to be changed cuz its not the best way to do it but whatever
+                    //okay the code isnt perfect and there is a known bug where the object will randomly start floating off into nothiing, seemingly freezing the y pos on the object fixes this
                 }
             }
 
