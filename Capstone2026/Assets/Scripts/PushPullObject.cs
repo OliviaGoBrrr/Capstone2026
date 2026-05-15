@@ -30,6 +30,7 @@ public class PushPullObject : MonoBehaviour, IInteractable
                 transform.rotation = PlayerTransform.rotation;
                 
                 //For objects that need to stay on one y level
+                //like currently if we needed we could include both? just a bool for "stays on same level"
 
                 /*
                 transform.position = new Vector3 (transform.position.x, initialYPos, transform.position.z); //for objects on flat ground
@@ -37,7 +38,7 @@ public class PushPullObject : MonoBehaviour, IInteractable
                 
                 if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit ground))
                 {
-                    transform.position = new Vector3(transform.position.x, ground.normal.y - 1, transform.position.z); // the little ground.normal.y will probably need to be changed cuz its not the best way to do it but whatever
+                    transform.position = new Vector3(transform.position.x, ground.normal.y - .99f, transform.position.z); // the little ground.normal.y will probably need to be changed cuz its not the best way to do it but whatever
                 }
             }
 
