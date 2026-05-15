@@ -30,7 +30,7 @@ public class MainMenu : MonoBehaviour
 
     [SerializeField] private GameObject optionsBg;
     [SerializeField] private GameObject turnOnEffect; // used for animating the turn on animation
-    [SerializeField] private GameObject blackScreen; // shown when the tv is off
+    //[SerializeField] private GameObject blackScreen; // shown when the tv is off
 
     [SerializeField] private GameObject titleText;
 
@@ -131,7 +131,7 @@ public class MainMenu : MonoBehaviour
                     optionsButton.SetActive(true);
                     settingsButton.SetActive(true);
 
-                    blackScreen.SetActive(false); // hide the black screen
+                    //blackScreen.SetActive(false); // hide the black screen
 
                     turnOnEffect.GetComponent<Image>().DOFade(0f, 0.2f).SetId("ScreenOnOff").OnComplete(() =>
                     {
@@ -155,7 +155,7 @@ public class MainMenu : MonoBehaviour
         DOTween.Kill("ScreenOnOff");
 
         turnOnEffect.SetActive(true);
-        blackScreen.SetActive(true);
+        //blackScreen.SetActive(true);
 
         turnOnEffect.GetComponent<Image>().color = Color.white;
 
