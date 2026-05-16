@@ -114,7 +114,7 @@ public class MainMenu : MonoBehaviour
         titleText.GetComponent<TMP_Text>().DOFade(0f, 0.2f);
 
         mainCamera.transform.DOMove(cameraSettingsPos.position, 0.5f).SetId("Camera");
-        mainCamera.transform.DORotate(new Vector3(6.5f, 0, -5), 0.5f).SetId("Camera").OnComplete(() =>
+        mainCamera.transform.DORotate(new Vector3(0f, 0, 0), 0.5f).SetId("Camera").OnComplete(() =>
         {
             turnOnEffect.SetActive(true);
 
