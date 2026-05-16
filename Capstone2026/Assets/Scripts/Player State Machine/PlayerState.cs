@@ -11,6 +11,7 @@ public class PlayerState
     protected bool isAnimationFinished;
     protected float startTime;
 
+
     public PlayerState(PlayerManager player, PlayerStateMachine playerStateMachine, string animationName, Animator animationController)
     {
         this.player = player;
@@ -44,9 +45,9 @@ public class PlayerState
     public virtual void FixedUpdate()
     {
         // Change battery % regardless of current state
-        if (player.solarPanel.CheckIfInLight() <= 2) // in light
+        if (player.solarPanel.CheckIfInLight() <= player.numberOfSunRaysForPower) // in light
         {
-            player.batteryPercent = player.solarPanel.ChangeBatteryPercent(player.batteryPercent, player.batteryLightROC, 1);
+            player.batteryPercent = player.solarPanel.ChangeBatteryPercent(player.batteryPercent, player.batteryLightRateOfChangePerSecond);
             player.batteryText.text = Mathf.Round(player.batteryPercent).ToString();
             player.batteryText.color = Color.green;
             UpdateBatteryUI();
@@ -54,7 +55,7 @@ public class PlayerState
         }
         else // in shade
         {
-            player.batteryPercent = player.solarPanel.ChangeBatteryPercent(player.batteryPercent, player.batteryShadeROC, -1);
+            player.batteryPercent = player.solarPanel.ChangeBatteryPercent(player.batteryPercent, player.batteryShadeRateOfChangePerSecond);
             player.batteryText.text = Mathf.Round(player.batteryPercent).ToString();
             player.batteryText.color = Color.red;
             UpdateBatteryUI();
