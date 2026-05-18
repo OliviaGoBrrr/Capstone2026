@@ -55,7 +55,7 @@ public class PlayerSolarDetector : MonoBehaviour
 
         float x = lightSource.transform.rotation.x * deg2rad;
         float y = (lightSource.transform.rotation.y + 180) * deg2rad;
-        float z = lightSource.transform.rotation.z * deg2rad;
+        //float z = lightSource.transform.rotation.z * deg2rad;
 
         Vector3 lightDirection = new Vector3(Mathf.Cos(x) * Mathf.Sin(y), Mathf.Sin(x), Mathf.Cos(x) * Mathf.Cos(y));
 
