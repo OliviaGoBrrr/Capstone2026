@@ -21,14 +21,14 @@ public class Temp_Farm : MonoBehaviour
         River_A.SetActive(true);
         CropsA_A.SetActive(true);
         CropsD_A.SetActive(false);
-        yield return new WaitForSeconds(1f);
-        River_B.SetActive(true);
         CropsA_B.SetActive(true);
         CropsD_B.SetActive(false);
-        yield return new WaitForSeconds(1f);
-        River_C.SetActive(true);
         CropsA_C.SetActive(true);
         CropsD_C.SetActive(false);
+        yield return new WaitForSeconds(2f);
+        River_B.SetActive(true);
+        yield return new WaitForSeconds(1f);
+        River_C.SetActive(true);
         yield return new WaitForSeconds(1f);
     }
 }
