@@ -59,12 +59,16 @@ public class LightCrystal : MonoBehaviour
         // Visual of the Line
         Debug.DrawLine(beamStartPoint.position, beamStartPoint.position + (ray.direction * beamMaxDistance), Color.red);
 
+        // Checks to see if the ray hits anything
         if(Physics.Raycast(beamStartPoint.position, transform.forward, out RaycastHit hit, beamMaxDistance, beamLayerMask))
         {
-            LightCrystal crystal = hit.transform.GetComponent<LightCrystal>();
-
-            if (crystal != null)
+            if (hit.transform.TryGetComponent<LightCrystal>(out LightCrystal crystal))
             {
+                if (crystal.beamsHitting.Count >= crystal.lightsNeededToIlluminate)
+                {
+                    return;
+                }
+
                 if (crystal.beamsHitting.Contains(this) == false)
                 {
                     crystal.beamsHitting.Add(this);
@@ -73,6 +77,16 @@ public class LightCrystal : MonoBehaviour
                 if (crystalHitting == null)
                 {
                     crystalHitting = crystal;
+                }
+                return;
+            }
+
+            else if (hit.transform.TryGetComponent<PlayerManager>(out PlayerManager player))
+            {
+                if(player.TryGetComponent<PlayerSolarDetector>(out PlayerSolarDetector solarDetector))
+                {
+                    Debug.Log("Recharging Player");
+                    solarDetector.ChangeBatteryPercent(player.batteryPercent, player.batteryLightRateOfChangePerSecond);
                 }
             }
         }
@@ -88,7 +102,7 @@ public class LightCrystal : MonoBehaviour
     {
         if(crystalHitting != null)
         {
-            crystalHitting.beamsHitting.Remove(this);
+            crystalHitting.beamsHitting.Remove(this); // causing a stack overflow if two beams hit eachother
             crystalHitting.StopLightBeam();
             crystalHitting = null;
         }
