@@ -27,21 +27,22 @@ public class PushPullObject : MonoBehaviour, IInteractable
             if(PManager.isPushPulling == true)
             {
                 transform.position = PlayerTransform.position + (transform.forward * 2);
-                transform.rotation = PlayerTransform.rotation;
+                transform.rotation = PlayerTransform.rotation; 
+                Debug.Log(transform.position.y + "Player");
                 
                 //For objects that need to stay on one y level
                 //like currently if we needed we could include both? just a bool for "stays on same level"
 
-                /*
-                transform.position = new Vector3 (transform.position.x, initialYPos, transform.position.z); //for objects on flat ground
-                */
+                transform.position = new Vector3 (transform.position.x, initialYPos, transform.position.z); 
                 
-                if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit ground))
+                /* come back to this if future objects will changed elevation
+                if (Physics.Raycast(transform.position, -Vector3.up, out RaycastHit hit, 10f))
                 {
-                    transform.position = new Vector3(transform.position.x, ground.normal.y - 1, transform.position.z); // the little ground.normal.y will probably need to be changed cuz its not the best way to do it but whatever
-                    //okay the code isnt perfect and there is a known bug where the object will randomly start floating off into nothiing, seemingly freezing the y pos on the object fixes this
+                    transform.position = hit.point; 
+                    Debug.Log(transform.position.y + "Raycast");
                 }
-            }
+                */
+            }   
 
             else
             {
