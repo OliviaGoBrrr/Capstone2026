@@ -19,7 +19,7 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] private GameObject settingsOptions;
     [SerializeField] private GameObject audioSettingsOptions;
     [SerializeField] private GameObject videoSettingsOptions;
-    [SerializeField] private GameObject gameSettingsOptions;
+    [SerializeField] private GameObject accessibilitySettingsOptions;
     [SerializeField] private GameObject controlsSettingsOptions;
 
     private GameObject currentWindow;
@@ -40,7 +40,7 @@ public class PauseMenu : MonoBehaviour
         settingsOptions.SetActive(false);
         audioSettingsOptions.SetActive(false);
         videoSettingsOptions.SetActive(false);
-        gameSettingsOptions.SetActive(false);
+        accessibilitySettingsOptions.SetActive(false);
         controlsSettingsOptions.SetActive(false);
 
         HideCursor();
