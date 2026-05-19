@@ -21,6 +21,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private Transform cameraSettingsPos;
     [SerializeField] private Transform cameraNormalPos;
 
+
     [Header("Options Screen")]
     // buttons!
     [SerializeField] private GameObject optionsContents;
@@ -104,6 +105,7 @@ public class MainMenu : MonoBehaviour
         // zoom in to monitor & fade to black
         Sequence zoomFadeCameraIn = DOTween.Sequence();
         zoomFadeCameraIn.Insert(0, mainCamera.transform.DOMove(cameraSettingsPos.position, settingsZoomInSpeed).SetEase(Ease.InOutSine)).
+            Insert(0, mainCamera.transform.DORotate(new Vector3(12f, -18f, 12f), settingsZoomInSpeed).SetEase(Ease.InOutSine)).
             Insert(0, blackScreen.GetComponent<Image>().DOFade(1, settingsFadeInSpeed).SetEase(Ease.InQuint)).SetId("Camera").OnComplete(() =>
         {
             // set up turn on effect
@@ -169,16 +171,18 @@ public class MainMenu : MonoBehaviour
             {
                 turnOnEffect.SetActive(false);
 
-                Sequence zoomFadeCameraOut = DOTween.Sequence();
+            });
+        });
 
-                zoomFadeCameraOut.Insert(0, mainCamera.transform.DOMove(cameraNormalPos.position, settingsZoomOutSpeed).SetEase(Ease.InOutSine)).
+        Sequence zoomFadeCameraOut = DOTween.Sequence();
+
+        zoomFadeCameraOut.Insert(0, mainCamera.transform.DOMove(cameraNormalPos.position, settingsZoomOutSpeed).SetEase(Ease.InOutSine)).
+                Insert(0, mainCamera.transform.DORotate(new Vector3(0f, 0f, 0f), settingsZoomInSpeed).SetEase(Ease.InOutSine)).
                 Insert(0.1f, blackScreen.GetComponent<Image>().DOFade(0, settingsFadeOutSpeed).SetEase(Ease.OutQuint)).SetId("Camera").OnComplete(() =>
                 {
                     titleText.GetComponent<TMP_Text>().DOFade(1f, 0.2f);
                     blackScreen.SetActive(false);
                 });
-            });
-        });
 
         optionsShown = false;
         optionsContents.SetActive(false);
