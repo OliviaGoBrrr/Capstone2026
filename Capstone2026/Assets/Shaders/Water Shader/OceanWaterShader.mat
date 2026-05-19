@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shader Graphs_Water
+  m_Name: OceanWaterShader
   m_Shader: {fileID: -6465566751694194690, guid: faaecf820bf6661488566a45e0407042, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -66,12 +66,12 @@ Material:
     - _Alpha: 0.8
     - _Depth_Fade_Distance: 0.1
     - _Foam_Blend: 1
-    - _Intersection_Foam_Cutoff: 4
+    - _Intersection_Foam_Cutoff: 2
     - _Intersection_Foam_Depth: 1
     - _Intersection_Foam_Direction: 1
     - _Intersection_Foam_Fade: 1
     - _Intersection_Foam_Speed: 0.1
-    - _Intersection_Foam_Tiling: 80
+    - _Intersection_Foam_Tiling: 40
     - _Lighting_Hardness: 1
     - _Lighting_Smoothness: 0.28
     - _Normals_Scale: 1
@@ -89,7 +89,7 @@ Material:
     - _Surface_Foam_Tiling: 10
     - _Wave_Length: 0.4
     - _Wave_Speed: 0.2
-    - _Wave_Steepness: 1
+    - _Wave_Steepness: 1.4
     m_Colors:
     - _Deep_Colour: {r: 0.1544589, g: 0.41788885, b: 0.8396226, a: 1}
     - _Foam_Colour: {r: 0.7311321, g: 0.9773627, b: 1, a: 1}
@@ -97,6 +97,6 @@ Material:
     - _Shallow_Colour: {r: 0.27058825, g: 0.83137256, b: 0.5504166, a: 1}
     - _Specular_Colour: {r: 1, g: 1, b: 1, a: 0.2}
     - _Surface_Foam_Colour: {r: 1, g: 1, b: 1, a: 1}
-    - _Wave_Direction: {r: 4, g: 2, b: 1, a: 6}
+    - _Wave_Direction: {r: 0.1, g: 1.3, b: 0.5, a: 3}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
