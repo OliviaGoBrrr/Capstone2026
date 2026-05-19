@@ -3,6 +3,8 @@ using UnityEngine.UIElements;
 
 public class LightPrism : MonoBehaviour
 {
+    [SerializeField] private LightBeamShaderCollisionDetector lightbeam;
+
     [SerializeField] LayerMask raycastMask;
     [SerializeField] LayerMask interactMask;
     public float maxDistance;
