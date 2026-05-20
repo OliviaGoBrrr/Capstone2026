@@ -23,4 +23,18 @@ public class SceneLoader : MonoBehaviour
 
         Time.timeScale = 1;
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Scene currentScene = SceneManager.GetActiveScene();
+        if (currentScene.name == "MVP_Level-A")
+        {
+            StartCoroutine(LoadScene("Dock"));
+
+        }
+        else
+        {
+            StartCoroutine(LoadScene("MVP_Level-A"));
+        }
+    }
 }
