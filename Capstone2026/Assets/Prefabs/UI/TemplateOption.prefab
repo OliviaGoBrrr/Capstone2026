@@ -160,6 +160,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3626738518697458575}
   - component: {fileID: 6034781810295154139}
+  - component: {fileID: 3140461460565695727}
   m_Layer: 5
   m_Name: Slider
   m_TagString: Untagged
@@ -240,7 +241,34 @@ MonoBehaviour:
   m_Value: 0.0001
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3140461460565695727}
+        m_TargetAssemblyTypeName: SliderUpdateExternalValue, Assembly-CSharp
+        m_MethodName: ChangeExternalSliderValue
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &3140461460565695727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3128391656035702590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 106130dc6f1852047b04fc897ae770e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  displayedValueText: {fileID: 4496030124156214414}
+  slider: {fileID: 6034781810295154139}
+  maxValue: 10
 --- !u!1 &3725298989106729769
 GameObject:
   m_ObjectHideFlags: 0
