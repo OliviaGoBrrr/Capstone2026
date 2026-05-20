@@ -4,6 +4,7 @@ public class RotationLever : MonoBehaviour, IInteractable
 {
     Animator AnimController;
     public bool isMoving;
+    public PlayerManager playerM;
 
     public void Start()
     {
@@ -13,11 +14,11 @@ public class RotationLever : MonoBehaviour, IInteractable
     //void IInteractable.OnInteract()
     //{
     //    AnimController.Play("rotatePrism");
-    //}
+    //}s
 
     public void OnInteract()
     {
-        if (!isMoving) AnimController.Play("rotatePrism");
+        if (!isMoving && playerM.isPushPulling != true) AnimController.Play("rotatePrism");
     }
 }
 
