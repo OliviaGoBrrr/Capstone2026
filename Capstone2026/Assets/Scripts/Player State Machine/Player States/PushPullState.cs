@@ -12,6 +12,7 @@ public class PlayerPushPullState : PlayerCanMoveSuperState
         player.movement.moveSpeed = 5f;
         
         player.isPushPulling = true;
+        player.canPickUp = false;
 
         base.EnterState();
         //Debug.Log("Entered PushPull State");
@@ -22,6 +23,7 @@ public class PlayerPushPullState : PlayerCanMoveSuperState
         player.movement.moveSpeed = 10f;
 
         player.isPushPulling = false;
+        player.canPickUp = true;
 
         base.ExitState();
         //Debug.Log("Exited PushPull State");

@@ -62,10 +62,14 @@ public class PushPullObject : MonoBehaviour, IInteractable
             PManager.PushPullState.ExitState(); //TESTING THIS 
             return;
         }
-
-        Held = true;
-        // enter state
-        PManager.PushPullState.EnterState(); //TESTING THIS
+        
+        if(PManager.canPickUp == true)
+        {
+            Held = true;
+            // enter state
+            PManager.PushPullState.EnterState(); //TESTING THIS
+        }
+        
     }
 
     public void OnTriggerEnter(Collider collision)
