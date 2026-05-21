@@ -27,8 +27,7 @@ public class PushPullObject : MonoBehaviour, IInteractable
             if(PManager.isPushPulling == true)
             {
                 transform.position = PlayerTransform.position + (transform.forward * 2);
-                transform.rotation = PlayerTransform.rotation; 
-                Debug.Log(transform.position.y + "Player");
+                transform.rotation = PlayerTransform.rotation; //should be changed
                 
                 // For objects that need to stay on one y level
                 // like currently if we needed we could include both? just a bool for "stays on same level"
