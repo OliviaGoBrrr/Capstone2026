@@ -19,6 +19,8 @@ public class SceneLoader : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(transitionTime);
 
+        PostGameDataLog.updateSceneTime($"{SceneManager.GetActiveScene().name} " + "Time in level: " + $"{Time.timeSinceLevelLoad}");
+
         SceneManager.LoadScene(nextScene);
 
         Time.timeScale = 1;
