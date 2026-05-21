@@ -6,6 +6,11 @@ public class RotationLever : MonoBehaviour, IInteractable
     public bool isMoving;
     public PlayerManager playerM;
 
+    private void Awake()
+    {
+        playerM = FindFirstObjectByType<PlayerManager>().GetComponent<PlayerManager>(); 
+    }
+
     public void Start()
     {
         AnimController = GetComponent<Animator>();
