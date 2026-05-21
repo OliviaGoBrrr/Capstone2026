@@ -5,6 +5,7 @@ public class RotationLever : MonoBehaviour, IInteractable
     Animator AnimController;
     public bool isMoving;
     public PlayerManager playerM;
+    public AudioClip clip;
 
     private void Awake()
     {
@@ -24,7 +25,11 @@ public class RotationLever : MonoBehaviour, IInteractable
     public void OnInteract()
     {
         PostGameDataLog.prismInteractInt++;
-        if (!isMoving && playerM.isPushPulling != true) AnimController.Play("rotatePrism");
+        if (!isMoving && playerM.isPushPulling != true) 
+        {
+            AudioManager.Instance.PlaySFX(clip, transform, 0.25f);
+            AnimController.Play("rotatePrism");
+        }
     }
 }
 
