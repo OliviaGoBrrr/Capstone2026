@@ -2,6 +2,13 @@ using UnityEngine;
 
 public class PlatformSwitch : MonoBehaviour, IInteractable
 {
+    public GameObject grapplePoint;
+
+    public void OnInteract()
+    {
+        grapplePoint.SetActive(!grapplePoint.activeSelf);
+    }
+   /*
     public GameObject[] platforms;
     public GameObject[] flipOnAwake;
 
@@ -25,5 +32,5 @@ public class PlatformSwitch : MonoBehaviour, IInteractable
                 platforms[i].SetActive(!platforms[i].activeSelf); // Flips the active state (active -> inactive and vice versa)
             }
         }
-    }
+    }*/
 }
