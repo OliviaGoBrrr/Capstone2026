@@ -22,6 +22,7 @@ public class OptionHovered : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        print(eventData.hovered);
         backgroundOutline.enabled = true;
     }
 
