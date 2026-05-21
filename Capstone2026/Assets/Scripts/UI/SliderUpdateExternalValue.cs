@@ -46,8 +46,6 @@ public class SliderUpdateExternalValue : MonoBehaviour
     {
         if (isMouseDown)
         {
-            
-
             if (clipTimer >= 0.2f)
             {
                 
