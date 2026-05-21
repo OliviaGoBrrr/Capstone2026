@@ -53,10 +53,6 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private float settingsFadeOutSpeed = 0.5f;
     [SerializeField] private float settingsZoomOutSpeed = 0.5f;
 
-    [Header("Audio")]
-    // AUDIO CLIPS
-    [SerializeField] private AudioClip buttonPressedClip;
-
     void Awake()
     {
         PostGameDataLog.listInits();
@@ -136,8 +132,6 @@ public class MainMenu : MonoBehaviour
                 });
             });
         });
-
-        AudioManager.Instance.PlaySFX(buttonPressedClip, mainCamera.transform, 1);
 
         optionsShown = true;
         optionsContents.SetActive(true);
@@ -250,8 +244,6 @@ public class MainMenu : MonoBehaviour
                 });
             });
         });
-        
-        AudioManager.Instance.PlaySFX(buttonPressedClip, mainCamera.transform, 1);
 
         optionsShown = true;
         optionsContents.SetActive(true);

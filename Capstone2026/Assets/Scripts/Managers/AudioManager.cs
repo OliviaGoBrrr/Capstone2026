@@ -17,7 +17,7 @@ public class AudioManager : MonoBehaviour
     // at some point it might be a good idea to put in something for cancelling audio clips early, 
     public void PlaySFX(AudioClip audioClip, Transform spawnTransform, float volume)
     {
-        print("AUDIO CLIP PLAYED");
+        //print("AUDIO CLIP PLAYED");
         // Spawn sound object
         AudioSource audioSource = Instantiate(SFXObject, spawnTransform.position, Quaternion.identity);
 
