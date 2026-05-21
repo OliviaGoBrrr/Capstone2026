@@ -9,6 +9,9 @@ public class PlayerRunSubState : PlayerGroundedSuperState
     public override void EnterState()
     {
         base.EnterState();
+
+        player.movement.moveSpeed = player.movement.runSpeed;
+
         //Debug.Log("Entered Run State");
     }
 

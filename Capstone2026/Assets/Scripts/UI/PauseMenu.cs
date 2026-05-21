@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Linq;
+using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -8,11 +11,19 @@ public class PauseMenu : MonoBehaviour
 
     private bool isPaused;
     public InputActionReference pauseAction;
+    public InputActionAsset playerInputMap;
 
     [SerializeField] private GameObject pauseMenu;
-    [SerializeField] private GameObject settingsOptions;
 
-    private GameObject currentlyShownOptions;
+    // settings panels
+    [SerializeField] private GameObject settingsOptions;
+    [SerializeField] private GameObject audioSettingsOptions;
+    [SerializeField] private GameObject videoSettingsOptions;
+    [SerializeField] private GameObject accessibilitySettingsOptions;
+    [SerializeField] private GameObject controlsSettingsOptions;
+
+    private GameObject currentWindow;
+    private List<GameObject> previousWindows = new List<GameObject>();
 
     void Awake()
     {
@@ -27,40 +38,54 @@ public class PauseMenu : MonoBehaviour
     {
         pauseMenu.SetActive(false);
         settingsOptions.SetActive(false);
+        audioSettingsOptions.SetActive(false);
+        videoSettingsOptions.SetActive(false);
+        accessibilitySettingsOptions.SetActive(false);
+        controlsSettingsOptions.SetActive(false);
 
-        currentlyShownOptions = null;
+        HideCursor();
     }
 
-    void Update()
+    public void WasPausePressed()
     {
         if (pauseAction.action.WasPressedThisFrame())
         {
             if (isPaused)
             {
-                ResumeLogic();
+                OnBackPressed();
             }
             else
             {
-                Time.timeScale = 0;
-
-                Cursor.visible = true;
-
-                // replace with exit animation
-                pauseMenu.SetActive(true);
-
-                isPaused = true;
+                PauseLogic();
             }
         }
+    }
+
+    private void PauseLogic()
+    {
+        Time.timeScale = 0;
+        playerInputMap.FindActionMap("Player").Disable();
+        ShowCursor();
+
+        // replace with exit animation
+        pauseMenu.SetActive(true);
+
+        isPaused = true;
+
+        currentWindow = pauseMenu;
+        previousWindows.Add(pauseMenu);
     }
 
     private void ResumeLogic()
     {
         Time.timeScale = 1;
-
+        playerInputMap.FindActionMap("Player").Enable();
         // replace with exit animation
         HideAllUI();
 
         isPaused = false;
+
+        previousWindows.Remove(pauseMenu);
     }
 
     // ---------- Button Press Logic ----------
@@ -71,18 +96,30 @@ public class PauseMenu : MonoBehaviour
         HideCursor();
     }
 
-    public void OnSettingsPressed()
+    public void OnWindowButtonPressed(GameObject window)
     {
-        // if settings is already displayed, hide it else display!
-        if (currentlyShownOptions == settingsOptions)
+        window.SetActive(true);
+
+        currentWindow = window;
+        previousWindows.Add(window);
+
+        print(previousWindows.Count);
+    }
+
+    public void OnBackPressed()
+    {
+        if (previousWindows.Count > 1) // more than the initial window when esc or back button
         {
-            settingsOptions.SetActive(false);
-            currentlyShownOptions = null;
+            currentWindow.SetActive(false);
+
+            currentWindow = previousWindows[previousWindows.Count - 2]; // go back to last window
+            previousWindows.Remove(previousWindows[previousWindows.Count - 1]); // delete most recently visited window
+
+            print(previousWindows.Count);
         }
         else
         {
-            settingsOptions.SetActive(true);
-            currentlyShownOptions = settingsOptions;
+            ResumeLogic();
         }
     }
 
@@ -95,12 +132,12 @@ public class PauseMenu : MonoBehaviour
     public void HideCursor()
     {
         Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void ShowCursor()
     {
         Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
+        Cursor.lockState = CursorLockMode.Confined;
     }
 }

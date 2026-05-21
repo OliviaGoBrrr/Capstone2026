@@ -11,8 +11,10 @@ public class PlayerDialogueState : PlayerState
         player.isDialogue = true;
         player.canMove = false;
 
+        player.movement.playerVelocity = new Vector3 (0, 0, 0);
+
         base.EnterState();
-        //Debug.Log("Entered Dialogue State");
+        Debug.Log("Entered Dialogue State");
     }
 
     public override void ExitState()

@@ -19,4 +19,9 @@ public class SceneSelectManager : MonoBehaviour
     {
         sceneLoader.LoadNewScene("MainMenu");
     }
+
+    public void GoToDock()
+    {
+        sceneLoader.LoadNewScene("Dock");
+    }
 }

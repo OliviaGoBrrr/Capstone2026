@@ -11,7 +11,7 @@ public class PlayerJumpState : PlayerCanMoveSuperState
         player.isJumping = true;
 
         // jump logic
-        player.movement.playerVelocity.y = player.movement.jumpHeight;
+        player.movement.PlayerJump();
 
         base.EnterState();
         //Debug.Log("Entered Jump State");
@@ -26,7 +26,11 @@ public class PlayerJumpState : PlayerCanMoveSuperState
 
     public override void FrameUpdate()
     {
-        player.movement.desiredMove *= player.movement.jumpHorizontalDampening;
+
+        if (player.movement.FindValidGrappleTarget() == true)
+        {
+            playerStateMachine.ChangeState(player.GrappleState);
+        }
 
         base.FrameUpdate();
     }

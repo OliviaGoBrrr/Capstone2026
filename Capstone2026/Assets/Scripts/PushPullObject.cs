@@ -6,13 +6,19 @@ using UnityEditor;
 using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
 
-public class PushPullObject : Interactable
+public class PushPullObject : MonoBehaviour, IInteractable
 {
     public Transform PlayerTransform;
     public PlayerManager PManager;
     private bool Held = false;
     public bool canBeSetDown;
     public Vector3 setDownLocation;
+    [HideInInspector] float initialYPos;
+
+    void Start()
+    {
+        initialYPos = transform.position.y;
+    }
 
     void Update()
     {
@@ -21,13 +27,18 @@ public class PushPullObject : Interactable
             if(PManager.isPushPulling == true)
             {
                 transform.position = PlayerTransform.position + (transform.forward * 2);
+                transform.rotation = PlayerTransform.rotation; //should be changed
+                
+                // For objects that need to stay on one y level
+                // like currently if we needed we could include both? just a bool for "stays on same level"
 
-                //have object always be on ground
-                if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit ground))
-                {
-                    transform.up = ground.normal;
-                }
-            }
+                // transform.position = new Vector3 (transform.position.x, initialYPos, transform.position.z); 
+                
+                // come back to this if future objects will changed elevation
+                float terrainHeight = Terrain.activeTerrain.SampleHeight(transform.position);
+                transform.position = new Vector3(transform.position.x, terrainHeight /*+ (transform.localScale.y * 0.5f)*/, transform.position.z);
+                
+            }   
 
             else
             {
@@ -37,7 +48,7 @@ public class PushPullObject : Interactable
         } 
     }
 
-    public override void onInteract()
+    public void OnInteract()
     {
         if(Held)
         {
@@ -47,10 +58,14 @@ public class PushPullObject : Interactable
             PManager.PushPullState.ExitState(); //TESTING THIS 
             return;
         }
-
-        Held = true;
-        // enter state
-        PManager.PushPullState.EnterState(); //TESTING THIS
+        
+        if(PManager.canPickUp == true)
+        {
+            Held = true;
+            // enter state
+            PManager.PushPullState.EnterState(); //TESTING THIS
+        }
+        
     }
 
     public void OnTriggerEnter(Collider collision)

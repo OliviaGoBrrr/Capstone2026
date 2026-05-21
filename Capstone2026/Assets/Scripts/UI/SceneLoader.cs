@@ -17,12 +17,6 @@ public class SceneLoader : MonoBehaviour
     {
         transition.SetTrigger("Start");
 
-        //yield return StartCoroutine(CoroutineUtil.WaitForRealSeconds(DURATION));
-
-        //yield return new WaitForSeconds(transitionTime);
-
-        //StartCoroutine(WaitForRealSeconds(transitionTime));
-
         yield return new WaitForSecondsRealtime(transitionTime);
 
         SceneManager.LoadScene(nextScene);
@@ -30,13 +24,17 @@ public class SceneLoader : MonoBehaviour
         Time.timeScale = 1;
     }
 
-    IEnumerator WaitForRealSeconds(float seconds)
+    private void OnTriggerEnter(Collider other)
     {
-        float startTime = Time.realtimeSinceStartup;
-
-        while (Time.realtimeSinceStartup - startTime < seconds)
+        Scene currentScene = SceneManager.GetActiveScene();
+        if (currentScene.name == "MVP_Level-A")
         {
-            yield return null;
+            StartCoroutine(LoadScene("Dock"));
+
+        }
+        else
+        {
+            StartCoroutine(LoadScene("MVP_Level-A"));
         }
     }
 }

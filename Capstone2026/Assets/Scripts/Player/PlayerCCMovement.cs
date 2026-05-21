@@ -1,45 +1,55 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerCCMovement : MonoBehaviour
 {
+    [Header("Player Model")]
+    public GameObject playerModel;
     // Movement Values
     [Header("Player Movement Values")]
     public float moveSpeed = 10f;
+    public float walkSpeed = 10f;
     public float runSpeed = 15f;
     public float jumpHeight = 0.5f;
-    public float jumpHorizontalDampening = 0.7f;
+   
+
+    // Rotation (1 = snap to rotation direction)
+    [Range(0f, 180f)] public float rotationSpeed;
 
     // Physics
-    //[HideInInspector]
     public Vector3 playerVelocity;
+    [HideInInspector]
     public Vector3 desiredMove;
 
     [HideInInspector]
     public bool groundedPlayer;
+    public bool prevFrameGrounded;
     public float acceleration = 10f;
-    //public float decceleration = 10f;
+    public float deccceleration = 45f;
     public float gravityValue = -9.81f;
     public bool gravityOn = true;
 
-    // Rotation
-    [Range(0f, 180f)] public float rotationSpeed = 180f;
-    private Vector3 playerRotation;
-
+    [HideInInspector] public bool grappling;
     [Header("Grapple Action Values")]
-    public bool grappling;
-    public float grappleRange;
+    public float grappleAngle;
+    public float grappleMaxDistance;
     public float grappleSpeed;
     public float grappleLockoutTime;
     [HideInInspector]
     public float grappleLockoutTimer = 0.0f;
+    private Collider[] grappleColliders;
+    private const int maxGrappleColliders = 10;
     public LayerMask grappleTargetLayer;
     public Vector3 grapplePoint;
     [SerializeField]
     private LineRenderer grappleLine;
     [SerializeField]
     private Transform grappleHand;
+
+    [Header("Grapple UI")]
+    private GameObject currentGrappleUI;
 
     [Header("Player Camera Values")]
     public CharacterController playerController;
@@ -50,6 +60,16 @@ public class PlayerCCMovement : MonoBehaviour
     public InputActionReference jumpAction;
     public InputActionReference grappleAction;
     public InputActionReference runAction;
+
+    [Header("Input Buffer Times")]
+    public float coyoteTime = 0.1f;
+    [HideInInspector] public float coyoteTimer;
+
+    public float grappleBuffer = 0.1f;
+    [HideInInspector] public float grappleBufferTimer;
+
+    public float jumpBuffer = 0.2f;
+    [HideInInspector] public float jumpBufferTimer;
 
     private void Awake()
     {
@@ -63,18 +83,45 @@ public class PlayerCCMovement : MonoBehaviour
             grappleLine = GetComponent<LineRenderer>();
             grappleLine.enabled = false;
         }
+
+        if(playerModel == null)
+        {
+            Debug.LogError("There is no player model added in the PlayerCCMovement Inspector");
+        }
+
+        grappleColliders = new Collider[maxGrappleColliders];
     }
 
-    private void Start()
+    private void LateUpdate()
     {
-        // Cursor is invisible and is confined to screen
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Confined;
+        InputBuffers();
     }
 
-    private void Update()
+    private void InputBuffers()
     {
+        if (grappleBufferTimer > 0) { grappleBufferTimer -= Time.deltaTime; }
 
+        if (jumpBufferTimer > 0) { jumpBufferTimer -= Time.deltaTime; }
+
+        if (coyoteTimer > 0) { coyoteTimer -= Time.deltaTime; }
+
+        if (!groundedPlayer && prevFrameGrounded)
+        {
+            coyoteTimer = coyoteTime;
+        }
+
+        prevFrameGrounded = groundedPlayer;
+
+        if (grappleAction.action.WasPressedThisFrame())
+        {
+            grappleBufferTimer = grappleBuffer;
+        }
+
+        if (jumpAction.action.WasPressedThisFrame())
+        {
+            jumpBufferTimer = jumpBuffer;
+        }
+        
     }
 
     public void PlayerMovementLogic()
@@ -96,14 +143,15 @@ public class PlayerCCMovement : MonoBehaviour
         }
     }
 
+
     public void PlayerMove()
     {
-        // Rotate the player with the direction they're walking towards
-        //this.playerRotation = new Vector3(0, Input.GetAxisRaw("Horizontal") * rotationSpeed * Time.deltaTime, 0);
-
         // Get the x,z direction the player is inputting
         Vector2 input = moveAction.action.ReadValue<Vector2>();
 
+        Vector2 inputNorm = input.normalized;
+
+        // Rotate the player
         Vector3 camF = playerCamera.transform.forward;
         Vector3 camR = playerCamera.transform.right;
 
@@ -113,12 +161,12 @@ public class PlayerCCMovement : MonoBehaviour
         desiredMove = (camF * input.y + camR * input.x).normalized;
 
         // Jump & Fall States
-        
-        if (!groundedPlayer)
+
+        // Rotates the player if they're inputting an action
+        if(desiredMove != Vector3.zero)
         {
-            desiredMove *= jumpHorizontalDampening;
+            RotatePlayer(desiredMove);
         }
-        
 
         Vector3 targetVelcoity = desiredMove * moveSpeed;
 
@@ -128,9 +176,9 @@ public class PlayerCCMovement : MonoBehaviour
 
     public void PlayerJump()
     {
-        if (groundedPlayer)
+        if (groundedPlayer || coyoteTimer > 0f)
         {
-            if (jumpAction.action.WasPressedThisFrame())
+            if (jumpBufferTimer > 0f || jumpAction.action.WasPressedThisFrame())
             {
                 playerVelocity.y = jumpHeight;
             }
@@ -141,25 +189,118 @@ public class PlayerCCMovement : MonoBehaviour
         }
     }
 
+    public void IsPlayerRunning()
+    {
+        if (runAction.action.IsPressed())
+        {
+            moveSpeed = runSpeed;
+        }
+        else
+        {
+            moveSpeed = walkSpeed;
+        }
+    }
+
+    public void RotatePlayer(Vector3 targetRotation)
+    {
+        // Rotation calculation - will look in the direction the input action
+        Vector3 adjustedTarget = new Vector3(targetRotation.x, 0, targetRotation.z);
+
+        Quaternion target = Quaternion.LookRotation(adjustedTarget);
+
+        // Rotates the model over time
+        playerModel.transform.rotation = Quaternion.Slerp(playerModel.transform.rotation, target, rotationSpeed * Time.deltaTime);
+    }
+
     public bool FindValidGrappleTarget() // returns true if valid target selected
     {
-        RaycastHit hit;
-
-        if(Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hit, grappleRange, grappleTargetLayer))
+        // Doesn't find another target if the player is locked out from grappling
+        if(grappleLockoutTimer < 0f)
         {
-            GrappleableObject target = hit.transform.GetComponent<GrappleableObject>();
+            // Checks if theres any grapple points within the player's view, and puts them in an array
+            // *Seperate Note* - This may be an expensive calculation if the grapple point collider meshes are too complex
+            int numColliders = Physics.OverlapSphereNonAlloc(playerCamera.transform.position, grappleMaxDistance, grappleColliders, grappleTargetLayer);
 
-            Debug.DrawLine(target.anchorPoint.position, transform.position, Color.magenta);
+            // Temporarily saves the direction the closest grapple point
+            Vector3 closestGrapple = Vector3.zero;
+            float closestDot = 0f;
 
-            if (target != null)
+            if (numColliders > 0)
             {
-                if (grappleAction.action.WasPressedThisFrame() && grappleLockoutTimer <= 0)
+                // Checks all colliders (within the grapple target layer) if they're within the grapple angle...
+                for (int i = 0; i < numColliders; i++)
                 {
-                    StartGrapple(target);
-                    return true;
+                    Vector3 direction = (grappleColliders[i].transform.position - playerCamera.transform.position).normalized;
+
+                    float dirDot = Vector3.Dot(playerCamera.transform.forward, direction);
+
+                    // ... and which one is closest to what the player is looking at.
+                    if (dirDot >= Mathf.Cos(Mathf.Deg2Rad * grappleAngle)) // if its within the search angle
+                    {
+                        if (dirDot > closestDot) // saves the closest grapple target
+                        {
+                            closestDot = dirDot;
+                            closestGrapple = direction;
+                        }
+                    }
                 }
             }
+            else // Disables any grapple UI if the player runs out of range
+            {
+                DisableGrappleUI();
+            }
+
+
+            // If there was a valid grapple target found, throw a ray in its a direction to graaple to
+            if (closestGrapple != Vector3.zero)
+            {
+                RaycastHit hit;
+
+                // Sends a ray towards the closest grapple point
+                if (Physics.Raycast(playerCamera.transform.position, closestGrapple, out hit, grappleMaxDistance, grappleTargetLayer))
+                {
+                    // It should find a target, but it allows the disabling of the grapple point
+                    GrappleableObject target = hit.transform.GetComponent<GrappleableObject>();
+
+                    Debug.DrawLine(target.anchorPoint.position, transform.position, Color.magenta);
+
+                    if (target != null) // If the grapple point isn't disabled
+                    {
+                        // UI Appears
+                        if (target.grappleUICanvas != null)
+                        {
+                            if (currentGrappleUI != target.grappleUICanvas.gameObject)
+                            {
+                                DisableGrappleUI();
+                                target.grappleUICanvas.gameObject.SetActive(true);
+                                currentGrappleUI = target.grappleUICanvas.gameObject;
+                            }
+                        }
+
+                        // Action is taken
+                        if (grappleBufferTimer > 0f && grappleLockoutTimer <= 0) // If there was an input buffered
+                        {
+                            StartGrapple(target);
+                            Array.Clear(grappleColliders, 0, grappleColliders.Length);
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        DisableGrappleUI(); // Disables UI if player looks at another target
+                    }
+                }
+            }
+            else
+            {
+                DisableGrappleUI(); // Disables UI if player looks away from any target
+            }
         }
+        else
+        {
+            DisableGrappleUI(); // Disables UI if player grapples, and is in grapple lockout
+        }
+
         return false;
     }
 
@@ -183,21 +324,26 @@ public class PlayerCCMovement : MonoBehaviour
     }
     public void GrappleToTarget()
     {
-        // Find the distance between player and grapple point
-        Vector3 direction = grapplePoint - transform.position;
-
-        // Normalize to translate to velocity
-        direction.Normalize();
-        playerVelocity = direction * grappleSpeed;
-
-        // LineRenderer
-        grappleLine.SetPosition(0, grappleHand.position);
-
-        if (Vector3.Distance(transform.position, grapplePoint) < 1.0f)
+        if (grappling)
         {
-            transform.position = grapplePoint;
-            playerVelocity = Vector3.zero;
-            CancelGrapple();
+            // Find the distance between player and grapple point
+            Vector3 direction = grapplePoint - transform.position;
+
+            // Normalize to translate to velocity
+            direction.Normalize();
+            RotatePlayer(direction);
+
+            playerVelocity = direction * grappleSpeed;
+
+            // LineRenderer
+            grappleLine.SetPosition(0, grappleHand.position);
+
+            if (Vector3.Distance(transform.position, grapplePoint) < 1.0f)
+            {
+                transform.position = grapplePoint;
+
+                CancelGrapple();
+            }
         }
     }
     public void CancelGrapple()
@@ -206,11 +352,21 @@ public class PlayerCCMovement : MonoBehaviour
         gravityOn = true;
         grappling = false;
 
+        playerVelocity.y += gravityValue * 0.6f;
         grapplePoint = Vector3.zero;
 
         // Linerenderer
         grappleLine.enabled = false;
     }
+
+    private void DisableGrappleUI()
+    {
+        if(currentGrappleUI != null)
+        {
+            currentGrappleUI.SetActive(false);
+            currentGrappleUI = null;
+        }
+    } 
 
     private void OnEnable()
     {
@@ -227,48 +383,4 @@ public class PlayerCCMovement : MonoBehaviour
         grappleAction.action.Disable();
         runAction.action.Disable();
     }
-
-    /* Depreciated Movement Update() code
-
-    /*
-        groundedPlayer = playerController.isGrounded;
-
-        if (gravityOn)
-        {
-            playerVelocity.y += gravityValue * Time.deltaTime;
-        }
-        
-
-        // Grounded State
-        if(grappling == false)
-        {
-            PlayerJump(); // jump check
-            PlayerMove(); // move logic
-            FindValidGrappleTarget(); // grapple check
-        }
-        
-        // During Grapple
-        else if (grappling)
-        {
-            GrappleToTarget();
-
-            if (jumpAction.action.WasPressedThisFrame())
-            {
-                CancelGrapple();
-                playerVelocity.y = jumpHeight;
-            }
-        }
-        
-
-        /*
-        playerController.Move(playerVelocity * Time.deltaTime);
-
-        // Timers
-
-        if (grappleLockoutTimer > -1.0f)
-        {
-            grappleLockoutTimer -= Time.deltaTime;
-        }
-    */
-    
 }

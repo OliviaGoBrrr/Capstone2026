@@ -1,11 +1,13 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour
 {
     [Header("Player Scripts")]
     public PlayerCCMovement movement;
     public PlayerSolarDetector solarPanel;
+    public PauseMenu pauseMenu;
     //public GrappleInteract grapple;
     // public PlayerDialogueScript dialogue;
     // public PlayerGrappleScript grapple;
@@ -13,9 +15,16 @@ public class PlayerManager : MonoBehaviour
 
 
     [Header("Player Stats")]
-    public float batteryROC = 5;
+    public float batteryLightRateOfChangePerSecond;
+    public float batteryShadeRateOfChangePerSecond;
     public float batteryPercent = 100;
+    public int numberOfSunRaysForPower = 2;
     public TMP_Text batteryText;
+    public Image batteryImage;
+    public Vector3 lastCheckpoint;
+
+    [Header("References")] //remove this if i've done it wrong, this is just the solution im thinking of rn
+    public DeathFade deathfade;
 
     [Header("Player State Bools")]
     #region State Bools
@@ -28,6 +37,7 @@ public class PlayerManager : MonoBehaviour
     public bool isGrappling = false;
     public bool isFalling = false;
     public bool isDead = false;
+    [HideInInspector] public bool canPickUp = true;
 
     #endregion
 
@@ -84,6 +94,7 @@ public class PlayerManager : MonoBehaviour
     void Start()
     {
         batteryPercent = 100;
+        lastCheckpoint = transform.position;
     }
 
     // Update is called once per frame

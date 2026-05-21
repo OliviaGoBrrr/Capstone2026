@@ -17,8 +17,10 @@ public class AudioManager : MonoBehaviour
 
     public void PlaySFX(AudioClip audioClip, Transform spawnTransform, float volume)
     {
+        print("AUDIO CLIP PLAYED");
         // Spawn sound object
         AudioSource audioSource = Instantiate(SFXObject, spawnTransform.position, Quaternion.identity);
+
 
         audioSource.clip = audioClip;
 

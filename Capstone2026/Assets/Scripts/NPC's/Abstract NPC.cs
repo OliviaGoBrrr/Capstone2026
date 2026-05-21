@@ -2,12 +2,13 @@ using UnityEngine;
 using System.Collections;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEngine.UI;
 
 /// <summary>
 /// this entire thing is pretty much copy pasted from my IGB200 project.
 /// everything that's commented out basically just needs to be swapped over to our current systems, i.e. state machine.
 /// </summary>
-public abstract class AbstractNPC : Interactable
+public abstract class AbstractNPC : MonoBehaviour, IInteractable
 {
     //[SerializeField] protected GameObject exclamationMark;
     [Header("Dialogue")]
@@ -20,15 +21,15 @@ public abstract class AbstractNPC : Interactable
 
 
     public TextMeshProUGUI textBox;
-    private float textSpeed;
+    private float textSpeed = 10f;
     private bool isTyping = false;
     private bool finishTyping = false;
 
     private Coroutine currentTyping;
-
+    private const string HTML_ALPHA = "<color=#00000000>";
     
 
-    public override void onInteract()
+    public void OnInteract()
     {
         // If no line has been displayed, start dialogue
         if (index == -1) StartDialogue();
@@ -50,7 +51,7 @@ public abstract class AbstractNPC : Interactable
     {
         // If dialogue is active and typing is not currently happening, then when e is pressed go to next line, else finish the line
         if (index == -1) { return; }
-        if (!playerI.interactAction.action.WasPressedThisFrame()) { return; } 
+        if (!playerI.interactAction.action.WasReleasedThisFrame()) { return; } 
         if (isTyping) finishTyping = true;
         else NextLine();
         
@@ -70,17 +71,25 @@ public abstract class AbstractNPC : Interactable
     {
         if (index < 0 || index >= currentDialogue.Length) yield break;
 
-        // Set Text Speed
-        // textSpeed = GameManager.instance.textSpeed;
-        // Empty text box then type line character by character (makes it look pretty)
         isTyping = true;
-        textBox.text = string.Empty;
+        textBox.text = "";
+
+        string originalText = currentDialogue[index];
+        string displayedText = "";
+        int alphaIndex = 0;
+
         foreach(char c in currentDialogue[index].ToCharArray())
         {
-            textBox.text += c;
-            yield return new WaitForSeconds(0.1f - (textSpeed) / 100f);
-            if (finishTyping) { textBox.text = currentDialogue[index]; finishTyping = false; break; }
+           alphaIndex++;
+           textBox.text = originalText;
+
+           displayedText = textBox.text.Insert(alphaIndex, HTML_ALPHA);
+           textBox.text = displayedText;
+
+           yield return new WaitForSeconds(0.1f - (textSpeed) / 100f);
+           if (finishTyping) { textBox.text = currentDialogue[index]; finishTyping = false; break; }
         }
+
         isTyping = false;
     }
 

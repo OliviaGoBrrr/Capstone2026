@@ -1,7 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlayerPushPullState : PlayerState
+public class PlayerPushPullState : PlayerCanMoveSuperState
 {
     public PlayerPushPullState(PlayerManager player, PlayerStateMachine playerStateMachine, string animationName, Animator animationController) : base(player, playerStateMachine, animationName, animationController)
     {
@@ -12,6 +12,7 @@ public class PlayerPushPullState : PlayerState
         player.movement.moveSpeed = 5f;
         
         player.isPushPulling = true;
+        player.canPickUp = false;
 
         base.EnterState();
         //Debug.Log("Entered PushPull State");
@@ -22,6 +23,7 @@ public class PlayerPushPullState : PlayerState
         player.movement.moveSpeed = 10f;
 
         player.isPushPulling = false;
+        player.canPickUp = true;
 
         base.ExitState();
         //Debug.Log("Exited PushPull State");

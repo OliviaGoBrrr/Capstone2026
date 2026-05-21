@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,63 +9,100 @@ using UnityEngine.InputSystem;
 public class PlayerInteract : MonoBehaviour
 {
     [Header("Player Interact")]
+    public Camera playerCamera;
+    public IInteractable interactable;
     public float maxDistance;
     public InputActionReference interactAction;
     public LayerMask InteractLayerMask;
+    public Collider[] interactColliders;
 
     [Header("Debug Options")]
     public bool debug;
 
-    private GameObject mainCamera;
+    private void Awake()
+    {
+        interactColliders = new Collider[10]; // Necessary for NonAlloc OverlapSphere
+    }
 
     void Start()
     {
-        mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        FindInteractable();
+        FindIntertactable();
     }
 
     /// <summary>
     /// Function that sends a ray out from the player's camera to a distance. 
     /// If it hits an object, that object can be sent a message to complete an event
     /// </summary>
-    private void FindInteractable()
+
+
+    private void FindIntertactable()
     {
-        // Finds the max distance point in relation to the camera's rotation
-        Vector3 endPoint = (mainCamera.transform.forward.normalized * maxDistance) + mainCamera.transform.position;
+        int numColliders = Physics.OverlapSphereNonAlloc(playerCamera.transform.position, maxDistance, interactColliders, InteractLayerMask);
 
-        // Recalculates the max distance from the camera to the end point
-        float interactDistance = Vector3.Distance(mainCamera.transform.position, endPoint);
+        Vector3 closestInteraction = Vector3.zero;
+        float closestDot = 0f;
 
-        // Sends a ray out from the camera to the end point
-        if (Physics.Raycast(mainCamera.transform.position,
-            mainCamera.transform.forward,
-            out RaycastHit hit,
-            interactDistance,
-            InteractLayerMask)) // Ignores everything but objects in the "Interactable" layer
+        if (numColliders > 0)
         {
-            
-            if (interactAction.action.WasPressedThisFrame()) // and the player innteracts with it
+            // Checks all colliders (within the interact target layer) if they're within the interact angle...
+            for (int i = 0; i < numColliders; i++)
             {
-                hit.transform.GetComponent<Interactable>().onInteract(); // perform the onInteract() function on the gameobject
-                Debug.Log("yayy clicked");
-            }
+                Vector3 direction = (interactColliders[i].transform.position - playerCamera.transform.position).normalized;
 
-            // Debugging for when players are able to interact with something
-            if (debug){
-                //Debug.Log("Player can interact with " + hit.collider.gameObject.name); // Tells you what the player can interact with
-                Debug.DrawLine(transform.position, hit.transform.position, Color.blue); // Draws a line from the object to the player
+                float dirDot = Vector3.Dot(playerCamera.transform.forward, direction);
+
+                // ... and which one is closest to what the player is looking at.
+                if (dirDot >= Mathf.Cos(Mathf.Deg2Rad * 35f)) // if its within the search angle
+                {
+                    if (dirDot > closestDot) // saves the closest interact target
+                    {
+                        closestDot = dirDot;
+                        closestInteraction = direction;
+                    }
+                }
             }
         }
 
-        // Debugging Player Interact Raycast
-        if (debug){
-            Debug.DrawLine(transform.position, endPoint, Color.green); // From the player
-            Debug.DrawLine(mainCamera.transform.position, endPoint, Color.yellow); // From the camera
+        if (closestInteraction != Vector3.zero)
+        {
+            RaycastHit hit;
+
+            // Sends a ray towards the closest grapple point
+            if (Physics.Raycast(playerCamera.transform.position, closestInteraction, out hit, maxDistance, InteractLayerMask))
+            {
+                // It should find a target, but it allows the disabling of the grapple point
+                IInteractable target = hit.transform.GetComponent<IInteractable>();
+
+                if (target != null) // If the grapple point isn't disabled
+                {
+                    // UI Appears
+                    /*
+                    if (target.grappleUICanvas != null)
+                    {
+                        if (currentGrappleUI != target.grappleUICanvas.gameObject)
+                        {
+                            DisableGrappleUI();
+                            target.grappleUICanvas.gameObject.SetActive(true);
+                            currentGrappleUI = target.grappleUICanvas.gameObject;
+                        }
+                    }
+                    */
+
+                    // Action is taken
+                    if (interactAction.action.WasPressedThisFrame()) // If there was an input buffered
+                    {
+                        target.OnInteract();
+                        // Clears interact colliders (doesn't save on memory, just worried it'll be funky)
+                        Array.Clear(interactColliders,0, interactColliders.Length);
+                    }
+                }
+            }
         }
     }
 
