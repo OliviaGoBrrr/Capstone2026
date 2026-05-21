@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class DataLogging : MonoBehaviour
 {
+    [Header("Pre Game Info")]
     string playerName;
     bool playerIDExists;
     List<string> deviceInfo;
@@ -80,4 +81,9 @@ public class DataLogging : MonoBehaviour
     {
         SceneManager.LoadScene("SceneSelect");
     }
+
+    
+
+
+   
 }

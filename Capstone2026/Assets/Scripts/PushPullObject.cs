@@ -9,11 +9,16 @@ using Vector3 = UnityEngine.Vector3;
 public class PushPullObject : MonoBehaviour, IInteractable
 {
     public Transform PlayerTransform;
-    public PlayerManager PManager;
+    public PlayerManager playerM;
     private bool Held = false;
     public bool canBeSetDown;
     public Vector3 setDownLocation;
     [HideInInspector] float initialYPos;
+
+    private void Awake()
+    {
+        playerM = FindFirstObjectByType<PlayerManager>().GetComponent<PlayerManager>(); 
+    }
 
     void Start()
     {
@@ -24,7 +29,7 @@ public class PushPullObject : MonoBehaviour, IInteractable
     {
         if(Held)
         {
-            if(PManager.isPushPulling == true)
+            if(playerM.isPushPulling == true)
             {
                 transform.position = PlayerTransform.position + (transform.forward * 2);
                 transform.rotation = PlayerTransform.rotation; //should be changed
@@ -55,15 +60,15 @@ public class PushPullObject : MonoBehaviour, IInteractable
             if(canBeSetDown) transform.position = setDownLocation;
             Held = false;
             // exit state
-            PManager.PushPullState.ExitState(); //TESTING THIS 
+            playerM.PushPullState.ExitState(); //TESTING THIS 
             return;
         }
         
-        if(PManager.canPickUp == true)
+        if(playerM.canPickUp == true)
         {
             Held = true;
             // enter state
-            PManager.PushPullState.EnterState(); //TESTING THIS
+            playerM.PushPullState.EnterState(); //TESTING THIS
         }
         
     }
