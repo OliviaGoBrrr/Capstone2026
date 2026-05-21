@@ -39,6 +39,9 @@ public class PlayerManager : MonoBehaviour
     public bool isDead = false;
     [HideInInspector] public bool canPickUp = true;
 
+    [Header("Player Movement SFX")]
+    public AudioClip grapplePullSFX;
+
     #endregion
 
     #region State Machine Vars

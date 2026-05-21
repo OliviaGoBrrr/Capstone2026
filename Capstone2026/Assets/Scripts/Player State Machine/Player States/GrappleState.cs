@@ -11,6 +11,8 @@ public class PlayerGrappleState : PlayerCanMoveSuperState
         player.isGrappling = true;
         PostGameDataLog.grappleAmountInt++;
 
+        //AudioManager.Instance.PlaySFX(player.grapplePullSFX, player.transform, 0.25f); needs to be changed so that it ends when the player stops grappling
+
         base.EnterState();
         //Debug.Log("Entered Grapple State");
     }

@@ -80,6 +80,7 @@ GameObject:
   - component: {fileID: 3021316637416306007}
   - component: {fileID: 3620456610392008294}
   - component: {fileID: 3202193941931844920}
+  - component: {fileID: 8273767628926525595}
   m_Layer: 7
   m_Name: CC_Player
   m_TagString: Player
@@ -241,6 +242,7 @@ MonoBehaviour:
   isGrappling: 0
   isFalling: 0
   isDead: 0
+  canPickUp: 1
 --- !u!114 &2228826731360664703
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -468,6 +470,14 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 0
+--- !u!81 &8273767628926525595
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5901223429068538866}
+  m_Enabled: 1
 --- !u!1 &6570323975515940237
 GameObject:
   m_ObjectHideFlags: 0
