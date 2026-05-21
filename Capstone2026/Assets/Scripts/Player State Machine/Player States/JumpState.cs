@@ -13,6 +13,8 @@ public class PlayerJumpState : PlayerCanMoveSuperState
         // jump logic
         player.movement.PlayerJump();
 
+        //audio player jump
+
         base.EnterState();
         //Debug.Log("Entered Jump State");
     }

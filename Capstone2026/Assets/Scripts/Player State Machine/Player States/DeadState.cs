@@ -28,6 +28,8 @@ public class PlayerDeadState : PlayerState
     {
         player.isDead = false;
 
+        //audio sfx power on
+
         base.ExitState();
     }
 

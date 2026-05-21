@@ -16,7 +16,7 @@ public class Temp_Farm : MonoBehaviour
         }
     }
 
-    IEnumerator Flow()
+    IEnumerator Flow() //audio river flowing
     {
         River_A.SetActive(true);
         CropsA_A.SetActive(true);

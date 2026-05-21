@@ -17,6 +17,8 @@ public class DeathFade : MonoBehaviour
     {
         transition.SetTrigger("Start");
 
+        //audio player shut down
+
         yield return new WaitForSecondsRealtime(transitionTime);
 
         playerM.transform.position = playerM.lastCheckpoint;
