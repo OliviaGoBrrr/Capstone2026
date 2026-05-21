@@ -16,12 +16,18 @@ public class LightCrystal : MonoBehaviour
     public bool illuminated;
     public LayerMask beamLayerMask;
 
+    public LineRenderer lineRenderer;
+
     private void Awake()
     {
         if(beamStartPoint == null) // Throws an error if the beam's start point isn't attached
         {
             Debug.LogError($"{this.gameObject.name}{this.GetInstanceID()} does not have the BeamStart object attached in the inspector", this);
         }
+
+        lineRenderer = GetComponent<LineRenderer>();
+        lineRenderer.SetPosition(0, beamStartPoint.position);
+        lineRenderer.enabled = false;
     }
 
     private void Update()
@@ -43,6 +49,7 @@ public class LightCrystal : MonoBehaviour
         else if(illuminated && lightsNeededToIlluminate > beamsHitting.Count)
         {
             illuminated = false;
+            lineRenderer.enabled = false;
             if(crystalHitting != null)
             {
                 StopLightBeam();
@@ -59,9 +66,14 @@ public class LightCrystal : MonoBehaviour
         // Visual of the Line
         Debug.DrawLine(beamStartPoint.position, beamStartPoint.position + (ray.direction * beamMaxDistance), Color.red);
 
+        if (lineRenderer.enabled == false) { lineRenderer.enabled = true; }
+        lineRenderer.SetPosition(0, beamStartPoint.position);
+
         // Checks to see if the ray hits anything
-        if(Physics.Raycast(beamStartPoint.position, transform.forward, out RaycastHit hit, beamMaxDistance, beamLayerMask))
+        if (Physics.Raycast(beamStartPoint.position, transform.forward, out RaycastHit hit, beamMaxDistance, beamLayerMask))
         {
+            lineRenderer.SetPosition(1, new Vector3(hit.transform.position.x, beamStartPoint.position.y, hit.transform.position.z));
+
             if (hit.transform.TryGetComponent<LightCrystal>(out LightCrystal crystal))
             {
                 if (crystal.beamsHitting.Count >= crystal.lightsNeededToIlluminate)
@@ -78,6 +90,7 @@ public class LightCrystal : MonoBehaviour
                 {
                     crystalHitting = crystal;
                 }
+
                 return;
             }
 
@@ -92,6 +105,7 @@ public class LightCrystal : MonoBehaviour
         }
         else
         {
+            lineRenderer.SetPosition(1, beamStartPoint.position + (ray.direction * beamMaxDistance));
             StopLightBeam();
         }
 
@@ -102,6 +116,7 @@ public class LightCrystal : MonoBehaviour
     {
         if(crystalHitting != null)
         {
+
             crystalHitting.beamsHitting.Remove(this); // causing a stack overflow if two beams hit eachother
             crystalHitting.StopLightBeam();
             crystalHitting = null;
