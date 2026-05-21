@@ -13,6 +13,12 @@ public class SliderUpdateExternalValue : MonoBehaviour
 
     [SerializeField] private int maxValue = 10;
 
+    private void Start()
+    {
+        newValue = (int)(slider.value * maxValue);
+        displayedValueText.text = newValue.ToString();
+    }
+
     public void ChangeExternalSliderValue()
     {
         newValue = (int)(slider.value * maxValue);
