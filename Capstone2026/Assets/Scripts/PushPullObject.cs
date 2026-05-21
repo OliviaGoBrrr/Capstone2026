@@ -30,18 +30,15 @@ public class PushPullObject : MonoBehaviour, IInteractable
                 transform.rotation = PlayerTransform.rotation; 
                 Debug.Log(transform.position.y + "Player");
                 
-                //For objects that need to stay on one y level
-                //like currently if we needed we could include both? just a bool for "stays on same level"
+                // For objects that need to stay on one y level
+                // like currently if we needed we could include both? just a bool for "stays on same level"
 
-                transform.position = new Vector3 (transform.position.x, initialYPos, transform.position.z); 
+                // transform.position = new Vector3 (transform.position.x, initialYPos, transform.position.z); 
                 
-                /* come back to this if future objects will changed elevation
-                if (Physics.Raycast(transform.position, -Vector3.up, out RaycastHit hit, 10f))
-                {
-                    transform.position = hit.point; 
-                    Debug.Log(transform.position.y + "Raycast");
-                }
-                */
+                // come back to this if future objects will changed elevation
+                float terrainHeight = Terrain.activeTerrain.SampleHeight(transform.position);
+                transform.position = new Vector3(transform.position.x, terrainHeight /*+ (transform.localScale.y * 0.5f)*/, transform.position.z);
+                
             }   
 
             else
