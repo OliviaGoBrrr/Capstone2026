@@ -59,6 +59,8 @@ public class MainMenu : MonoBehaviour
 
     void Awake()
     {
+        PostGameDataLog.listInits();
+        
         // kill all tweens relating to the camera
         DOTween.KillAll();
         optionsShown = false;

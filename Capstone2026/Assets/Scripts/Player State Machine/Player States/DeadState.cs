@@ -9,6 +9,7 @@ public class PlayerDeadState : PlayerState
 
     public override void EnterState()
     {
+        
         player.isDead = true;
         player.canMove = false;
 

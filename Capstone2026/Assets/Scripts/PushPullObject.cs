@@ -55,6 +55,8 @@ public class PushPullObject : MonoBehaviour, IInteractable
 
     public void OnInteract()
     {
+        PostGameDataLog.pushpullInteractInt++;
+        
         if(Held)
         {
             if(canBeSetDown) transform.position = setDownLocation;

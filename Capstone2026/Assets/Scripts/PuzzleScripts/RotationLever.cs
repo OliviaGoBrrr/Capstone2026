@@ -23,6 +23,7 @@ public class RotationLever : MonoBehaviour, IInteractable
 
     public void OnInteract()
     {
+        PostGameDataLog.prismInteractInt++;
         if (!isMoving && playerM.isPushPulling != true) AnimController.Play("rotatePrism");
     }
 }

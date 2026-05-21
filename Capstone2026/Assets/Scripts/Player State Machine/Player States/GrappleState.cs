@@ -9,6 +9,7 @@ public class PlayerGrappleState : PlayerCanMoveSuperState
     public override void EnterState()
     {
         player.isGrappling = true;
+        PostGameDataLog.grappleAmountInt++;
 
         base.EnterState();
         //Debug.Log("Entered Grapple State");

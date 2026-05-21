@@ -17,6 +17,7 @@ public class PlatformSwitch : MonoBehaviour, IInteractable
     }
     public void OnInteract()
     {
+        PostGameDataLog.lightMazeInteractInt++;
         if(platforms.Length > 0) // For all platforms that the switch flips
         {
             for(int i = 0; i < platforms.Length; i++)

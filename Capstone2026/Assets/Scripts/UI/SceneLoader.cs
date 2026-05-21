@@ -7,7 +7,6 @@ public class SceneLoader : MonoBehaviour
     public Animator transition;
 
     public float transitionTime = 0.75f;
-
     public void LoadNewScene(string nextScene)
     {
         StartCoroutine(LoadScene(nextScene));

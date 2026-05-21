@@ -15,7 +15,7 @@ public class Checkpoint : MonoBehaviour
     {
         if (!activated)
         {
-            PostGameDataLog.updateCheckpointTimes($"Checkpoint: {checkpointNumber}" + $"{Time.timeSinceLevelLoad}");
+            PostGameDataLog.updateCheckpointTimes($"Checkpoint {checkpointNumber}: " + $"{Time.timeSinceLevelLoad}");
         }
 
         activated = true;

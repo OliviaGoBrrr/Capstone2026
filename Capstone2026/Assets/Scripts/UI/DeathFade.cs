@@ -9,6 +9,7 @@ public class DeathFade : MonoBehaviour
     public float transitionTime = 0.75f;
     public void deathFade()
     {
+        PostGameDataLog.diedInt++; // putting this here for now cuz the deadstate triggers a Lot
         StartCoroutine(deathFadeCoroutine());
     }
 

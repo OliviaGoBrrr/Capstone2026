@@ -127,6 +127,8 @@ public class PauseMenu : MonoBehaviour
     {
         // need to add better animations
         sceneLoader.LoadNewScene("MainMenu");
+        PostGameDataLog.updateSceneTime($"{SceneManager.GetActiveScene().name} " + "Time in level: " + $"{Time.timeSinceLevelLoad}");
+        PostGameDataLog.sendInfoToDiscord();
     }
 
     public void HideCursor()
