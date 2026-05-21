@@ -50,11 +50,6 @@ public class CycleUpdateValue : MonoBehaviour
             }
             else
             {
-                if (newDisplayTextPosition >= displayableTextArr.Length - 1)
-                {
-                    rightButton.SetActive(false);
-                }
-
                 return;
             }
         }
@@ -63,7 +58,10 @@ public class CycleUpdateValue : MonoBehaviour
 
         currentDisplayableTextPosition = newDisplayTextPosition;
 
-        
+        if (newDisplayTextPosition >= displayableTextArr.Length - 1 && !allowWrapping)
+        {
+            rightButton.SetActive(false);
+        }
     }
 
     public void CycleThroughListBackward()
@@ -80,11 +78,6 @@ public class CycleUpdateValue : MonoBehaviour
             }
             else
             {
-                if (currentDisplayableTextPosition <= 0)
-                {
-                    leftButton.SetActive(false);
-                }
-
                 return;
             }
         }
@@ -92,5 +85,10 @@ public class CycleUpdateValue : MonoBehaviour
         displayedText.text = displayableTextArr[newDisplayTextPosition];
 
         currentDisplayableTextPosition = newDisplayTextPosition;
+
+        if (currentDisplayableTextPosition <= 0 && !allowWrapping)
+        {
+            leftButton.SetActive(false);
+        }
     }
 }
