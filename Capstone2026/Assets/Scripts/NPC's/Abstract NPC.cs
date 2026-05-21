@@ -21,6 +21,7 @@ public abstract class AbstractNPC : MonoBehaviour, IInteractable
 
 
     public TextMeshProUGUI textBox;
+    public GameObject moveOnPrompt;
     private float textSpeed = 10f;
     private bool isTyping = false;
     private bool finishTyping = false;
@@ -90,11 +91,13 @@ public abstract class AbstractNPC : MonoBehaviour, IInteractable
            if (finishTyping) { textBox.text = currentDialogue[index]; finishTyping = false; break; }
         }
 
+        moveOnPrompt.SetActive(true);
         isTyping = false;
     }
 
     public void NextLine()
     {
+        moveOnPrompt.SetActive(false);
         // If typing is still happening or dialogue is finished, exit early
         if (isTyping || index >= currentDialogue.Length - 1)
         {
