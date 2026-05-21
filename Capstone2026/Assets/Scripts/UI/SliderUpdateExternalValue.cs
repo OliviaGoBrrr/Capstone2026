@@ -34,7 +34,6 @@ public class SliderUpdateExternalValue : MonoBehaviour
     public void PointerDown()
     {
         isMouseDown = true;
-        
     }
 
     public void PointerUp()
@@ -47,13 +46,16 @@ public class SliderUpdateExternalValue : MonoBehaviour
     {
         if (isMouseDown)
         {
-            if (clipTimer >= 0.2)
+            
+
+            if (clipTimer >= 0.2f)
             {
+                
                 AudioManager.Instance.PlaySFX(sliderMoveClip, transform, 1);
                 clipTimer = 0;
             }
 
-            clipTimer += Time.deltaTime;
+            clipTimer += Time.unscaledDeltaTime;
         }
     }
 }
