@@ -426,8 +426,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5359513071827906940}
-  - {fileID: 5202812856439981334}
   - {fileID: 3309674778991642191}
+  - {fileID: 5202812856439981334}
   m_Father: {fileID: 424304316702845231}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
@@ -455,7 +455,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62038f70e36b3e04886747d007b79182, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  displayableText: []
+  leftButton: {fileID: 5966607313809684245}
+  rightButton: {fileID: 6599605808935330444}
+  displayableTextArr: []
+  posOfInitialText: 0
+  displayedText: {fileID: 2228407728309147541}
+  allowWrapping: 0
 --- !u!1 &4402056309253602589
 GameObject:
   m_ObjectHideFlags: 0
@@ -862,7 +867,7 @@ GameObject:
   - component: {fileID: 3287051782511593164}
   - component: {fileID: 1024087466950432091}
   m_Layer: 5
-  m_Name: PointerRight
+  m_Name: PointerLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -969,7 +974,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3287051782511593164}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7295490539176670237}
+        m_TargetAssemblyTypeName: CycleUpdateValue, Assembly-CSharp
+        m_MethodName: CycleThroughListBackward
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5999430817533980930
 GameObject:
   m_ObjectHideFlags: 0
@@ -1073,7 +1090,7 @@ GameObject:
   - component: {fileID: 1261514920136529105}
   - component: {fileID: 8542493833590279731}
   m_Layer: 5
-  m_Name: PointerLeft
+  m_Name: PointerRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1180,7 +1197,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1261514920136529105}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7295490539176670237}
+        m_TargetAssemblyTypeName: CycleUpdateValue, Assembly-CSharp
+        m_MethodName: CycleThroughListForward
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6673678351743030589
 GameObject:
   m_ObjectHideFlags: 0
