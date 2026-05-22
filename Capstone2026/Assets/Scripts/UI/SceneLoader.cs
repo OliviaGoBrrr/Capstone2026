@@ -22,6 +22,8 @@ public class SceneLoader : MonoBehaviour
 
         SceneManager.LoadScene(nextScene);
 
+        Debug.Log(nextScene);
+
         Time.timeScale = 1;
     }
 
