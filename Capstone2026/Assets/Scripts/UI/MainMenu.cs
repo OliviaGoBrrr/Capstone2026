@@ -292,7 +292,7 @@ public class MainMenu : MonoBehaviour
         currentWindow = window;
         previousWindows.Add(window);
 
-        print(previousWindows.Count);
+        //print(previousWindows.Count);
     }
 
 
@@ -312,7 +312,7 @@ public class MainMenu : MonoBehaviour
             }   
             previousWindows.Remove(previousWindows[previousWindows.Count - 1]); // delete most recently visited window
 
-            print(previousWindows.Count);
+            //print(previousWindows.Count);
         }
         else
         {
