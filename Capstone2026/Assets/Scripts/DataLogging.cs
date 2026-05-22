@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class DataLogging : MonoBehaviour
 {
-    [Header("Pre Game Info")]
     string playerName;
     bool playerIDExists;
     List<string> deviceInfo;
@@ -14,6 +13,9 @@ public class DataLogging : MonoBehaviour
     public TMP_InputField nameField;
     public Button startPlaying;
 
+    /// <summary>
+    /// Set the startPlaying Button to be inactive if empty. Set input text to "". 
+    /// </summary>
     private void Start()
     {
         nameField.textComponent.text = "";
@@ -27,7 +29,9 @@ public class DataLogging : MonoBehaviour
             startPlaying.interactable = false;
         }
     }
-
+    /// <summary>
+    /// Set placeholder text, Check if input is > 1, and < 32, if so, turn the start button on and and take device info
+    /// </summary>
     public void checkIfNameInputted()
     {
         TextMeshProUGUI placeholder = (TextMeshProUGUI)nameField.placeholder;
@@ -51,6 +55,9 @@ public class DataLogging : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Save all device info and send it to Discord
+    /// </summary>
     void SaveDeviceInfo()
     {
         playerName = nameField.text;
@@ -81,9 +88,4 @@ public class DataLogging : MonoBehaviour
     {
         SceneManager.LoadScene("SceneSelect");
     }
-
-    
-
-
-   
 }
