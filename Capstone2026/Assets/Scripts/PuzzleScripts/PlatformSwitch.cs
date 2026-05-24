@@ -6,7 +6,6 @@ public class PlatformSwitch : MonoBehaviour, IInteractable
 
     public void OnInteract()
     {
-        print("AAAA");
         grapplePoint.SetActive(!grapplePoint.activeSelf);
     }
    /*
