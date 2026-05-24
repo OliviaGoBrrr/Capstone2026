@@ -3,6 +3,7 @@ using DG.Tweening;
 
 public class YRotateObject : MonoBehaviour, IInteractable
 {
+    [SerializeField] private GameObject objectToBeRotated;
     [SerializeField] private int originalRotation;
     [SerializeField] private int rotationStep;
     [SerializeField] private int totalNumberOfRotations; // number of rotations before loop back to start
@@ -11,17 +12,17 @@ public class YRotateObject : MonoBehaviour, IInteractable
     // Update is called once per frame
     void Start()
     {
-        transform.eulerAngles = new Vector3(transform.eulerAngles.x, originalRotation, transform.eulerAngles.z);
+        objectToBeRotated.transform.eulerAngles = new Vector3(objectToBeRotated.transform.eulerAngles.x, originalRotation, objectToBeRotated.transform.eulerAngles.z);
     }
 
-    void IInteractable.OnInteract()
+    public void OnInteract()
     {
         print("AAA");
-        transform.Rotate(0, rotationStep, 0, Space.Self);
+        objectToBeRotated.transform.Rotate(0, rotationStep, 0, Space.World);
 
         if (totalNumberOfRotations == currentNumberOfRotations)
         {
-            transform.eulerAngles = new Vector3(transform.eulerAngles.x, originalRotation, transform.eulerAngles.z);
+            objectToBeRotated.transform.eulerAngles = new Vector3(objectToBeRotated.transform.eulerAngles.x, originalRotation, objectToBeRotated.transform.eulerAngles.z);
         }
 
         currentNumberOfRotations += 1;
