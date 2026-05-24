@@ -32,6 +32,7 @@ public class PlayerPushPullState : PlayerCanMoveSuperState
     public override void FrameUpdate()
     {
         base.FrameUpdate();
+        // audio if player is moving play sfx (maybe do one depending on each object and chuck it in that script? cuz there are diff objects like wooden and rocky and stuff)
     }
 
     public override void FixedUpdate()

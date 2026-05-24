@@ -20,8 +20,6 @@ public class LightBeamShaderCollisionDetector : MonoBehaviour
         }
         else
         {
-            print(percentDistanceFromStartToHit);
-
             var currentLightFallOffPoint = r.material.GetFloat("_LightFallOffPoint");
 
             r.material.SetFloat("_LightFallOffPoint", Mathf.Clamp(currentLightFallOffPoint - 0.05f, 0, 1)); // default to max distance

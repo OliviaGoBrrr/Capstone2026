@@ -7,7 +7,6 @@ public class SceneLoader : MonoBehaviour
     public Animator transition;
 
     public float transitionTime = 0.75f;
-
     public void LoadNewScene(string nextScene)
     {
         StartCoroutine(LoadScene(nextScene));
@@ -19,7 +18,11 @@ public class SceneLoader : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(transitionTime);
 
+        PostGameDataLog.updateSceneTime($"{SceneManager.GetActiveScene().name} " + "Time in level: " + $"{Time.timeSinceLevelLoad}");
+
         SceneManager.LoadScene(nextScene);
+
+        Debug.Log(nextScene);
 
         Time.timeScale = 1;
     }

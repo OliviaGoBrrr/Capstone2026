@@ -4,11 +4,12 @@ using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
 using UnityEngine.InputSystem;
 
-public class OptionHovered : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class OutlineOptionHovered : MonoBehaviour
 {
-    [SerializeField] private Outline backgroundOutline;
+    [SerializeField] private Outline backgroundOutline = null;
 
     [SerializeField] private InputActionReference pauseAction;
+
 
     void Start()
     {
@@ -20,12 +21,12 @@ public class OptionHovered : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         backgroundOutline.enabled = false;
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
+    public void MouseEntered()
     {
         backgroundOutline.enabled = true;
     }
 
-    public void OnPointerExit(PointerEventData eventData)
+    public void MouseExited()
     {
         backgroundOutline.enabled = false;
     }

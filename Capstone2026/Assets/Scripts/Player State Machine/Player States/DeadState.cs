@@ -9,6 +9,7 @@ public class PlayerDeadState : PlayerState
 
     public override void EnterState()
     {
+        
         player.isDead = true;
         player.canMove = false;
 
@@ -26,6 +27,8 @@ public class PlayerDeadState : PlayerState
     public override void ExitState()
     {
         player.isDead = false;
+
+        //audio sfx power on
 
         base.ExitState();
     }

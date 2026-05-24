@@ -53,12 +53,10 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private float settingsFadeOutSpeed = 0.5f;
     [SerializeField] private float settingsZoomOutSpeed = 0.5f;
 
-    [Header("Audio")]
-    // AUDIO CLIPS
-    [SerializeField] private AudioClip buttonPressedClip;
-
     void Awake()
     {
+        PostGameDataLog.listInits();
+        
         // kill all tweens relating to the camera
         DOTween.KillAll();
         optionsShown = false;
@@ -134,8 +132,6 @@ public class MainMenu : MonoBehaviour
                 });
             });
         });
-
-        AudioManager.Instance.PlaySFX(buttonPressedClip, mainCamera.transform, 1);
 
         optionsShown = true;
         optionsContents.SetActive(true);
@@ -248,8 +244,6 @@ public class MainMenu : MonoBehaviour
                 });
             });
         });
-        
-        AudioManager.Instance.PlaySFX(buttonPressedClip, mainCamera.transform, 1);
 
         optionsShown = true;
         optionsContents.SetActive(true);
@@ -298,7 +292,7 @@ public class MainMenu : MonoBehaviour
         currentWindow = window;
         previousWindows.Add(window);
 
-        print(previousWindows.Count);
+        //print(previousWindows.Count);
     }
 
 
@@ -318,7 +312,7 @@ public class MainMenu : MonoBehaviour
             }   
             previousWindows.Remove(previousWindows[previousWindows.Count - 1]); // delete most recently visited window
 
-            print(previousWindows.Count);
+            //print(previousWindows.Count);
         }
         else
         {

@@ -19,8 +19,12 @@ public class PlayerManager : MonoBehaviour
     public float batteryShadeRateOfChangePerSecond;
     public float batteryPercent = 100;
     public int numberOfSunRaysForPower = 2;
+
     public TMP_Text batteryText;
     public Image batteryImage;
+
+    public Image backBatteryImage;
+
     public Vector3 lastCheckpoint;
 
     [Header("References")] //remove this if i've done it wrong, this is just the solution im thinking of rn
@@ -38,6 +42,9 @@ public class PlayerManager : MonoBehaviour
     public bool isFalling = false;
     public bool isDead = false;
     [HideInInspector] public bool canPickUp = true;
+
+    [Header("Player Movement SFX")]
+    public AudioClip grapplePullSFX;
 
     #endregion
 
