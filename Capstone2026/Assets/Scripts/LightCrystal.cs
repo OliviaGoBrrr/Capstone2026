@@ -85,7 +85,6 @@ public class LightCrystal : MonoBehaviour
                 if (crystal.beamsHitting.Contains(this) == false)
                 {
                     crystal.beamsHitting.Add(this);
-                    crystal.illuminated = true;
                 }
 
                 if (crystalHitting == null)
