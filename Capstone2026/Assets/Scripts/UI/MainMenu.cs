@@ -98,7 +98,7 @@ public class MainMenu : MonoBehaviour
 
         blackScreen.SetActive(true);
 
-        titleText.GetComponent<TMP_Text>().DOFade(0f, 0.2f); // fade out title text
+        titleText.GetComponent<Image>().DOFade(0f, 0.2f); // fade out title text
 
         // zoom in to monitor & fade to black
         Sequence zoomFadeCameraIn = DOTween.Sequence();
@@ -176,7 +176,7 @@ public class MainMenu : MonoBehaviour
                 Insert(0, mainCamera.transform.DORotate(new Vector3(0f, 0f, 0f), settingsZoomInSpeed).SetEase(Ease.InOutSine)).
                 Insert(0.1f, blackScreen.GetComponent<Image>().DOFade(0, settingsFadeOutSpeed).SetEase(Ease.OutQuint)).SetId("Camera").OnComplete(() =>
                 {
-                    titleText.GetComponent<TMP_Text>().DOFade(1f, 0.2f);
+                    titleText.GetComponent<Image>().DOFade(1f, 0.2f);
                     blackScreen.SetActive(false);
                 });
 
@@ -274,7 +274,7 @@ public class MainMenu : MonoBehaviour
         mainCamera.transform.DOMove(cameraNormalPos.position, 0.5f).SetId("Camera");
         mainCamera.transform.DORotate(new Vector3(0, 0, 0), 0.5f).SetId("Camera").OnComplete(() =>
         {
-            titleText.GetComponent<TMP_Text>().DOFade(1f, 0.2f);
+            titleText.GetComponent<Image>().DOFade(1f, 0.2f);
         });
 
         optionsShown = false;
