@@ -27,6 +27,8 @@ public class PlayerManager : MonoBehaviour
 
     public Vector3 lastCheckpoint;
 
+    [HideInInspector] public bool fallenInWater;
+
     [Header("References")] //remove this if i've done it wrong, this is just the solution im thinking of rn
     public DeathFade deathfade;
 
@@ -102,6 +104,7 @@ public class PlayerManager : MonoBehaviour
     {
         batteryPercent = 100;
         lastCheckpoint = transform.position;
+        
     }
 
     // Update is called once per frame
@@ -113,5 +116,13 @@ public class PlayerManager : MonoBehaviour
     private void FixedUpdate()
     {
         StateMachine.CurrentState.FixedUpdate();
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer == 11) // 11 is death layer
+        {
+            fallenInWater = true;
+        }
     }
 }

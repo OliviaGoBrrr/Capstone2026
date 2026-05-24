@@ -79,6 +79,11 @@ public class PlayerState
         {
             playerStateMachine.ChangeState(player.DeadState);
         }
+
+        if (player.fallenInWater == true)
+        {
+            playerStateMachine.ChangeState(player.DeadState);
+        }
     }
 
     public virtual void AnimationTrigger()

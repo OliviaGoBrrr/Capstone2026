@@ -18,17 +18,14 @@ public class DeathFade : MonoBehaviour
         transition.SetTrigger("Start");
 
         //audio player shut down
+        yield return new WaitForSeconds(0.75f);
 
-        yield return new WaitForSecondsRealtime(transitionTime);
-
-        playerM.transform.position = playerM.lastCheckpoint;
-
-        yield return new WaitForSecondsRealtime(transitionTime);
+        playerM.isDead = false;
 
         transition.SetTrigger("End");
 
-        yield return new WaitForSecondsRealtime(transitionTime);
+        //yield return new WaitForSecondsRealtime(transitionTime);
 
-        playerM.DeadState.ExitState();
+        
     }
 }
