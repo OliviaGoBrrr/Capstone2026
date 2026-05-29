@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class PlayerManager : MonoBehaviour
 
 
     [Header("Player Stats")]
+    public bool isBatteryIncreasing = true; // change this to an enum
     public float batteryLightRateOfChangePerSecond;
     public float batteryShadeRateOfChangePerSecond;
     public float batteryPercent = 100;
@@ -32,6 +34,11 @@ public class PlayerManager : MonoBehaviour
     [Header("References")] //remove this if i've done it wrong, this is just the solution im thinking of rn
     public DeathFade deathfade;
 
+    [Header("Player SFX")]
+    public AudioClip grapplePullSFX;
+    public AudioClip batteryDrainSFX;
+    [HideInInspector] public List<AudioSource> batteryDownClipsPlayed = new List<AudioSource>();
+
     [Header("Player State Bools")]
     #region State Bools
 
@@ -45,8 +52,7 @@ public class PlayerManager : MonoBehaviour
     public bool isDead = false;
     [HideInInspector] public bool canPickUp = true;
 
-    [Header("Player Movement SFX")]
-    public AudioClip grapplePullSFX;
+    
 
     #endregion
 

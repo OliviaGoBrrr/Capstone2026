@@ -534,16 +534,19 @@ MonoBehaviour:
   movement: {fileID: 2228826731360664703}
   solarPanel: {fileID: 3620456610392008294}
   pauseMenu: {fileID: 0}
+  isBatteryIncreasing: 0
   batteryLightRateOfChangePerSecond: 40
   batteryShadeRateOfChangePerSecond: -20
   batteryPercent: 100
   numberOfSunRaysForPower: 2
   batteryText: {fileID: 0}
   batteryImage: {fileID: 0}
-  backBatteryText: {fileID: 0}
   backBatteryImage: {fileID: 1531136767037607162}
   lastCheckpoint: {x: 0, y: 0, z: 0}
+  fallenInWater: 0
   deathfade: {fileID: 0}
+  grapplePullSFX: {fileID: 8300000, guid: 8115b5387b5fbe942ba81faec6749f05, type: 3}
+  batteryDrainSFX: {fileID: 8300000, guid: f825873fa00ff50499fd59f8fe2f73d8, type: 3}
   canMove: 1
   isCurrentlyGrounded: 0
   isDialogue: 0
@@ -553,7 +556,6 @@ MonoBehaviour:
   isFalling: 0
   isDead: 0
   canPickUp: 1
-  grapplePullSFX: {fileID: 0}
 --- !u!114 &2228826731360664703
 MonoBehaviour:
   m_ObjectHideFlags: 0
