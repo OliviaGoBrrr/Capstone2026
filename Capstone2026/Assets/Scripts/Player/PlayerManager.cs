@@ -2,6 +2,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using Unity.Cinemachine;
+using UnityEditor.ShaderGraph.Internal;
+using System.Collections;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -33,6 +36,8 @@ public class PlayerManager : MonoBehaviour
 
     [Header("References")] //remove this if i've done it wrong, this is just the solution im thinking of rn
     public DeathFade deathfade;
+    public CinemachineCamera playerCam;
+    public ParticleSystem[] sparks;
 
     [Header("Player SFX")]
     public AudioClip grapplePullSFX;
@@ -129,6 +134,25 @@ public class PlayerManager : MonoBehaviour
         if (other.gameObject.layer == 11) // 11 is death layer
         {
             fallenInWater = true;
+        }
+    }
+
+    // Couldn't think of another place to put this :P
+    public IEnumerator EaseFOV(float startValue, float endValue, float duration)
+    {
+        Debug.Log("test");
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsedTime / duration);
+
+            float currentValue = Mathf.Lerp(startValue, endValue, t);
+            
+            playerCam.Lens.FieldOfView = currentValue;
+
+            yield return null;
         }
     }
 }

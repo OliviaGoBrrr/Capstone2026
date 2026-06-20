@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class PlayerRunSubState : PlayerGroundedSuperState
 {
@@ -11,12 +13,17 @@ public class PlayerRunSubState : PlayerGroundedSuperState
         base.EnterState();
 
         player.movement.moveSpeed = player.movement.runSpeed;
+        
+        player.StartCoroutine(player.EaseFOV(player.playerCam.Lens.FieldOfView, player.playerCam.Lens.FieldOfView + 10, 0.5f));
 
-        //Debug.Log("Entered Run State");
+        Debug.Log("Entered Run State");
     }
 
     public override void ExitState()
     {
+        player.StartCoroutine(player.EaseFOV(player.playerCam.Lens.FieldOfView, player.playerCam.Lens.FieldOfView - 10, 0.5f)); 
+        // this isnt working properlly because i need to change how it's triggered, its triggering a lot
+
         base.ExitState();
     }
 
