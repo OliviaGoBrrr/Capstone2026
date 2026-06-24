@@ -39,6 +39,9 @@ public class PlayerManager : MonoBehaviour
     public CinemachineCamera playerCam;
     public ParticleSystem[] sparks;
 
+    [Header("Settings")]
+    public Settings settings;
+
     [Header("Player SFX")]
     public AudioClip grapplePullSFX;
     public AudioClip batteryDrainSFX;
@@ -138,8 +141,10 @@ public class PlayerManager : MonoBehaviour
     }
 
     // Couldn't think of another place to put this :P
+    [HideInInspector] public bool isEaseFOVRunning = false;
     public IEnumerator EaseFOV(float startValue, float endValue, float duration)
     {
+        isEaseFOVRunning = true;
         Debug.Log("test");
         float elapsedTime = 0f;
 
@@ -154,5 +159,8 @@ public class PlayerManager : MonoBehaviour
 
             yield return null;
         }
+
+        playerCam.Lens.FieldOfView = endValue;
+        isEaseFOVRunning = false;
     }
 }
