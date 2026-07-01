@@ -146,6 +146,7 @@ public class PlayerManager : MonoBehaviour
     {
         isEaseFOVRunning = true;
         Debug.Log("test");
+
         float elapsedTime = 0f;
 
         while (elapsedTime < duration)
