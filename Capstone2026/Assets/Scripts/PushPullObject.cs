@@ -40,7 +40,7 @@ public class PushPullObject : MonoBehaviour, IInteractable
 
                 // find terrain height & set it
                 float terrainHeight = Terrain.activeTerrain.SampleHeight(transform.position);
-                transform.localPosition = new Vector3(transform.localPosition.x, terrainHeight, transform.localPosition.z);
+                transform.position = new Vector3(transform.position.x, terrainHeight, transform.position.z);
 
                 //transform.position = PlayerTransform.position + (transform.forward * 2);
                 //transform.rotation = PlayerTransform.rotation;
