@@ -5,6 +5,7 @@ using UnityEditor;
 //using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
+using Quaternion = UnityEngine.Quaternion;
 
 public class PushPullObject : MonoBehaviour, IInteractable
 {
@@ -31,18 +32,19 @@ public class PushPullObject : MonoBehaviour, IInteractable
         {
             if(playerM.isPushPulling == true)
             {
-                transform.position = PlayerTransform.position + (transform.forward * 2);
-                transform.rotation = PlayerTransform.rotation; //should be changed
-                
-                // For objects that need to stay on one y level
-                // like currently if we needed we could include both? just a bool for "stays on same level"
+                float forwardOffset = 0f;
+                forwardOffset = GetComponent<Collider>().bounds.extents.z;
 
-                // transform.position = new Vector3 (transform.position.x, initialYPos, transform.position.z); 
-                
-                // come back to this if future objects will changed elevation
+                float finalDistance = 1.5f + forwardOffset;
+                transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, finalDistance);
+
+                // find terrain height & set it
                 float terrainHeight = Terrain.activeTerrain.SampleHeight(transform.position);
-                transform.position = new Vector3(transform.position.x, terrainHeight /*+ (transform.localScale.y * 0.5f)*/, transform.position.z);
-                
+                transform.localPosition = new Vector3(transform.localPosition.x, terrainHeight, transform.localPosition.z);
+
+                //transform.position = PlayerTransform.position + (transform.forward * 2);
+                //transform.rotation = PlayerTransform.rotation;
+                // transform.rotation = new Quaternion(transform.rotation.x, PlayerTransform.rotation.y, transform.rotation.z, 0); //thing im working on to make the rotation nicer
             }   
 
             else
@@ -62,6 +64,7 @@ public class PushPullObject : MonoBehaviour, IInteractable
             if(canBeSetDown) transform.position = setDownLocation;
             Held = false;
             // exit state
+            transform.SetParent(null);
             playerM.PushPullState.ExitState(); //TESTING THIS 
             return;
         }
@@ -70,6 +73,9 @@ public class PushPullObject : MonoBehaviour, IInteractable
         {
             Held = true;
             // enter state
+            // transform.localRotation = Quaternion.identity;
+            transform.SetParent(PlayerTransform);
+
             playerM.PushPullState.EnterState(); //TESTING THIS
         }
         
