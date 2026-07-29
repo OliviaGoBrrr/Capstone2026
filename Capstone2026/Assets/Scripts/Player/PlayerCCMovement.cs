@@ -1,5 +1,4 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -20,7 +19,6 @@ public class PlayerCCMovement : MonoBehaviour
     [Range(0f, 180f)] public float rotationSpeed;
 
     // Physics
-    public Vector3 playerInput;
     public Vector3 playerVelocity;
     [HideInInspector]
     public Vector3 desiredMove;
@@ -130,11 +128,12 @@ public class PlayerCCMovement : MonoBehaviour
     {
         groundedPlayer = playerController.isGrounded;
 
-        //playerController.Move(playerVelocity * Time.deltaTime);
+        if (gravityOn)
+        {
+            playerVelocity.y += gravityValue * Time.deltaTime;
+        }
 
-        MovePlayer();
-
-        HandleGravity();
+        playerController.Move(playerVelocity * Time.deltaTime);
 
         // Timers
 
@@ -144,53 +143,6 @@ public class PlayerCCMovement : MonoBehaviour
         }
     }
 
-    void HandleGravity()
-    {
-        if (playerController.isGrounded)
-        {
-            playerInput.y = -1f;
-        }
-        else
-        {
-            float previousYVelocity = playerInput.y;
-            float newYVelocity = playerInput.y + (gravityValue * Time.deltaTime);
-            float nextYVelocity = (previousYVelocity + newYVelocity) * 0.5f;
-            playerInput.y = nextYVelocity;
-        }
-    }
-
-
-    public void MovePlayer()
-    {
-        Vector2 actionInput = moveAction.action.ReadValue<Vector2>();
-
-        playerInput.x = actionInput.x;
-        playerInput.z = actionInput.y;
-
-        Vector3 cameraRelativeMovement = ConvertToCameraSpace(playerInput);
-
-        playerController.Move(moveSpeed * Time.deltaTime * cameraRelativeMovement);
-    }
-
-    private Vector3 ConvertToCameraSpace(Vector3 vectorToRotate)
-    {
-
-        float currentYValue = vectorToRotate.y;
-
-        Vector3 camF = Camera.main.transform.forward;
-        Vector3 camR = Camera.main.transform.right;
-
-        camF = camF.normalized;
-        camR = camR.normalized;
-
-        Vector3 camForwardZProduct = vectorToRotate.z * camF;
-        Vector3 camRightXProduct = vectorToRotate.x * camR;
-
-        Vector3 vectorRoatatedToCameraSpace = camForwardZProduct + camRightXProduct;
-        vectorRoatatedToCameraSpace.y = currentYValue;
-        return vectorRoatatedToCameraSpace;
-    }
-    
 
     public void PlayerMove()
     {
@@ -222,19 +174,17 @@ public class PlayerCCMovement : MonoBehaviour
     }
 
 
-
-
     public void PlayerJump()
     {
         if (groundedPlayer || coyoteTimer > 0f)
         {
             if (jumpBufferTimer > 0f || jumpAction.action.WasPressedThisFrame())
             {
-                playerInput.y = jumpHeight;
+                playerVelocity.y = jumpHeight;
             }
             else if (playerVelocity.y < 0f) // caps the falling speed of the player when on the ground
             {
-                playerInput.y = -3f;
+                playerVelocity.y = -3f;
             }
         }
     }
