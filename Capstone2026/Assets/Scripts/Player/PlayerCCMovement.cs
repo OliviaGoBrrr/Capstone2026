@@ -130,6 +130,8 @@ public class PlayerCCMovement : MonoBehaviour
     {
         groundedPlayer = playerController.isGrounded;
 
+        //playerController.Move(playerVelocity * Time.deltaTime);
+
         MovePlayer();
 
         HandleGravity();
@@ -185,16 +187,42 @@ public class PlayerCCMovement : MonoBehaviour
         Vector3 camRightXProduct = vectorToRotate.x * camR;
 
         Vector3 vectorRoatatedToCameraSpace = camForwardZProduct + camRightXProduct;
-
-        if (vectorRoatatedToCameraSpace != Vector3.zero)
-        {
-            RotatePlayer(vectorRoatatedToCameraSpace.normalized);
-        }
-
         vectorRoatatedToCameraSpace.y = currentYValue;
-
         return vectorRoatatedToCameraSpace;
     }
+    
+
+    public void PlayerMove()
+    {
+        // Get the x,z direction the player is inputting
+        Vector2 input = moveAction.action.ReadValue<Vector2>();
+
+        Vector2 inputNorm = input.normalized;
+
+        // Rotate the player
+        Vector3 camF = playerCamera.transform.forward;
+        Vector3 camR = playerCamera.transform.right;
+
+        camF.y = 0f;
+        camR.y = 0f;
+
+        desiredMove = (camF * input.y + camR * input.x).normalized;
+
+        // Jump & Fall States
+
+        // Rotates the player if they're inputting an action
+        if(desiredMove != Vector3.zero)
+        {
+            RotatePlayer(desiredMove);
+        }
+
+        Vector3 targetVelcoity = desiredMove * moveSpeed;
+
+        playerVelocity = Vector3.MoveTowards(playerVelocity, new Vector3(targetVelcoity.x, playerVelocity.y, targetVelcoity.z), acceleration * Time.deltaTime);
+    }
+
+
+
 
     public void PlayerJump()
     {
@@ -405,37 +433,4 @@ public class PlayerCCMovement : MonoBehaviour
         grappleAction.action.Disable();
         runAction.action.Disable();
     }
-
-
-    /* LEGACY MOVEMENT 
-public void PlayerMove()
-{
-    // Get the x,z direction the player is inputting
-    Vector2 input = moveAction.action.ReadValue<Vector2>();
-
-    Vector2 inputNorm = input.normalized;
-
-    // Rotate the player
-    Vector3 camF = playerCamera.transform.forward;
-    Vector3 camR = playerCamera.transform.right;
-
-    camF.y = 0f;
-    camR.y = 0f;
-
-    desiredMove = (camF * input.y + camR * input.x).normalized;
-
-    // Jump & Fall States
-
-    // Rotates the player if they're inputting an action
-    if(desiredMove != Vector3.zero)
-    {
-        RotatePlayer(desiredMove);
-    }
-
-    Vector3 targetVelcoity = desiredMove * moveSpeed;
-
-    playerVelocity = Vector3.MoveTowards(playerVelocity, new Vector3(targetVelcoity.x, playerVelocity.y, targetVelcoity.z), acceleration * Time.deltaTime);
-}
-*/
-
 }
