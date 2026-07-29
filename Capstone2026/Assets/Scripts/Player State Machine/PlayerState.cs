@@ -1,4 +1,5 @@
 using UnityEngine;
+using DG.Tweening;
 
 public class PlayerState
 {
@@ -53,6 +54,35 @@ public class PlayerState
 
             UpdateBatteryUI();
             player.solarPanel.isInLight = true;
+
+            
+
+            if (!player.isBatteryIncreasing)
+            {
+                //if (player.batteryDownClipsPlayed.Count == 0) return;
+
+                foreach (AudioSource audioSource in player.batteryDownClipsPlayed)
+                {
+                    if (audioSource == null)
+                    {
+                        player.batteryDownClipsPlayed.Remove(audioSource);
+                        continue;
+                    }
+
+                    audioSource.DOFade(0, 0.2f).OnComplete(() =>
+                    {
+                        Object.Destroy(audioSource.gameObject);
+                        player.batteryDownClipsPlayed.Remove(audioSource);
+                    });
+                }
+
+                player.batteryDownClipsPlayed.Clear();
+
+                player.isBatteryIncreasing = true;
+
+            }
+            
+            
         }
         else // in shade
         {
@@ -62,6 +92,13 @@ public class PlayerState
 
             UpdateBatteryUI();
             player.solarPanel.isInLight = false;
+
+            if (player.isBatteryIncreasing) // play drain sfx one time once the battery starts to drain
+            {
+                player.batteryDownClipsPlayed.Add(AudioManager.Instance.PlaySFXWithReference(player.batteryDrainSFX, player.transform, 0.75f));
+                player.isBatteryIncreasing = false;
+            }
+            
         }
     }
 
@@ -70,12 +107,19 @@ public class PlayerState
         player.batteryImage.fillAmount = player.batteryPercent / 100;
 
         player.backBatteryImage.fillAmount = player.batteryPercent / 100;
+
+        
     }
 
     public virtual void TransitionChecks()
     {
         // DEAD STATE
         if (player.batteryPercent <= 0)
+        {
+            playerStateMachine.ChangeState(player.DeadState);
+        }
+
+        if (player.fallenInWater == true)
         {
             playerStateMachine.ChangeState(player.DeadState);
         }

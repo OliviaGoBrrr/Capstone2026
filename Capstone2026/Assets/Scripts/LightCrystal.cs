@@ -11,6 +11,7 @@ public class LightCrystal : MonoBehaviour
 
     public int lightsNeededToIlluminate = 1;
     public LightCrystal crystalHitting;
+    public DisableGrapplePoint grappleHitting;
 
     public List<LightCrystal> beamsHitting = new List<LightCrystal>();
 
@@ -55,6 +56,10 @@ public class LightCrystal : MonoBehaviour
             if(crystalHitting != null)
             {
                 StopLightBeam();
+            }
+            if(grappleHitting != null)
+            {
+                StopGrapple();
             }
         }
     }
@@ -104,11 +109,22 @@ public class LightCrystal : MonoBehaviour
                     solarDetector.ChangeBatteryPercent(player.batteryPercent, player.batteryLightRateOfChangePerSecond);
                 }
             }
+
+            else if (hit.transform.TryGetComponent<DisableGrapplePoint>(out DisableGrapplePoint grapple))
+            {
+                if (grappleHitting == null)
+                {
+                    grappleHitting = grapple;
+
+                    grappleHitting.isGrappleActive = true;
+                }
+            }
         }
         else
         {
             lineRenderer.SetPosition(1, beamStartPoint.position + (transform.forward * beamMaxDistance));
             StopLightBeam();
+            StopGrapple();
         }
     }
 
@@ -119,6 +135,15 @@ public class LightCrystal : MonoBehaviour
             crystalHitting.beamsHitting.Remove(this); // causing a stack overflow if two beams hit eachother
             crystalHitting.StopLightBeam();
             crystalHitting = null;
+        }
+    }
+
+    public void StopGrapple() // cheese fix, if multiple point at grapple bad stuff happens (i think??)
+    {
+        if (grappleHitting != null)
+        {
+            grappleHitting.isGrappleActive = false;
+            grappleHitting = null;
         }
     }
 }

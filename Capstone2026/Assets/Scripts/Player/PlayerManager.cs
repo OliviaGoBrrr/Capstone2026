@@ -1,6 +1,10 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
+using Unity.Cinemachine;
+using UnityEditor.ShaderGraph.Internal;
+using System.Collections;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -15,6 +19,7 @@ public class PlayerManager : MonoBehaviour
 
 
     [Header("Player Stats")]
+    public bool isBatteryIncreasing = true; // change this to an enum
     public float batteryLightRateOfChangePerSecond;
     public float batteryShadeRateOfChangePerSecond;
     public float batteryPercent = 100;
@@ -27,8 +32,20 @@ public class PlayerManager : MonoBehaviour
 
     public Vector3 lastCheckpoint;
 
+    [HideInInspector] public bool fallenInWater;
+
     [Header("References")] //remove this if i've done it wrong, this is just the solution im thinking of rn
     public DeathFade deathfade;
+    public CinemachineCamera playerCam;
+    public ParticleSystem[] sparks;
+
+    [Header("Settings")]
+    public Settings settings;
+
+    [Header("Player SFX")]
+    public AudioClip grapplePullSFX;
+    public AudioClip batteryDrainSFX;
+    [HideInInspector] public List<AudioSource> batteryDownClipsPlayed = new List<AudioSource>();
 
     [Header("Player State Bools")]
     #region State Bools
@@ -43,8 +60,7 @@ public class PlayerManager : MonoBehaviour
     public bool isDead = false;
     [HideInInspector] public bool canPickUp = true;
 
-    [Header("Player Movement SFX")]
-    public AudioClip grapplePullSFX;
+    
 
     #endregion
 
@@ -102,6 +118,7 @@ public class PlayerManager : MonoBehaviour
     {
         batteryPercent = 100;
         lastCheckpoint = transform.position;
+        
     }
 
     // Update is called once per frame
@@ -113,5 +130,38 @@ public class PlayerManager : MonoBehaviour
     private void FixedUpdate()
     {
         StateMachine.CurrentState.FixedUpdate();
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer == 11) // 11 is death layer
+        {
+            fallenInWater = true;
+        }
+    }
+
+    // Couldn't think of another place to put this :P
+    [HideInInspector] public bool isEaseFOVRunning = false;
+    public IEnumerator EaseFOV(float startValue, float endValue, float duration)
+    {
+        isEaseFOVRunning = true;
+        Debug.Log("test");
+
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsedTime / duration);
+
+            float currentValue = Mathf.Lerp(startValue, endValue, t);
+            
+            playerCam.Lens.FieldOfView = currentValue;
+
+            yield return null;
+        }
+
+        playerCam.Lens.FieldOfView = endValue;
+        isEaseFOVRunning = false;
     }
 }

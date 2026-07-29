@@ -13,6 +13,8 @@ public class PlayerDeadState : PlayerState
         player.isDead = true;
         player.canMove = false;
 
+        player.fallenInWater = false;
+
         player.movement.playerVelocity = new Vector3(0, 0, 0);
 
         // restarts scene when player runs out of power
@@ -26,7 +28,14 @@ public class PlayerDeadState : PlayerState
 
     public override void ExitState()
     {
-        player.isDead = false;
+        // character controller overrides manual transform changes
+        player.movement.playerController.enabled = false;
+        player.transform.position = player.lastCheckpoint;
+        player.movement.playerController.enabled = true;
+        Debug.Log(player.lastCheckpoint);
+
+        //player.isDead = false;
+        player.batteryPercent = 100; // reset battery
 
         //audio sfx power on
 
@@ -46,11 +55,12 @@ public class PlayerDeadState : PlayerState
 
     public override void TransitionChecks()
     {
-        base.TransitionChecks();
+        //base.TransitionChecks();
 
         if(player.isDead == false)
         {
             playerStateMachine.ChangeState(player.IdleSubState);
+            
         }
     }
 }

@@ -17,14 +17,19 @@ public class YRotateObject : MonoBehaviour, IInteractable
 
     public void OnInteract()
     {
-        print("AAA");
-        objectToBeRotated.transform.Rotate(0, rotationStep, 0, Space.World);
-
         if (totalNumberOfRotations == currentNumberOfRotations)
         {
-            objectToBeRotated.transform.eulerAngles = new Vector3(objectToBeRotated.transform.eulerAngles.x, originalRotation, objectToBeRotated.transform.eulerAngles.z);
+            objectToBeRotated.transform.DORotate(new Vector3(0, originalRotation, 0), 0.5f).SetEase(Ease.OutCubic);
+
+            //objectToBeRotated.transform.eulerAngles = new Vector3(objectToBeRotated.transform.eulerAngles.x, originalRotation, objectToBeRotated.transform.eulerAngles.z);
+            currentNumberOfRotations = 0;
+            return;
         }
 
         currentNumberOfRotations += 1;
+
+        objectToBeRotated.transform.DORotate(new Vector3(0, originalRotation + rotationStep * currentNumberOfRotations, 0), 0.5f).SetEase(Ease.OutCubic);
+
+        //objectToBeRotated.transform.Rotate(0, rotationStep, 0, Space.World);
     }
 }

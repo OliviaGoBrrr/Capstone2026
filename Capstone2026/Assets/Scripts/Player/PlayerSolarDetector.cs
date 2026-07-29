@@ -10,6 +10,7 @@ public class PlayerSolarDetector : MonoBehaviour
     // raycast only detects objects in this layermask
     private int layerMask;
     private int interactLayerMask;
+    private int crystalLayerMask;
 
     [SerializeField] private GameObject lightSource;
     [SerializeField] private Transform centreSolarPanel;
@@ -28,6 +29,7 @@ public class PlayerSolarDetector : MonoBehaviour
     {
         layerMask = 6;
         interactLayerMask = 8;
+        crystalLayerMask = 12;
 
         r = GetComponent<MeshRenderer>();
 
@@ -69,7 +71,7 @@ public class PlayerSolarDetector : MonoBehaviour
         {
             RaycastHit hit;
 
-            if (Physics.Raycast(rayCastPositions[i].transform.position, lightSource.transform.TransformDirection(lightDirection), out hit, Vector3.Magnitude(lightDirection) * 100) && hit.transform.gameObject.layer != layerMask && hit.transform.gameObject.layer != interactLayerMask && hit.transform.gameObject.layer != 7)
+            if (Physics.Raycast(rayCastPositions[i].transform.position, lightSource.transform.TransformDirection(lightDirection), out hit, Vector3.Magnitude(lightDirection) * 100) && hit.transform.gameObject.layer != layerMask && hit.transform.gameObject.layer != interactLayerMask && hit.transform.gameObject.layer != 7 && hit.transform.gameObject.layer != crystalLayerMask)
             {
                 numberOfCollisions += 1;
                 rayColor = Color.red;
