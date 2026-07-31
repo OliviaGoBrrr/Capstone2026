@@ -8,6 +8,7 @@ using System.IO;
 using System.Text;
 using UnityEngine.UI;
 using TMPro;
+using UnityEditor.PackageManager.UI;
 
 public class MainMenu : MonoBehaviour
 {
@@ -287,6 +288,16 @@ public class MainMenu : MonoBehaviour
 
     public void OnWindowButtonPressed(GameObject window)
     {
+        
+        DOTween.Kill("WindowScale" + window.name);
+
+        // scale set to 0 then tween up
+        Sequence windowScaleSequence = DOTween.Sequence().SetId("WindowScale" + window.name);
+
+        windowScaleSequence.Append(window.transform.DOScale(Vector3.zero, 0f));
+        windowScaleSequence.Append(window.transform.DOScale(new Vector3(1, 1, 1), 0.25f).SetEase(Ease.OutSine));
+        
+
         window.SetActive(true);
 
         currentWindow = window;
@@ -300,7 +311,17 @@ public class MainMenu : MonoBehaviour
     {
         if (previousWindows.Count > 0) // more than the options screen displayed
         {
-            currentWindow.SetActive(false);
+            GameObject referenceToCurrentWindow = currentWindow; // so when current window changes reference to old one stays the same
+            DOTween.Kill("WindowScale" + referenceToCurrentWindow.name);
+
+
+            Sequence windowScaleSequence = DOTween.Sequence().SetId("WindowScale" + referenceToCurrentWindow.name);
+
+            windowScaleSequence.Append(referenceToCurrentWindow.transform.DOScale(new Vector3(1, 1, 1), 0f));
+            windowScaleSequence.Append(referenceToCurrentWindow.transform.DOScale(Vector3.zero, 0.25f).SetEase(Ease.OutSine).OnComplete(() =>
+            {
+                referenceToCurrentWindow.SetActive(false);
+            }));
 
             if (previousWindows.Count == 1) // if only 1 window up, itll go back to the base screen which isnt a window so set current to null
             {
