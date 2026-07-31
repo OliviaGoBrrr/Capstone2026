@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -98,7 +99,18 @@ public class PauseMenu : MonoBehaviour
 
     public void OnWindowButtonPressed(GameObject window)
     {
-        window.SetActive(true);
+        DOTween.Kill("WindowScale" + window.name);
+
+        // scale set to 0 then tween up
+        Sequence windowScaleSequence = DOTween.Sequence().SetId("WindowScale" + window.name);
+
+        windowScaleSequence.Append(window.transform.DOScale(Vector3.zero, 0f).OnComplete(() =>
+        {
+            window.SetActive(true);
+        }));
+        windowScaleSequence.Append(window.transform.DOScale(new Vector3(1, 1, 1), 0.25f).SetEase(Ease.OutSine));
+
+        
 
         currentWindow = window;
         previousWindows.Add(window);
@@ -110,10 +122,22 @@ public class PauseMenu : MonoBehaviour
     {
         if (previousWindows.Count > 1) // more than the initial window when esc or back button
         {
-            currentWindow.SetActive(false);
+            GameObject referenceToCurrentWindow = currentWindow; // so when current window changes reference to old one stays the same
+            DOTween.Kill("WindowScale" + referenceToCurrentWindow.name);
+
+
+            Sequence windowScaleSequence = DOTween.Sequence().SetId("WindowScale" + referenceToCurrentWindow.name);
+
+            windowScaleSequence.Append(referenceToCurrentWindow.transform.DOScale(Vector3.zero, 0.25f).SetEase(Ease.OutSine).OnComplete(() =>
+            {
+                referenceToCurrentWindow.SetActive(false);
+
+                
+            }));
 
             currentWindow = previousWindows[previousWindows.Count - 2]; // go back to last window
             previousWindows.Remove(previousWindows[previousWindows.Count - 1]); // delete most recently visited window
+
 
             print(previousWindows.Count);
         }

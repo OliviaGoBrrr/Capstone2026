@@ -294,11 +294,11 @@ public class MainMenu : MonoBehaviour
         // scale set to 0 then tween up
         Sequence windowScaleSequence = DOTween.Sequence().SetId("WindowScale" + window.name);
 
-        windowScaleSequence.Append(window.transform.DOScale(Vector3.zero, 0f));
+        windowScaleSequence.Append(window.transform.DOScale(Vector3.zero, 0f).OnComplete(() =>
+        {
+            window.SetActive(true);
+        }));
         windowScaleSequence.Append(window.transform.DOScale(new Vector3(1, 1, 1), 0.25f).SetEase(Ease.OutSine));
-        
-
-        window.SetActive(true);
 
         currentWindow = window;
         previousWindows.Add(window);
