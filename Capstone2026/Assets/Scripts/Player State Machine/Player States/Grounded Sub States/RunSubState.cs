@@ -16,12 +16,12 @@ public class PlayerRunSubState : PlayerGroundedSuperState
         
         if(!player.isEaseFOVRunning) 
         { 
-            foreach(ParticleSystem spark in player.sparks)
-            {
-                spark.Play();
-            }
-
             player.StartCoroutine(player.EaseFOV(player.settings.FOVslider.value , player.settings.FOVslider.value + 10, 0.25f)); 
+        }
+
+        foreach (ParticleSystem spark in player.sparks)
+        {
+            spark.Play();
         }
 
         Debug.Log("Entered Run State");
@@ -30,15 +30,15 @@ public class PlayerRunSubState : PlayerGroundedSuperState
     public override void ExitState()
     {
         if(!player.isEaseFOVRunning) 
-        { 
-            foreach(ParticleSystem spark in player.sparks)
-            {
-                spark.Stop();
-            }
-            
+        {
             player.StartCoroutine(player.EaseFOV(player.playerCam.Lens.FieldOfView, player.settings.FOVslider.value, 0.25f)); 
         }
         // this isnt working properlly because i need to change how it's triggered, its triggering a lot
+
+        foreach (ParticleSystem spark in player.sparks)
+        {
+            spark.Stop();
+        }
 
         base.ExitState();
     }
