@@ -49,7 +49,7 @@ public class PlayerCCMovement : MonoBehaviour
     [SerializeField]
     private LineRenderer grappleLine;
     [SerializeField]
-    private Transform grappleHand;
+    private GameObject grappleHand;
 
     [Header("Grapple UI")]
     private GameObject currentGrappleUI;
@@ -165,13 +165,22 @@ public class PlayerCCMovement : MonoBehaviour
     public void MovePlayer()
     {
         Vector2 actionInput = moveAction.action.ReadValue<Vector2>();
-        if(grappling == false)
+        Vector3 cameraRelativeMovement;
+        if (grappling == false)
         {
             playerInput.x = actionInput.x; // left and right
             playerInput.z = actionInput.y; // forward and backward
+
+
+            cameraRelativeMovement = ConvertToCameraSpace(playerInput);
+        }
+        else
+        {
+            // Disables camera movement while grappling
+            // Otherwise, causes the player to fly if they face away from the grapple target
+            cameraRelativeMovement = playerInput;
         }
 
-        Vector3 cameraRelativeMovement = ConvertToCameraSpace(playerInput);
 
         playerController.Move(moveSpeed * Time.deltaTime * cameraRelativeMovement);
     }
@@ -205,8 +214,6 @@ public class PlayerCCMovement : MonoBehaviour
         }
 
         vectorRoatatedToCameraSpace.y = currentYValue;
-
-        Debug.Log(vectorRoatatedToCameraSpace);
 
         return vectorRoatatedToCameraSpace;
     }
@@ -374,7 +381,7 @@ public class PlayerCCMovement : MonoBehaviour
             playerInput = direction * grappleSpeed;
 
             // LineRenderer
-            grappleLine.SetPosition(0, grappleHand.position);
+            grappleLine.SetPosition(0, grappleHand.transform.position);
 
             if (Vector3.Distance(transform.position, grapplePoint) < 1.0f)
             {
