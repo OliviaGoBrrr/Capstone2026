@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -19,6 +20,7 @@ public class PlayerCCMovement : MonoBehaviour
     [Range(0f, 180f)] public float rotationSpeed;
 
     // Physics
+    public Vector3 playerInput;
     public Vector3 playerVelocity;
     [HideInInspector]
     public Vector3 desiredMove;
@@ -128,12 +130,12 @@ public class PlayerCCMovement : MonoBehaviour
     {
         groundedPlayer = playerController.isGrounded;
 
+        MovePlayer();
+
         if (gravityOn)
         {
-            playerVelocity.y += gravityValue * Time.deltaTime;
+            HandleGravity();
         }
-
-        playerController.Move(playerVelocity * Time.deltaTime);
 
         // Timers
 
@@ -143,36 +145,61 @@ public class PlayerCCMovement : MonoBehaviour
         }
     }
 
-
-    public void PlayerMove()
+    void HandleGravity()
     {
-        // Get the x,z direction the player is inputting
-        Vector2 input = moveAction.action.ReadValue<Vector2>();
-
-        Vector2 inputNorm = input.normalized;
-
-        // Rotate the player
-        Vector3 camF = playerCamera.transform.forward;
-        Vector3 camR = playerCamera.transform.right;
-
-        camF.y = 0f;
-        camR.y = 0f;
-
-        desiredMove = (camF * input.y + camR * input.x).normalized;
-
-        // Jump & Fall States
-
-        // Rotates the player if they're inputting an action
-        if(desiredMove != Vector3.zero)
+        if (playerController.isGrounded)
         {
-            RotatePlayer(desiredMove);
+            playerInput.y = -1f;
         }
-
-        Vector3 targetVelcoity = desiredMove * moveSpeed;
-
-        playerVelocity = Vector3.MoveTowards(playerVelocity, new Vector3(targetVelcoity.x, playerVelocity.y, targetVelcoity.z), acceleration * Time.deltaTime);
+        else
+        {
+            float previousYVelocity = playerInput.y;
+            float newYVelocity = playerInput.y + (gravityValue * Time.deltaTime);
+            float nextYVelocity = (previousYVelocity + newYVelocity) * 0.5f;
+            playerInput.y = nextYVelocity;
+        }
     }
 
+
+    public void MovePlayer()
+    {
+        Vector2 actionInput = moveAction.action.ReadValue<Vector2>();
+        if(grappling == false)
+        {
+            playerInput.x = actionInput.x;
+            playerInput.z = actionInput.y;
+        }
+
+        Vector3 cameraRelativeMovement = ConvertToCameraSpace(playerInput);
+
+        playerController.Move(moveSpeed * Time.deltaTime * cameraRelativeMovement);
+    }
+
+    private Vector3 ConvertToCameraSpace(Vector3 vectorToRotate)
+    {
+
+        float currentYValue = vectorToRotate.y;
+
+        Vector3 camF = Camera.main.transform.forward;
+        Vector3 camR = Camera.main.transform.right;
+
+        camF = camF.normalized;
+        camR = camR.normalized;
+
+        Vector3 camForwardZProduct = vectorToRotate.z * camF;
+        Vector3 camRightXProduct = vectorToRotate.x * camR;
+
+        Vector3 vectorRoatatedToCameraSpace = camForwardZProduct + camRightXProduct;
+
+        if (vectorRoatatedToCameraSpace != Vector3.zero)
+        {
+            RotatePlayer(vectorRoatatedToCameraSpace.normalized);
+        }
+
+        vectorRoatatedToCameraSpace.y = currentYValue;
+
+        return vectorRoatatedToCameraSpace;
+    }
 
     public void PlayerJump()
     {
@@ -180,11 +207,11 @@ public class PlayerCCMovement : MonoBehaviour
         {
             if (jumpBufferTimer > 0f || jumpAction.action.WasPressedThisFrame())
             {
-                playerVelocity.y = jumpHeight;
+                playerInput.y = jumpHeight;
             }
             else if (playerVelocity.y < 0f) // caps the falling speed of the player when on the ground
             {
-                playerVelocity.y = -3f;
+                playerInput.y = -3f;
             }
         }
     }
@@ -312,7 +339,7 @@ public class PlayerCCMovement : MonoBehaviour
         grappling = true;
 
         // Reset player velocity
-        playerVelocity = Vector3.zero;
+        playerInput = Vector3.zero;
 
         // Set grapple location
         grapplePoint = grappleTarget.anchorPoint.transform.position;
@@ -333,7 +360,7 @@ public class PlayerCCMovement : MonoBehaviour
             direction.Normalize();
             RotatePlayer(direction);
 
-            playerVelocity = direction * grappleSpeed;
+            playerInput = direction * grappleSpeed;
 
             // LineRenderer
             grappleLine.SetPosition(0, grappleHand.position);
@@ -341,6 +368,7 @@ public class PlayerCCMovement : MonoBehaviour
             if (Vector3.Distance(transform.position, grapplePoint) < 1.0f)
             {
                 transform.position = grapplePoint;
+                playerInput.y = 0f;
 
                 CancelGrapple();
             }
@@ -352,7 +380,6 @@ public class PlayerCCMovement : MonoBehaviour
         gravityOn = true;
         grappling = false;
 
-        playerVelocity.y += gravityValue * 0.6f;
         grapplePoint = Vector3.zero;
 
         // Linerenderer
@@ -383,4 +410,37 @@ public class PlayerCCMovement : MonoBehaviour
         grappleAction.action.Disable();
         runAction.action.Disable();
     }
+
+
+    /* LEGACY MOVEMENT 
+public void PlayerMove()
+{
+    // Get the x,z direction the player is inputting
+    Vector2 input = moveAction.action.ReadValue<Vector2>();
+
+    Vector2 inputNorm = input.normalized;
+
+    // Rotate the player
+    Vector3 camF = playerCamera.transform.forward;
+    Vector3 camR = playerCamera.transform.right;
+
+    camF.y = 0f;
+    camR.y = 0f;
+
+    desiredMove = (camF * input.y + camR * input.x).normalized;
+
+    // Jump & Fall States
+
+    // Rotates the player if they're inputting an action
+    if(desiredMove != Vector3.zero)
+    {
+        RotatePlayer(desiredMove);
+    }
+
+    Vector3 targetVelcoity = desiredMove * moveSpeed;
+
+    playerVelocity = Vector3.MoveTowards(playerVelocity, new Vector3(targetVelcoity.x, playerVelocity.y, targetVelcoity.z), acceleration * Time.deltaTime);
+}
+*/
+
 }
