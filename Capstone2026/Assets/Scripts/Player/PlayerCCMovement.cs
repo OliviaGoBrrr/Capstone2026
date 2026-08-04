@@ -334,16 +334,17 @@ public class PlayerCCMovement : MonoBehaviour
 
     private void StartGrapple(GrappleableObject grappleTarget)
     {
+        // Set grapple location
+        grapplePoint = grappleTarget.anchorPoint.transform.position;
+        grappleLockoutTimer = grappleLockoutTime;
+
+
         // Turn off physics
         gravityOn = false;
         grappling = true;
 
         // Reset player velocity
         playerInput = Vector3.zero;
-
-        // Set grapple location
-        grapplePoint = grappleTarget.anchorPoint.transform.position;
-        grappleLockoutTimer = grappleLockoutTime;
 
         // Linerenderer
         grappleLine.SetPosition(1, grapplePoint);
