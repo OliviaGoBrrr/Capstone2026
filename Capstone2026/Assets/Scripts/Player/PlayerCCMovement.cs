@@ -349,11 +349,23 @@ public class PlayerCCMovement : MonoBehaviour
     }
 
 
+    // Grapple Projectile pseudocode
+    /*
+     * Launch projectile
+     * 
+     * Move projectile each frame until destination is met 
+     * or time waiting for grapple is exceeded
+     * 
+     * Start grapple to target
+     * 
+     */
+
     private void StartGrapple(GrappleableObject grappleTarget)
     {
         // Set grapple location
         grapplePoint = grappleTarget.anchorPoint.transform.position;
         grappleLockoutTimer = grappleLockoutTime;
+
 
 
         // Turn off physics
@@ -367,6 +379,7 @@ public class PlayerCCMovement : MonoBehaviour
         grappleLine.SetPosition(1, grapplePoint);
         grappleLine.enabled = true;
     }
+
     public void GrappleToTarget()
     {
         if (grappling)
@@ -428,37 +441,4 @@ public class PlayerCCMovement : MonoBehaviour
         grappleAction.action.Disable();
         runAction.action.Disable();
     }
-
-
-    /* LEGACY MOVEMENT 
-public void PlayerMove()
-{
-    // Get the x,z direction the player is inputting
-    Vector2 input = moveAction.action.ReadValue<Vector2>();
-
-    Vector2 inputNorm = input.normalized;
-
-    // Rotate the player
-    Vector3 camF = playerCamera.transform.forward;
-    Vector3 camR = playerCamera.transform.right;
-
-    camF.y = 0f;
-    camR.y = 0f;
-
-    desiredMove = (camF * input.y + camR * input.x).normalized;
-
-    // Jump & Fall States
-
-    // Rotates the player if they're inputting an action
-    if(desiredMove != Vector3.zero)
-    {
-        RotatePlayer(desiredMove);
-    }
-
-    Vector3 targetVelcoity = desiredMove * moveSpeed;
-
-    playerVelocity = Vector3.MoveTowards(playerVelocity, new Vector3(targetVelcoity.x, playerVelocity.y, targetVelcoity.z), acceleration * Time.deltaTime);
-}
-*/
-
 }
