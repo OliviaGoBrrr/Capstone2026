@@ -1,4 +1,5 @@
 using System;
+using Mono.Cecil.Cil;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -166,8 +167,8 @@ public class PlayerCCMovement : MonoBehaviour
         Vector2 actionInput = moveAction.action.ReadValue<Vector2>();
         if(grappling == false)
         {
-            playerInput.x = actionInput.x;
-            playerInput.z = actionInput.y;
+            playerInput.x = actionInput.x; // left and right
+            playerInput.z = actionInput.y; // forward and backward
         }
 
         Vector3 cameraRelativeMovement = ConvertToCameraSpace(playerInput);
@@ -180,23 +181,32 @@ public class PlayerCCMovement : MonoBehaviour
 
         float currentYValue = vectorToRotate.y;
 
-        Vector3 camF = Camera.main.transform.forward;
-        Vector3 camR = Camera.main.transform.right;
+        Vector3 camF = playerCamera.transform.forward;
 
-        camF = camF.normalized;
-        camR = camR.normalized;
+        Vector3 camR = playerCamera.transform.right;
 
-        Vector3 camForwardZProduct = vectorToRotate.z * camF;
-        Vector3 camRightXProduct = vectorToRotate.x * camR;
+        // Sets camera's upo transform to Y, making it parallel to the ground
+        camF.y = 0f;
+        camR.y = 0f;
 
+        // Normalize camera transforms to derive direction along X and Z axis
+        camF.Normalize();
+        camR.Normalize();
+
+        Vector3 camForwardZProduct = vectorToRotate.z * camF; // forward and backward
+        Vector3 camRightXProduct = vectorToRotate.x * camR; // left and right
+
+        // Add vectors together to translate player movement
         Vector3 vectorRoatatedToCameraSpace = camForwardZProduct + camRightXProduct;
 
         if (vectorRoatatedToCameraSpace != Vector3.zero)
         {
-            RotatePlayer(vectorRoatatedToCameraSpace.normalized);
+            RotatePlayer(vectorRoatatedToCameraSpace);
         }
 
         vectorRoatatedToCameraSpace.y = currentYValue;
+
+        Debug.Log(vectorRoatatedToCameraSpace);
 
         return vectorRoatatedToCameraSpace;
     }
