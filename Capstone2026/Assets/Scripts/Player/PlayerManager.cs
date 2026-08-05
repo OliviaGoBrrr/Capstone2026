@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using Unity.Cinemachine;
-using UnityEditor.ShaderGraph.Internal;
 using System.Collections;
 
 public class PlayerManager : MonoBehaviour

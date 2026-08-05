@@ -1,14 +1,9 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 using DG.Tweening;
 using System.Collections.Generic;
-using System;
-using System.IO;
-using System.Text;
 using UnityEngine.UI;
 using TMPro;
-using UnityEditor.PackageManager.UI;
 
 public class MainMenu : MonoBehaviour
 {
