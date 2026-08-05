@@ -16,7 +16,7 @@ public class PlayerRunSubState : PlayerGroundedSuperState
         
         if(!player.isEaseFOVRunning) 
         { 
-            player.StartCoroutine(player.EaseFOV(player.settings.FOVslider.value , player.settings.FOVslider.value + 10, 0.25f)); 
+            player.StartCoroutine(player.EaseFOV(player.playerCam.Lens.FieldOfView , player.settings.FOVslider.value + 10, 0.2f)); 
         }
 
         if(player.isCurrentlyGrounded)
@@ -39,7 +39,7 @@ public class PlayerRunSubState : PlayerGroundedSuperState
 
         if(!player.isEaseFOVRunning) 
         {
-            player.StartCoroutine(player.EaseFOV(player.playerCam.Lens.FieldOfView, player.settings.FOVslider.value, 0.25f)); 
+            player.StartCoroutine(player.EaseFOV(player.playerCam.Lens.FieldOfView, player.settings.FOVslider.value, 0.2f)); 
         }
 
         base.ExitState();

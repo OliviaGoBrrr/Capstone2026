@@ -159,8 +159,7 @@ public class PlayerManager : MonoBehaviour
 
             yield return null;
         }
-
-        playerCam.Lens.FieldOfView = endValue;
         isEaseFOVRunning = false;
+        //playerCam.Lens.FieldOfView = endValue;
     }
 }
