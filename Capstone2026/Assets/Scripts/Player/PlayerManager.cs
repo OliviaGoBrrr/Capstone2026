@@ -145,7 +145,6 @@ public class PlayerManager : MonoBehaviour
     public IEnumerator EaseFOV(float startValue, float endValue, float duration)
     {
         isEaseFOVRunning = true;
-        Debug.Log("test");
 
         float elapsedTime = 0f;
 
