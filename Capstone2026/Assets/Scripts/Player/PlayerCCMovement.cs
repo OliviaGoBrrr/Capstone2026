@@ -8,6 +8,7 @@ public class PlayerCCMovement : MonoBehaviour
 {
     [Header("Player Model")]
     public GameObject playerModel;
+    public Animator animator;
     // Movement Values
     [Header("Player Movement Values")]
     public float moveSpeed = 10f;
@@ -48,7 +49,7 @@ public class PlayerCCMovement : MonoBehaviour
     [SerializeField]
     private LineRenderer grappleLine;
     [SerializeField]
-    private GameObject grappleHand;
+    private Transform grappleShootPoint;
 
     [Header("Grapple UI")]
     private GameObject currentGrappleUI;
@@ -224,6 +225,8 @@ public class PlayerCCMovement : MonoBehaviour
             if (jumpBufferTimer > 0f || jumpAction.action.WasPressedThisFrame())
             {
                 playerInput.y = jumpHeight;
+                animator.SetTrigger("Jump");
+
             }
             else if (playerVelocity.y < 0f) // caps the falling speed of the player when on the ground
             {
@@ -393,7 +396,7 @@ public class PlayerCCMovement : MonoBehaviour
             playerInput = direction * grappleSpeed;
 
             // LineRenderer
-            grappleLine.SetPosition(0, grappleHand.transform.position);
+            grappleLine.SetPosition(0, grappleShootPoint.position);
 
             if (Vector3.Distance(transform.position, grapplePoint) < 1.0f)
             {

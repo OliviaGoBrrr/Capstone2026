@@ -69,7 +69,7 @@ public class PlayerState
                         continue;
                     }
 
-                    audioSource.DOFade(0, 0.2f).OnComplete(() =>
+                    audioSource.DOFade(0, 0.1f).OnComplete(() =>
                     {
                         Object.Destroy(audioSource.gameObject);
                         player.batteryDownClipsPlayed.Remove(audioSource);
