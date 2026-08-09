@@ -136,6 +136,37 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -0.07}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &827715187332047840
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1559981370712412508}
+  m_Layer: 7
+  m_Name: CameraLook
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1559981370712412508
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 827715187332047840}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2513902909373232566}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &902794307574707662
 GameObject:
   m_ObjectHideFlags: 0
@@ -1062,6 +1093,7 @@ Transform:
   - {fileID: 3873192990038087011}
   - {fileID: 4902123207289960763}
   - {fileID: 4675117464399088918}
+  - {fileID: 1559981370712412508}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!81 &4219519922819683406
@@ -1197,6 +1229,7 @@ MonoBehaviour:
   batteryImage: {fileID: 0}
   backBatteryImage: {fileID: 1531136767037607162}
   lastCheckpoint: {x: 0, y: 0, z: 0}
+  recenterCameraAction: {fileID: 1100282742043652526, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   fallenInWater: 0
   deathfade: {fileID: 0}
   playerCam: {fileID: 0}
@@ -1205,7 +1238,7 @@ MonoBehaviour:
   - {fileID: 6685773425867787845}
   settings: {fileID: 0}
   grapplePullSFX: {fileID: 8300000, guid: 8115b5387b5fbe942ba81faec6749f05, type: 3}
-  batteryDrainSFX: {fileID: 8300000, guid: f825873fa00ff50499fd59f8fe2f73d8, type: 3}
+  batteryDrainSFX: {fileID: 8300000, guid: 206aa89778741db429ad566b51d633e3, type: 3}
   batteryDownClipsPlayed: []
   canMove: 1
   isCurrentlyGrounded: 0
@@ -1216,6 +1249,12 @@ MonoBehaviour:
   isFalling: 0
   isDead: 0
   canPickUp: 1
+  OnPlayerDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  PlayerReset:
+    m_PersistentCalls:
+      m_Calls: []
   isEaseFOVRunning: 0
 --- !u!114 &2228826731360664703
 MonoBehaviour:
@@ -1230,7 +1269,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerModel: {fileID: 6570323975515940237}
-  animator: {fileID: 7831216646368265285}
+  animator: {fileID: 6963756353409448387}
   moveSpeed: 4
   walkSpeed: 4
   runSpeed: 6
@@ -1248,7 +1287,7 @@ MonoBehaviour:
   grappling: 0
   grappleAngle: 30
   grappleMaxDistance: 20
-  grappleSpeed: 4
+  grappleSpeed: 3
   grappleLockoutTime: 1
   grappleLockoutTimer: 0
   grappleTargetLayer:
@@ -2217,7 +2256,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8768043204350658181, guid: 912dde05fbeff564ea297b977bc45c45, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7831216646368265285}
+      addedObject: {fileID: 6963756353409448387}
   m_SourcePrefab: {fileID: 100100000, guid: 912dde05fbeff564ea297b977bc45c45, type: 3}
 --- !u!4 &3907464735690850513 stripped
 Transform:
@@ -2229,7 +2268,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8768043204350658181, guid: 912dde05fbeff564ea297b977bc45c45, type: 3}
   m_PrefabInstance: {fileID: 4117186059449487474}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &7831216646368265285
+--- !u!95 &6963756353409448387
 Animator:
   serializedVersion: 7
   m_ObjectHideFlags: 0

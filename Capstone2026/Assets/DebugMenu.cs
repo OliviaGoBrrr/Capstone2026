@@ -15,16 +15,22 @@ public class DebugMenu : MonoBehaviour
 
     private void Start()
     {
-        debugMenuGameObject.SetActive(false);
-        teleportLocations = teleportContainer.GetComponentsInChildren<Transform>();
-        PopulateDebugButtons();
+        if(debugMenuGameObject != null)
+        {
+            debugMenuGameObject.SetActive(false);
+            teleportLocations = teleportContainer.GetComponentsInChildren<Transform>();
+            PopulateDebugButtons();
+        }
     }
 
     private void Update()
     {
-        if (debugMenuAction.action.WasPressedThisFrame())
+        if(debugMenuGameObject != null)
         {
-            DebugMenuToggle();
+            if (debugMenuAction.action.WasPressedThisFrame())
+            {
+                DebugMenuToggle();
+            }
         }
     }
 
