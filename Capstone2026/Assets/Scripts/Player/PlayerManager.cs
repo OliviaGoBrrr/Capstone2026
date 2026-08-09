@@ -177,6 +177,15 @@ public class PlayerManager : MonoBehaviour
         //playerCam.Lens.FieldOfView = endValue;
     }
 
+    public void HandleTeleport(Vector3 pos)
+    {
+        Debug.Log($"Teleporting the player to position to {pos}");
+        movement.playerController.enabled = false;
+        transform.position = pos;
+        SnapRecenterCamera();
+        movement.playerController.enabled = true;
+    }
+
     void HandleDeath()
     {
         isDead = true;
