@@ -129,6 +129,8 @@ public class PlayerCCMovement : MonoBehaviour
 
     public void PlayerMovementLogic()
     {
+        // Stops player from inputting movement/rotation
+        if (!playerController.enabled) { return; }
         groundedPlayer = playerController.isGrounded;
 
         MovePlayer();
@@ -139,7 +141,6 @@ public class PlayerCCMovement : MonoBehaviour
         }
 
         // Timers
-
         if (grappleLockoutTimer > -1.0f)
         {
             grappleLockoutTimer -= Time.deltaTime;
@@ -181,7 +182,7 @@ public class PlayerCCMovement : MonoBehaviour
             cameraRelativeMovement = playerInput;
         }
 
-
+        if (!playerController.enabled) { return; }
         playerController.Move(moveSpeed * Time.deltaTime * cameraRelativeMovement);
     }
 

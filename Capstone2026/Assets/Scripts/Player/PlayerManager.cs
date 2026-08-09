@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using Unity.Cinemachine;
 using System.Collections;
+using UnityEngine.Events;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -59,7 +60,10 @@ public class PlayerManager : MonoBehaviour
     public bool isDead = false;
     [HideInInspector] public bool canPickUp = true;
 
-    
+
+    [Header("Events")]
+    public UnityEvent OnPlayerDeath = new();
+    public UnityEvent PlayerReset = new();
 
     #endregion
 
@@ -110,6 +114,9 @@ public class PlayerManager : MonoBehaviour
         DeadState = new PlayerDeadState(this, StateMachine, null, null);
 
         StateMachine.Initialise(IdleSubState);
+
+
+
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -117,13 +124,21 @@ public class PlayerManager : MonoBehaviour
     {
         batteryPercent = 100;
         lastCheckpoint = transform.position;
-        
+
+        OnPlayerDeath.AddListener(HandleDeath);
+        PlayerReset.AddListener(HandleReset);
+
     }
 
     // Update is called once per frame
     void Update()
     {
         StateMachine.CurrentState.FrameUpdate();
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            RecenterCamera();
+        }
     }
 
     private void FixedUpdate()
@@ -160,5 +175,34 @@ public class PlayerManager : MonoBehaviour
         }
         isEaseFOVRunning = false;
         //playerCam.Lens.FieldOfView = endValue;
+    }
+
+    void HandleDeath()
+    {
+        isDead = true;
+        canMove = false;
+        movement.playerController.enabled = false;
+    }
+
+    void HandleReset()
+    {
+        // Teleport player to checkpoint
+        transform.position = lastCheckpoint;
+        isDead = false;
+        movement.playerController.enabled = true;
+        canMove = true;
+        RecenterCamera();
+    }
+
+    public void RecenterCamera()
+    {
+        if (playerCam != null)
+        {
+            playerCam.CancelDamping(true);
+            Transform camTarget = playerCam.LookAt;
+            playerCam.GetComponent<CinemachineRotationComposer>().ForceCameraPosition(camTarget.position, playerCam.transform.rotation);
+            Debug.Log($"Recentered to look at {camTarget.name}");
+            playerCam.CancelDamping(false);
+        }
     }
 }
