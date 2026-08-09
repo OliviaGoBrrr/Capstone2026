@@ -25,7 +25,6 @@ public class PushPullObject : MonoBehaviour, IInteractable
 
     void Start()
     {
-
         resetTransform = transform;
 
         playerM.PlayerReset.AddListener(PlayerDeathReset);
