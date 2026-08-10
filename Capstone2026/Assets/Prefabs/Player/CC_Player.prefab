@@ -1240,6 +1240,12 @@ MonoBehaviour:
   grapplePullSFX: {fileID: 8300000, guid: 8115b5387b5fbe942ba81faec6749f05, type: 3}
   batteryDrainSFX: {fileID: 8300000, guid: 206aa89778741db429ad566b51d633e3, type: 3}
   batteryDownClipsPlayed: []
+  OnPlayerDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  PlayerReset:
+    m_PersistentCalls:
+      m_Calls: []
   canMove: 1
   isCurrentlyGrounded: 0
   isDialogue: 0
@@ -1249,12 +1255,6 @@ MonoBehaviour:
   isFalling: 0
   isDead: 0
   canPickUp: 1
-  OnPlayerDeath:
-    m_PersistentCalls:
-      m_Calls: []
-  PlayerReset:
-    m_PersistentCalls:
-      m_Calls: []
   isEaseFOVRunning: 0
 --- !u!114 &2228826731360664703
 MonoBehaviour:
@@ -1514,7 +1514,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6242950403056010967}
   - {fileID: 6224049429506739987}
   - {fileID: 3318590164207169388}
   - {fileID: 5460234744287743053}
@@ -1934,17 +1933,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9069171341892170074}
-  m_LocalRotation: {x: 0.19080894, y: -0, z: -0, w: 0.9816273}
-  m_LocalPosition: {x: 0, y: 0, z: -0.404}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0.0001217105, y: 0.8290374, z: 0.5591931, w: -0.000082090366}
+  m_LocalPosition: {x: 0, y: 0, z: 0.0007099977}
+  m_LocalScale: {x: 0.01, y: 0.010000002, z: 0.009999998}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4751620354459787971}
-  m_Father: {fileID: 1463840855187641495}
+  m_Father: {fileID: 431851002649759594}
   m_LocalEulerAnglesHint: {x: 22, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -0.008, y: 0.192}
+  m_AnchoredPosition: {x: 0.0013914565, y: -0.0049795955}
   m_SizeDelta: {x: 0.42, y: 0.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &4040854101513118044
@@ -2250,6 +2249,9 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 4385680143494455064, guid: 912dde05fbeff564ea297b977bc45c45, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6242950403056010967}
     - targetCorrespondingSourceObject: {fileID: 1087958583243788451, guid: 912dde05fbeff564ea297b977bc45c45, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2826205137363488791}
@@ -2258,6 +2260,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 6963756353409448387}
   m_SourcePrefab: {fileID: 100100000, guid: 912dde05fbeff564ea297b977bc45c45, type: 3}
+--- !u!4 &431851002649759594 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4385680143494455064, guid: 912dde05fbeff564ea297b977bc45c45, type: 3}
+  m_PrefabInstance: {fileID: 4117186059449487474}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3907464735690850513 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1087958583243788451, guid: 912dde05fbeff564ea297b977bc45c45, type: 3}
