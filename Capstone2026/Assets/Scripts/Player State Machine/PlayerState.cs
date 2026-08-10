@@ -69,7 +69,7 @@ public class PlayerState
                         continue;
                     }
 
-                    audioSource.DOFade(0, 0.2f).OnComplete(() =>
+                    audioSource.DOFade(0, 0.1f).OnComplete(() =>
                     {
                         Object.Destroy(audioSource.gameObject);
                         player.batteryDownClipsPlayed.Remove(audioSource);
@@ -95,7 +95,7 @@ public class PlayerState
 
             if (player.isBatteryIncreasing) // play drain sfx one time once the battery starts to drain
             {
-                player.batteryDownClipsPlayed.Add(AudioManager.Instance.PlaySFXWithReference(player.batteryDrainSFX, player.transform, 0.75f));
+               // player.batteryDownClipsPlayed.Add(AudioManager.Instance.PlaySFXWithReference(player.batteryDrainSFX, player.transform, 0.75f));
                 player.isBatteryIncreasing = false;
             }
             
@@ -116,6 +116,7 @@ public class PlayerState
         // DEAD STATE
         if (player.batteryPercent <= 0)
         {
+            player.OnPlayerDeath.Invoke();
             playerStateMachine.ChangeState(player.DeadState);
         }
 

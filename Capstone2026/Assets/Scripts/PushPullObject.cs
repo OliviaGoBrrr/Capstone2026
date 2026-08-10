@@ -13,8 +13,10 @@ public class PushPullObject : MonoBehaviour, IInteractable
     public PlayerManager playerM;
     private bool Held = false;
     public bool canBeSetDown;
+    public bool inFinalPosition;
     public Vector3 setDownLocation;
-    [HideInInspector] float initialYPos;
+    
+    Transform resetTransform;
 
     private void Awake()
     {
@@ -23,7 +25,9 @@ public class PushPullObject : MonoBehaviour, IInteractable
 
     void Start()
     {
-        initialYPos = transform.position.y;
+        resetTransform = transform;
+
+        playerM.PlayerReset.AddListener(PlayerDeathReset);
     }
 
     void Update()
@@ -62,10 +66,7 @@ public class PushPullObject : MonoBehaviour, IInteractable
         if(Held)
         {
             if(canBeSetDown) transform.position = setDownLocation;
-            Held = false;
-            // exit state
-            transform.SetParent(null);
-            playerM.PushPullState.ExitState(); //TESTING THIS 
+            StopHolding();
             return;
         }
         
@@ -81,13 +82,38 @@ public class PushPullObject : MonoBehaviour, IInteractable
         
     }
 
+    void StopHolding()
+    {
+        Held = false;
+        transform.SetParent(null);
+        playerM.PushPullState.ExitState();
+    }
+
+    // Actions
+    void PlayerDeathReset()
+    {
+        Debug.Log("Push Pull Event");
+        
+        if (Held)
+        {
+            StopHolding(); 
+        }
+
+        transform.position = resetTransform.position;
+        transform.rotation = resetTransform.rotation;
+    }
+
+
     public void OnTriggerEnter(Collider collision)
     {
-        if(collision.gameObject.tag == "SetDownPoint")
+        if (collision.gameObject.tag == "SetDownPoint")
         {
             canBeSetDown = true;
             setDownLocation = collision.transform.position;
             Debug.Log("can be set down: " + $"{setDownLocation}");
+
+            // if in final position, remove PlayerDeath listener
+            // playerM.OnPlayerDeath.RemoveListener(HandleDeath);
         }
     }
 
