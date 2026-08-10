@@ -48,6 +48,11 @@ public class PlayerManager : MonoBehaviour
     public AudioClip batteryDrainSFX;
     [HideInInspector] public List<AudioSource> batteryDownClipsPlayed = new List<AudioSource>();
 
+
+    [Header("Events")]
+    public UnityEvent OnPlayerDeath = new();
+    public UnityEvent PlayerReset = new();
+
     [Header("Player State Bools")]
     #region State Bools
 
@@ -62,9 +67,6 @@ public class PlayerManager : MonoBehaviour
     [HideInInspector] public bool canPickUp = true;
 
 
-    [Header("Events")]
-    public UnityEvent OnPlayerDeath = new();
-    public UnityEvent PlayerReset = new();
 
     #endregion
 
