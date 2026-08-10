@@ -12,12 +12,14 @@ public class PlayerRunSubState : PlayerGroundedSuperState
     {
         base.EnterState();
 
-        player.movement.moveSpeed = player.movement.runSpeed;
+        player.movement.moveSpeed = player.movement.runSpeed; // double called
+        
         
         if(!player.isEaseFOVRunning) 
         { 
-            player.StartCoroutine(player.EaseFOV(player.playerCam.Lens.FieldOfView , player.settings.FOVslider.value + 10, 0.2f)); 
+            //player.StartCoroutine(player.EaseFOV(player.playerCam.Lens.FieldOfView , player.settings.FOVslider.value + 10, 0.2f)); 
         }
+        
 
         if(player.isCurrentlyGrounded)
         {
@@ -37,11 +39,12 @@ public class PlayerRunSubState : PlayerGroundedSuperState
             spark.Stop();
         }
 
+        
         if(!player.isEaseFOVRunning) 
         {
-            player.StartCoroutine(player.EaseFOV(player.playerCam.Lens.FieldOfView, player.settings.FOVslider.value, 0.2f)); 
+            //player.StartCoroutine(player.EaseFOV(player.playerCam.Lens.FieldOfView, player.settings.FOVslider.value, 0.2f)); 
         }
-
+        
         base.ExitState();
     }
 

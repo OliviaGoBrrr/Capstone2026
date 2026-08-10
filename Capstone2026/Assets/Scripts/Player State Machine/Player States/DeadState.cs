@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,15 +8,13 @@ public class PlayerDeadState : PlayerState
     {
     }
 
+
     public override void EnterState()
     {
-        
+        player.OnPlayerDeath.Invoke();
         player.isDead = true;
-        player.canMove = false;
 
         player.fallenInWater = false;
-
-        player.movement.playerVelocity = new Vector3(0, 0, 0);
 
         // restarts scene when player runs out of power
         // replace this later with animations and what not
@@ -23,15 +22,15 @@ public class PlayerDeadState : PlayerState
 
         player.deathfade.deathFade();
 
+
         base.EnterState();
     }
 
     public override void ExitState()
     {
         // character controller overrides manual transform changes
-        player.movement.playerController.enabled = false;
-        player.transform.position = player.lastCheckpoint;
-        player.movement.playerController.enabled = true;
+
+
         Debug.Log(player.lastCheckpoint);
 
         //player.isDead = false;
@@ -62,5 +61,20 @@ public class PlayerDeadState : PlayerState
             playerStateMachine.ChangeState(player.IdleSubState);
             
         }
+    }
+
+    private void OnEnable()
+    {
+
+    }
+
+    private void OnDisable()
+    {
+
+    }
+
+    void HandleDeath()
+    {
+        Debug.Log("Player has died and the death event has triggered correctly");
     }
 }

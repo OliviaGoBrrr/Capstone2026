@@ -4,6 +4,8 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using Unity.Cinemachine;
 using System.Collections;
+using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -30,7 +32,7 @@ public class PlayerManager : MonoBehaviour
     public Image backBatteryImage;
 
     public Vector3 lastCheckpoint;
-
+    public InputActionReference recenterCameraAction;
     [HideInInspector] public bool fallenInWater;
 
     [Header("References")] //remove this if i've done it wrong, this is just the solution im thinking of rn
@@ -46,6 +48,11 @@ public class PlayerManager : MonoBehaviour
     public AudioClip batteryDrainSFX;
     [HideInInspector] public List<AudioSource> batteryDownClipsPlayed = new List<AudioSource>();
 
+
+    [Header("Events")]
+    public UnityEvent OnPlayerDeath = new();
+    public UnityEvent PlayerReset = new();
+
     [Header("Player State Bools")]
     #region State Bools
 
@@ -59,9 +66,10 @@ public class PlayerManager : MonoBehaviour
     public bool isDead = false;
     [HideInInspector] public bool canPickUp = true;
 
-    
+
 
     #endregion
+
 
     #region State Machine Vars
 
@@ -110,6 +118,7 @@ public class PlayerManager : MonoBehaviour
         DeadState = new PlayerDeadState(this, StateMachine, null, null);
 
         StateMachine.Initialise(IdleSubState);
+
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -117,13 +126,21 @@ public class PlayerManager : MonoBehaviour
     {
         batteryPercent = 100;
         lastCheckpoint = transform.position;
-        
+
+        OnPlayerDeath.AddListener(HandleDeath);
+        PlayerReset.AddListener(HandleReset);
+
     }
 
     // Update is called once per frame
     void Update()
     {
         StateMachine.CurrentState.FrameUpdate();
+
+        if (recenterCameraAction.action.WasPressedThisFrame())
+        {
+            SnapRecenterCamera();
+        }
     }
 
     private void FixedUpdate()
@@ -160,5 +177,43 @@ public class PlayerManager : MonoBehaviour
         }
         isEaseFOVRunning = false;
         //playerCam.Lens.FieldOfView = endValue;
+    }
+
+    public void HandleTeleport(Vector3 pos)
+    {
+        Debug.Log($"Teleporting the player to position to {pos}");
+        movement.playerController.enabled = false;
+        transform.position = pos;
+        SnapRecenterCamera();
+        movement.playerController.enabled = true;
+    }
+
+    void HandleDeath()
+    {
+        isDead = true;
+        canMove = false;
+        movement.playerController.enabled = false;
+    }
+
+    void HandleReset()
+    {
+        // Teleport player to checkpoint
+        transform.position = lastCheckpoint;
+        isDead = false;
+        movement.playerController.enabled = true;
+        canMove = true;
+        SnapRecenterCamera();
+    }
+
+    // Flickers camera damping so the camera is centered to the player immediately. Used in death, but can be called with a key press/button
+    public void SnapRecenterCamera()
+    {
+        if (playerCam != null)
+        {
+            playerCam.CancelDamping(true);
+            Transform camTarget = playerCam.LookAt;
+            playerCam.GetComponent<CinemachineRotationComposer>().ForceCameraPosition(camTarget.position, playerCam.transform.rotation);
+            playerCam.CancelDamping(false);
+        }
     }
 }

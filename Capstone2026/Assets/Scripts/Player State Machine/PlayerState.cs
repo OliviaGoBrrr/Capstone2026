@@ -95,7 +95,7 @@ public class PlayerState
 
             if (player.isBatteryIncreasing) // play drain sfx one time once the battery starts to drain
             {
-                player.batteryDownClipsPlayed.Add(AudioManager.Instance.PlaySFXWithReference(player.batteryDrainSFX, player.transform, 0.75f));
+               // player.batteryDownClipsPlayed.Add(AudioManager.Instance.PlaySFXWithReference(player.batteryDrainSFX, player.transform, 0.75f));
                 player.isBatteryIncreasing = false;
             }
             
@@ -116,6 +116,7 @@ public class PlayerState
         // DEAD STATE
         if (player.batteryPercent <= 0)
         {
+            player.OnPlayerDeath.Invoke();
             playerStateMachine.ChangeState(player.DeadState);
         }
 

@@ -72,7 +72,7 @@
                     "name": "Next",
                     "type": "Button",
                     "id": "b7230bb6-fc9b-4f52-8b25-f5e19cb2c2ba",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -90,6 +90,24 @@
                     "name": "Grapple",
                     "type": "Button",
                     "id": "b7805de4-843a-46c3-a3ec-9335f1b92623",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Recenter Camera",
+                    "type": "Button",
+                    "id": "1b8112f8-b0d0-4ed2-bc92-d1f9d688271f",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Debug Menu Toggle",
+                    "type": "Button",
+                    "id": "7baf2265-328f-41d1-aa67-4350962dd9a0",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -479,6 +497,39 @@
                     "processors": "",
                     "groups": "",
                     "action": "Grapple",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0e80a45d-f4f9-4e2e-9b65-0cac8228955e",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Recenter Camera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fdae6478-0e6c-4c0c-8b77-39945dee5ab4",
+                    "path": "<Gamepad>/leftStickPress",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Joystick;Gamepad",
+                    "action": "Recenter Camera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b8404bb1-9e46-4d11-896a-f4d902e19b38",
+                    "path": "<Keyboard>/numpad9",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Debug Menu Toggle",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
