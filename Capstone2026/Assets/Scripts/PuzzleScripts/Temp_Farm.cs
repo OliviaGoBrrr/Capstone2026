@@ -1,11 +1,16 @@
+using DG.Tweening;
+using NUnit.Framework;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Temp_Farm : MonoBehaviour
 {
-    public GameObject Boulder, River_A, River_B, River_C, CropsA_A, CropsA_B, CropsA_C, CropsD_A, CropsD_B, CropsD_C;
+    public GameObject Boulder, Mask0, Mask1, Mask2, Mask3, Mask4, Mask5;
     public Transform BoulderInitPosition;
     public bool hasntfiredyet = true;
+
+    GameObject[] ArrayOfMasks; // It's been a hot second, this was the best i could do to get this to work.
 
     void Update()
     {
@@ -16,19 +21,38 @@ public class Temp_Farm : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        ArrayOfMasks = new GameObject[6];
+        ArrayOfMasks[0] = Mask0;
+        ArrayOfMasks[1] = Mask1;
+        ArrayOfMasks[2] = Mask2;
+        ArrayOfMasks[3] = Mask3;
+        ArrayOfMasks[4] = Mask4;
+        ArrayOfMasks[5] = Mask5;
+    }
     IEnumerator Flow() //audio river flowing
     {
-        River_A.SetActive(true);
-        CropsA_A.SetActive(true);
-        CropsD_A.SetActive(false);
-        CropsA_B.SetActive(true);
-        CropsD_B.SetActive(false);
-        CropsA_C.SetActive(true);
-        CropsD_C.SetActive(false);
-        yield return new WaitForSeconds(2f);
-        River_B.SetActive(true);
-        yield return new WaitForSeconds(1f);
-        River_C.SetActive(true);
-        yield return new WaitForSeconds(1f);
+        foreach (GameObject Mask in ArrayOfMasks)
+        {
+            var startScale = Mask.transform.localScale;
+            var endScale = Vector3.one * 0;
+            var elapsed = 0f;
+
+            while (elapsed < 0.2f)
+            {
+                var t = elapsed / 0.2f;
+                Mask.transform.localScale = new Vector3(
+                    Mathf.Lerp(startScale.x, 0f, t),
+                    startScale.y, 
+                    startScale.z);
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+
+
+            Mask.transform.localScale = endScale;
+            yield return null;
+        }
     }
 }
