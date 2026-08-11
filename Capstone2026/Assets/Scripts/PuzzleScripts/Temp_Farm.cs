@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Temp_Farm : MonoBehaviour
 {
-    public GameObject Boulder, Mask0, Mask1, Mask2, Mask3, Mask4, Mask5;
+    public GameObject Boulder, Mask0, Mask1, Mask2, Mask3, Mask4, Mask5, DeadCrops, AliveCrops;
     public Transform BoulderInitPosition;
     public bool hasntfiredyet = true;
 
@@ -54,5 +54,7 @@ public class Temp_Farm : MonoBehaviour
             Mask.transform.localScale = endScale;
             yield return null;
         }
+        DeadCrops.SetActive(false);
+        AliveCrops.SetActive(true);
     }
 }

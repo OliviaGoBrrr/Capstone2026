@@ -32,7 +32,7 @@ public class SceneLoader : MonoBehaviour
         Scene currentScene = SceneManager.GetActiveScene();
         if (currentScene.name == "_MVPFarmLevel")
         {
-            StartCoroutine(LoadScene("_MVPDock"));
+            StartCoroutine(LoadScene("_MVPDockHub"));
         }
         else
         {
