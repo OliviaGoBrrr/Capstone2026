@@ -36,7 +36,7 @@ public class SceneLoader : MonoBehaviour
         }
         else
         {
-            StartCoroutine(LoadScene("_MVPFarmLevel-A"));
+            StartCoroutine(LoadScene("_MVPFarmLevel"));
         }
     }
 }

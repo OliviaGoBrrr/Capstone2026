@@ -7,7 +7,7 @@ public class SceneSelectManager : MonoBehaviour
 
     public void GoToLevelA()
     {
-        sceneLoader.LoadNewScene("MVP_Level-A");
+        sceneLoader.LoadNewScene("_MVPFarmLevel");
     }
 
     public void GoToGym()
@@ -22,6 +22,6 @@ public class SceneSelectManager : MonoBehaviour
 
     public void GoToDock()
     {
-        sceneLoader.LoadNewScene("Dock");
+        sceneLoader.LoadNewScene("_MVPDockHub");
     }
 }
