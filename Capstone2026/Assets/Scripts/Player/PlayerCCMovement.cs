@@ -23,6 +23,7 @@ public class PlayerCCMovement : MonoBehaviour
     // Physics
     public Vector3 playerInput;
     public Vector3 playerVelocity;
+    private float timeFalling = 0f;
     [HideInInspector]
     public Vector3 desiredMove;
 
@@ -140,6 +141,8 @@ public class PlayerCCMovement : MonoBehaviour
             HandleGravity();
         }
 
+        HandlePlayerAnimations();
+
         // Timers
         if (grappleLockoutTimer > -1.0f)
         {
@@ -152,6 +155,7 @@ public class PlayerCCMovement : MonoBehaviour
         if (playerController.isGrounded)
         {
             playerInput.y = -1f;
+            timeFalling = 0f;
         }
         else
         {
@@ -159,9 +163,10 @@ public class PlayerCCMovement : MonoBehaviour
             float newYVelocity = playerInput.y + (gravityValue * Time.deltaTime);
             float nextYVelocity = (previousYVelocity + newYVelocity) * 0.5f;
             playerInput.y = nextYVelocity;
+
+            timeFalling += Time.deltaTime;
         }
     }
-
 
     public void MovePlayer()
     {
@@ -183,6 +188,19 @@ public class PlayerCCMovement : MonoBehaviour
         }
 
         if (!playerController.enabled) { return; }
+
+        // If the player is not inputting movement, idle animation, else running/walking
+        float targetAnimSpeed;
+        float animSpeed = animator.GetFloat("Speed");
+
+        if (actionInput == Vector2.zero) { targetAnimSpeed = 0f; }
+        else { targetAnimSpeed = moveSpeed; }
+
+        // Lerp between animations
+        float newAnimSpeed = animSpeed + ((targetAnimSpeed - animSpeed) * Time.deltaTime * 2f);
+        animator.SetFloat("Speed", newAnimSpeed);
+
+        // Move player
         playerController.Move(moveSpeed * Time.deltaTime * cameraRelativeMovement);
     }
 
@@ -227,8 +245,6 @@ public class PlayerCCMovement : MonoBehaviour
             {
                 playerInput.y = jumpHeight;
                 animator.SetTrigger("Jump");
-                Debug.Log("JUMPING ANIMATION STARTED");
-
             }
             else if (playerVelocity.y < 0f) // caps the falling speed of the player when on the ground
             {
@@ -258,6 +274,29 @@ public class PlayerCCMovement : MonoBehaviour
 
         // Rotates the model over time
         playerModel.transform.rotation = Quaternion.Slerp(playerModel.transform.rotation, target, rotationSpeed * Time.deltaTime);
+    }
+
+    private void HandlePlayerAnimations()
+    {
+        Vector3 playerVelocity = playerInput;
+
+        animator.SetBool("isGrounded", groundedPlayer);
+
+        // Falling Animation - start if they've been falling for a while
+        if (!groundedPlayer && timeFalling > 0.3f)
+        {
+            animator.SetFloat("YVelocity", playerVelocity.y);
+        }
+        else
+        {
+            if(animator.GetFloat("YVelocity") < 1f) // Makes it so the SetFloat is only triggered when not falling anymore
+            {
+                animator.SetFloat("YVelocity", 1f); // If the player is on the ground, the falling animation won't trigger
+            }
+        }
+
+        // Idle, Walking, Running
+
     }
 
     public bool FindValidGrappleTarget() // returns true if valid target selected
