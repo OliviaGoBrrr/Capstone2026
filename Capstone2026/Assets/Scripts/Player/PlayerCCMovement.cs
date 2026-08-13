@@ -227,6 +227,7 @@ public class PlayerCCMovement : MonoBehaviour
             {
                 playerInput.y = jumpHeight;
                 animator.SetTrigger("Jump");
+                Debug.Log("JUMPING ANIMATION STARTED");
 
             }
             else if (playerVelocity.y < 0f) // caps the falling speed of the player when on the ground
