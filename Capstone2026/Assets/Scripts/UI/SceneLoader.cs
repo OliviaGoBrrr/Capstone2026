@@ -30,14 +30,13 @@ public class SceneLoader : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Scene currentScene = SceneManager.GetActiveScene();
-        if (currentScene.name == "MVP_Level-A")
+        if (currentScene.name == "_MVPFarmLevel")
         {
-            StartCoroutine(LoadScene("Dock"));
-
+            StartCoroutine(LoadScene("_MVPDockHub"));
         }
         else
         {
-            StartCoroutine(LoadScene("MVP_Level-A"));
+            StartCoroutine(LoadScene("_MVPFarmLevel"));
         }
     }
 }

@@ -107,8 +107,6 @@ public class PlayerState
         player.batteryImage.fillAmount = player.batteryPercent / 100;
 
         player.backBatteryImage.fillAmount = player.batteryPercent / 100;
-
-        
     }
 
     public virtual void TransitionChecks()
