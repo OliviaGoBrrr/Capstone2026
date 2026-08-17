@@ -108,7 +108,6 @@ public class LightCrystal : MonoBehaviour
             {
                 if (player.TryGetComponent<PlayerSolarDetector>(out PlayerSolarDetector solarDetector))
                 {
-                    Debug.Log("Recharging Player");
                     solarDetector.ChangeBatteryPercent(player.batteryPercent, player.batteryLightRateOfChangePerSecond);
                 }
 
@@ -123,6 +122,7 @@ public class LightCrystal : MonoBehaviour
 
                     grappleHitting.isGrappleActive = true;
                 }
+                lineRenderer.SetPosition(1, hitPos);
             }
         }
         else
