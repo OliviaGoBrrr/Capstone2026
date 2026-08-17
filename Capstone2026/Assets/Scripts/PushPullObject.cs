@@ -13,6 +13,7 @@ public class PushPullObject : MonoBehaviour, IInteractable
     public PlayerManager playerM;
     public bool Held = false;
     private float forwardOffset;
+    public const float playerToObjDist = 1.5f;
     public bool canBeSetDown;
     public bool inFinalPosition;
     public Vector3 setDownLocation;
@@ -24,7 +25,7 @@ public class PushPullObject : MonoBehaviour, IInteractable
     private void Awake()
     {
         playerM = FindFirstObjectByType<PlayerManager>().GetComponent<PlayerManager>();
-        PlayerTransform = playerM.GetComponent<Transform>();
+        PlayerTransform = playerM.GetComponent<PlayerCCMovement>().playerModel.transform;
     }
 
     void Start()
@@ -46,20 +47,20 @@ public class PushPullObject : MonoBehaviour, IInteractable
     {
         if(Held)
         {
-            if(playerM.isPushPulling == true)
+            if (levelTerrain != Terrain.activeTerrain)
             {
-                /*
-                float forwardOffset;
-                forwardOffset = GetComponent<Collider>().bounds.extents.z;
-                */
+                levelTerrain = Terrain.activeTerrain;
+            }
 
-                float finalDistance = 1.5f + forwardOffset;
+            if (playerM.isPushPulling == true)
+            {
+                float finalDistance = playerToObjDist + forwardOffset;
                 transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, finalDistance);
 
                 // find terrain height & set it
-                if (Terrain.activeTerrain != null)
+                if (levelTerrain != null) // makes it so it can be used in testing scene without terrain
                 {
-                    float terrainHeight = Terrain.activeTerrain.SampleHeight(transform.position);
+                    float terrainHeight = levelTerrain.SampleHeight(transform.position);
                     transform.position = new Vector3(transform.position.x, terrainHeight, transform.position.z);
                 }
 
@@ -73,7 +74,7 @@ public class PushPullObject : MonoBehaviour, IInteractable
                 Held = false;
                 return;
             }
-        } 
+        }
     }
 
     public void OnInteract()
