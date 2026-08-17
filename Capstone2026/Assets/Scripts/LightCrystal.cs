@@ -78,7 +78,7 @@ public class LightCrystal : MonoBehaviour
         // Checks to see if the ray hits anything
         if (Physics.Raycast(rayStart, direction, out RaycastHit hit, beamMaxDistance, beamLayerMask))
         {
-            lineRenderer.SetPosition(1, new Vector3(hit.transform.position.x, beamStartPoint.position.y, hit.transform.position.z));
+            Vector3 hitPos = hit.transform.position;
 
             if (hit.transform.TryGetComponent<LightCrystal>(out LightCrystal crystal))
             {
@@ -98,6 +98,8 @@ public class LightCrystal : MonoBehaviour
 
                 }
 
+                lineRenderer.SetPosition(1, hitPos);
+
                 return;
             }
 
@@ -108,6 +110,8 @@ public class LightCrystal : MonoBehaviour
                     Debug.Log("Recharging Player");
                     solarDetector.ChangeBatteryPercent(player.batteryPercent, player.batteryLightRateOfChangePerSecond);
                 }
+
+                lineRenderer.SetPosition(1, rayStart + (direction * (Vector3.Distance(rayStart, player.transform.position))));
             }
 
             else if (hit.transform.TryGetComponent<DisableGrapplePoint>(out DisableGrapplePoint grapple))
