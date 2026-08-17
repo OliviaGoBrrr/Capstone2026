@@ -15,12 +15,8 @@ public class PlayerRunSubState : PlayerGroundedSuperState
         player.movement.moveSpeed = player.movement.runSpeed; // double called
         
         
-        if(!player.isEaseFOVRunning) 
-        { 
-            //player.StartCoroutine(player.EaseFOV(player.playerCam.Lens.FieldOfView , player.settings.FOVslider.value + 10, 0.2f)); 
-        }
+        player.SprintFOVChange(player.settings.FOVslider.value + 10);
         
-
         if(player.isCurrentlyGrounded)
         {
             foreach (ParticleSystem spark in player.sparks)
@@ -37,11 +33,7 @@ public class PlayerRunSubState : PlayerGroundedSuperState
             spark.Stop();
         }
 
-        
-        if(!player.isEaseFOVRunning) 
-        {
-            //player.StartCoroutine(player.EaseFOV(player.playerCam.Lens.FieldOfView, player.settings.FOVslider.value, 0.2f)); 
-        }
+        player.SprintFOVChange(player.settings.FOVslider.value);
         
         base.ExitState();
     }

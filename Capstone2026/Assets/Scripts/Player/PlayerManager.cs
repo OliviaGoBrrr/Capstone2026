@@ -6,6 +6,7 @@ using Unity.Cinemachine;
 using System.Collections;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using DG.Tweening;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -39,6 +40,7 @@ public class PlayerManager : MonoBehaviour
     public DeathFade deathfade;
     public CinemachineCamera playerCam;
     public ParticleSystem[] sparks;
+    private Tweener fovTween;
 
     [Header("Settings")]
     public Settings settings;
@@ -156,27 +158,16 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    // Couldn't think of another place to put this :P
-    [HideInInspector] public bool isEaseFOVRunning = false;
-    public IEnumerator EaseFOV(float startValue, float endValue, float duration)
+    //Tweening for FOV changes
+    public void SprintFOVChange(float targetFOV)
     {
-        isEaseFOVRunning = true;
+        if (playerCam.Lens.FieldOfView == targetFOV) return;
 
-        float elapsedTime = 0f;
+        fovTween?.Kill();
 
-        while (elapsedTime < duration)
-        {
-            elapsedTime += Time.deltaTime;
-            float t = Mathf.Clamp01(elapsedTime / duration);
+        //apparently cinemachine doesnt work with DOFieldOfView
+        fovTween = DOTween.To( () => playerCam.Lens.FieldOfView, x => playerCam.Lens.FieldOfView = x, targetFOV, 0.2f).SetEase(Ease.OutQuad);
 
-            float currentValue = Mathf.Lerp(startValue, endValue, t);
-            
-            playerCam.Lens.FieldOfView = currentValue;
-
-            yield return null;
-        }
-        isEaseFOVRunning = false;
-        //playerCam.Lens.FieldOfView = endValue;
     }
 
     public void HandleTeleport(Vector3 pos)
