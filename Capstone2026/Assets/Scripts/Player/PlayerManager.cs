@@ -64,7 +64,7 @@ public class PlayerManager : MonoBehaviour
     public bool isGrappling = false;
     public bool isFalling = false;
     public bool isDead = false;
-    [HideInInspector] public bool canPickUp = true;
+    public bool canPickUp = true;
 
 
 

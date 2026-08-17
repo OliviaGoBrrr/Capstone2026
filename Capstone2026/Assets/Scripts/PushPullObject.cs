@@ -11,21 +11,33 @@ public class PushPullObject : MonoBehaviour, IInteractable
 {
     public Transform PlayerTransform;
     public PlayerManager playerM;
-    private bool Held = false;
+    public bool Held = false;
+    private float forwardOffset;
     public bool canBeSetDown;
     public bool inFinalPosition;
     public Vector3 setDownLocation;
-    
-    Transform resetTransform;
+
+    Terrain levelTerrain;
+    [SerializeField] private Vector3 resetPos;
+    [SerializeField] private Quaternion resetRot;
 
     private void Awake()
     {
-        playerM = FindFirstObjectByType<PlayerManager>().GetComponent<PlayerManager>(); 
+        playerM = FindFirstObjectByType<PlayerManager>().GetComponent<PlayerManager>();
+        PlayerTransform = playerM.GetComponent<Transform>();
     }
 
     void Start()
     {
-        resetTransform = transform;
+        if(levelTerrain == null)
+        {
+            levelTerrain = Terrain.activeTerrain;
+        }
+
+        resetPos = transform.position;
+        resetRot = transform.rotation;
+
+        forwardOffset = GetComponent<Collider>().bounds.extents.z;
 
         playerM.PlayerReset.AddListener(PlayerDeathReset);
     }
@@ -36,20 +48,25 @@ public class PushPullObject : MonoBehaviour, IInteractable
         {
             if(playerM.isPushPulling == true)
             {
-                float forwardOffset = 0f;
+                /*
+                float forwardOffset;
                 forwardOffset = GetComponent<Collider>().bounds.extents.z;
+                */
 
                 float finalDistance = 1.5f + forwardOffset;
                 transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, finalDistance);
 
                 // find terrain height & set it
-                float terrainHeight = Terrain.activeTerrain.SampleHeight(transform.position);
-                transform.position = new Vector3(transform.position.x, terrainHeight, transform.position.z);
+                if (Terrain.activeTerrain != null)
+                {
+                    float terrainHeight = Terrain.activeTerrain.SampleHeight(transform.position);
+                    transform.position = new Vector3(transform.position.x, terrainHeight, transform.position.z);
+                }
 
                 //transform.position = PlayerTransform.position + (transform.forward * 2);
                 //transform.rotation = PlayerTransform.rotation;
                 // transform.rotation = new Quaternion(transform.rotation.x, PlayerTransform.rotation.y, transform.rotation.z, 0); //thing im working on to make the rotation nicer
-            }   
+            }
 
             else
             {
@@ -92,15 +109,10 @@ public class PushPullObject : MonoBehaviour, IInteractable
     // Actions
     void PlayerDeathReset()
     {
-        Debug.Log("Push Pull Event");
-        
-        if (Held)
-        {
-            StopHolding(); 
-        }
-
-        transform.position = resetTransform.position;
-        transform.rotation = resetTransform.rotation;
+        // Stop the player from holding and reset barrel
+        StopHolding();
+        transform.position = resetPos;
+        transform.rotation = resetRot;
     }
 
 

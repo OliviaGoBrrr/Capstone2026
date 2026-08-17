@@ -28,8 +28,6 @@ public class PlayerRunSubState : PlayerGroundedSuperState
                 spark.Play();
             }
         }
-
-        Debug.Log("Entered Run State");
     }
 
     public override void ExitState()

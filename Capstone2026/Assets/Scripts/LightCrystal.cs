@@ -39,6 +39,7 @@ public class LightCrystal : MonoBehaviour
         {
             ShootLightBeam();
         }
+
         IlluminateCrystal();
     }
 

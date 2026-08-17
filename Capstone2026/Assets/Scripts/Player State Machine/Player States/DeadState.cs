@@ -28,11 +28,6 @@ public class PlayerDeadState : PlayerState
 
     public override void ExitState()
     {
-        // character controller overrides manual transform changes
-
-
-        Debug.Log(player.lastCheckpoint);
-
         //player.isDead = false;
         player.batteryPercent = 100; // reset battery
 
