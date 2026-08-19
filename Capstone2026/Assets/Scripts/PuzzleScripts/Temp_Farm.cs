@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Temp_Farm : MonoBehaviour
 {
-    public GameObject Boulder, Mask0, Mask1, Mask2, Mask3, Mask4, Mask5, DeadCrops, AliveCrops;
+    public GameObject Boulder, Mask0, Mask1, Mask2, Mask3, Mask4, Mask5, DeadCrops, AliveCrops, ColliderForRiverInFarm;
     public Transform BoulderInitPosition;
     public bool hasntfiredyet = true;
 
@@ -31,7 +31,7 @@ public class Temp_Farm : MonoBehaviour
         ArrayOfMasks[4] = Mask4;
         ArrayOfMasks[5] = Mask5;
     }
-    IEnumerator Flow() //audio river flowing
+    IEnumerator Flow()
     {
         foreach (GameObject Mask in ArrayOfMasks)
         {
@@ -39,9 +39,9 @@ public class Temp_Farm : MonoBehaviour
             var endScale = Vector3.one * 0;
             var elapsed = 0f;
 
-            while (elapsed < 0.2f)
+            while (elapsed < 0.3f)
             {
-                var t = elapsed / 0.2f;
+                var t = elapsed / 0.3f;
                 Mask.transform.localScale = new Vector3(
                     Mathf.Lerp(startScale.x, 0f, t),
                     startScale.y, 
@@ -56,5 +56,6 @@ public class Temp_Farm : MonoBehaviour
         }
         DeadCrops.SetActive(false);
         AliveCrops.SetActive(true);
+        ColliderForRiverInFarm.SetActive(true);
     }
 }
