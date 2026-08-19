@@ -47,6 +47,8 @@ public class PushPullObject : MonoBehaviour, IInteractable
     {
         if(Held)
         {
+            playerM.canPickUp = false;
+            
             if (levelTerrain != Terrain.activeTerrain)
             {
                 levelTerrain = Terrain.activeTerrain;
@@ -63,10 +65,6 @@ public class PushPullObject : MonoBehaviour, IInteractable
                     float terrainHeight = levelTerrain.SampleHeight(transform.position);
                     transform.position = new Vector3(transform.position.x, terrainHeight, transform.position.z);
                 }
-
-                //transform.position = PlayerTransform.position + (transform.forward * 2);
-                //transform.rotation = PlayerTransform.rotation;
-                // transform.rotation = new Quaternion(transform.rotation.x, PlayerTransform.rotation.y, transform.rotation.z, 0); //thing im working on to make the rotation nicer
             }
 
             else
@@ -91,11 +89,9 @@ public class PushPullObject : MonoBehaviour, IInteractable
         if(playerM.canPickUp == true)
         {
             Held = true;
-            // enter state
-            // transform.localRotation = Quaternion.identity;
             transform.SetParent(PlayerTransform);
 
-            playerM.PushPullState.EnterState(); //TESTING THIS
+            playerM.PushPullState.EnterState();
         }
         
     }
