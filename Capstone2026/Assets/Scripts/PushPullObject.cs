@@ -86,7 +86,7 @@ public class PushPullObject : MonoBehaviour, IInteractable
             return;
         }
         
-        if(playerM.canPickUp == true)
+        else if(playerM.canPickUp == true)
         {
             Held = true;
             transform.SetParent(PlayerTransform);
