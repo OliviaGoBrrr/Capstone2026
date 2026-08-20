@@ -36,6 +36,7 @@ public class PlayerCCMovement : MonoBehaviour
     public bool gravityOn = true;
 
     [HideInInspector] public bool grappling;
+    [HideInInspector] bool grappleArmAtPoint;
     [Header("Grapple Action Values")]
     public float grappleAngle;
     public float grappleMaxDistance;
@@ -47,6 +48,13 @@ public class PlayerCCMovement : MonoBehaviour
     private const int maxGrappleColliders = 10;
     public LayerMask grappleTargetLayer;
     public Vector3 grapplePoint;
+    [SerializeField]
+    private GameObject grappleArmPrefab;
+    private GameObject grappleArmCopy;
+    [SerializeField]
+    private GameObject grappleArmOnModel;
+    [SerializeField]
+    private float grappleArmSpeed = 60f;
     [SerializeField]
     private LineRenderer grappleLine;
     [SerializeField]
@@ -134,12 +142,21 @@ public class PlayerCCMovement : MonoBehaviour
         if (!playerController.enabled) { return; }
         groundedPlayer = playerController.isGrounded;
 
-        MovePlayer();
+        if (grappling)
+        {
+            HandleGrapple();
+        }
+        else
+        {
+            MovePlayer();
+        }
 
         if (gravityOn)
         {
             HandleGravity();
         }
+
+
 
         HandlePlayerAnimations();
 
@@ -176,7 +193,6 @@ public class PlayerCCMovement : MonoBehaviour
         {
             playerInput.x = actionInput.x; // left and right
             playerInput.z = actionInput.y; // forward and backward
-
 
             cameraRelativeMovement = ConvertToCameraSpace(playerInput);
         }
@@ -229,7 +245,7 @@ public class PlayerCCMovement : MonoBehaviour
 
         if (vectorRoatatedToCameraSpace != Vector3.zero)
         {
-            RotatePlayer(vectorRoatatedToCameraSpace);
+            RotatePlayer(vectorRoatatedToCameraSpace, rotationSpeed);
         }
 
         vectorRoatatedToCameraSpace.y = currentYValue;
@@ -265,7 +281,7 @@ public class PlayerCCMovement : MonoBehaviour
         }
     }
 
-    public void RotatePlayer(Vector3 targetRotation)
+    public void RotatePlayer(Vector3 targetRotation, float rotSpeed)
     {
         // Rotation calculation - will look in the direction the input action
         Vector3 adjustedTarget = new Vector3(targetRotation.x, 0, targetRotation.z);
@@ -273,7 +289,7 @@ public class PlayerCCMovement : MonoBehaviour
         Quaternion target = Quaternion.LookRotation(adjustedTarget);
 
         // Rotates the model over time
-        playerModel.transform.rotation = Quaternion.Slerp(playerModel.transform.rotation, target, rotationSpeed * Time.deltaTime);
+        playerModel.transform.rotation = Quaternion.Slerp(playerModel.transform.rotation, target, rotSpeed * Time.deltaTime);
     }
 
     private void HandlePlayerAnimations()
@@ -283,7 +299,7 @@ public class PlayerCCMovement : MonoBehaviour
         animator.SetBool("isGrounded", groundedPlayer);
 
         // Falling Animation - start if they've been falling for a while
-        if (!groundedPlayer && timeFalling > 0.3f)
+        if (!groundedPlayer && timeFalling > 0.2f)
         {
             animator.SetFloat("YVelocity", playerVelocity.y);
         }
@@ -298,6 +314,7 @@ public class PlayerCCMovement : MonoBehaviour
         // Idle, Walking, Running
 
     }
+
 
     public bool FindValidGrappleTarget() // returns true if valid target selected
     {
@@ -409,40 +426,70 @@ public class PlayerCCMovement : MonoBehaviour
         grapplePoint = grappleTarget.anchorPoint.transform.position;
         grappleLockoutTimer = grappleLockoutTime;
 
-
-
         // Turn off physics
-        gravityOn = false;
+        //gravityOn = false;
         grappling = true;
+
+        grappleArmCopy = Instantiate(grappleArmPrefab, grappleShootPoint.position, Quaternion.identity);
+        grappleArmAtPoint = false;
+
+        grappleArmOnModel.SetActive(false);
 
         // Reset player velocity
         playerInput = Vector3.zero;
 
         // Linerenderer
-        grappleLine.SetPosition(1, grapplePoint);
+        grappleLine.SetPosition(0, grappleShootPoint.position);
+        grappleLine.SetPosition(1, grappleArmCopy.transform.position);
         grappleLine.enabled = true;
+    }
+
+    public void HandleGrapple()
+    { 
+        RotatePlayer(grapplePoint - transform.position, rotationSpeed * 1.5f);
+
+        Vector3 armPos = grappleArmCopy.transform.position;
+
+        armPos = Vector3.MoveTowards(armPos, grapplePoint, Time.deltaTime * grappleArmSpeed);
+
+        if(Vector3.Distance(armPos, grapplePoint) < 0.1f)
+        {
+            grappleArmAtPoint = true;
+        }
+
+        Vector3 direction =  grapplePoint - armPos;
+        Vector3 newRot = Vector3.RotateTowards(grappleArmCopy.transform.forward, direction, 1f, 0.0f);
+
+        grappleArmCopy.transform.position = armPos;
+        grappleArmCopy.transform.rotation = Quaternion.LookRotation(newRot);
+
+        grappleLine.SetPosition(0, grappleShootPoint.position);
+        grappleLine.SetPosition(1, grappleArmCopy.transform.position);
     }
 
     public void GrappleToTarget()
     {
-        if (grappling)
+        if (grappling && grappleArmAtPoint)
         {
             // Find the distance between player and grapple point
-            Vector3 direction = grapplePoint - transform.position;
+
+            Vector3 grappleOffset = new Vector3(grapplePoint.x, grapplePoint.y - 1f, grapplePoint.z);
+
+            Vector3 direction = grappleOffset - transform.position;
 
             // Normalize to translate to velocity
             direction.Normalize();
-            RotatePlayer(direction);
+            RotatePlayer(direction, rotationSpeed);
 
             playerInput = direction * grappleSpeed;
 
             // LineRenderer
             grappleLine.SetPosition(0, grappleShootPoint.position);
 
-            if (Vector3.Distance(transform.position, grapplePoint) < 1.0f)
+            if (Vector3.Distance(transform.position, grappleOffset) < 0.5f)
             {
-                transform.position = grapplePoint;
-                playerInput.y = 0f;
+                transform.position = grappleOffset;
+                playerInput.y = -0.1f;
 
                 CancelGrapple();
             }
@@ -453,6 +500,13 @@ public class PlayerCCMovement : MonoBehaviour
         // Reset and clear everything
         gravityOn = true;
         grappling = false;
+        
+        grappleArmOnModel.SetActive(true);
+
+        if (grappleArmCopy != null)
+        {
+            Destroy(grappleArmCopy);
+        }
 
         grapplePoint = Vector3.zero;
 
