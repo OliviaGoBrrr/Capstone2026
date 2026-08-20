@@ -12,9 +12,6 @@ public class PlayerRunSubState : PlayerGroundedSuperState
     {
         base.EnterState();
 
-        player.movement.moveSpeed = player.movement.runSpeed; // double called
-        
-        
         player.SprintFOVChange(player.settings.FOVslider.value + 10);
         
         if(player.isCurrentlyGrounded)
