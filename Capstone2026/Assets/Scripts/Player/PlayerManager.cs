@@ -184,6 +184,7 @@ public class PlayerManager : MonoBehaviour
         isDead = true;
         canMove = false;
         movement.playerController.enabled = false;
+        movement.CancelGrapple();
     }
 
     void HandleReset()
