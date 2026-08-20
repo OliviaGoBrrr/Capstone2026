@@ -24,4 +24,9 @@ public class SceneSelectManager : MonoBehaviour
     {
         sceneLoader.LoadNewScene("_MVPDockHub");
     }
+
+    public void GoToTutorial()
+    {
+        sceneLoader.LoadNewScene("_MVPTutorial");
+    }
 }
