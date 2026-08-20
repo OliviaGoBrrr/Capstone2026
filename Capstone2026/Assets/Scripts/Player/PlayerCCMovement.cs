@@ -472,7 +472,6 @@ public class PlayerCCMovement : MonoBehaviour
         if (grappling && grappleArmAtPoint)
         {
             // Find the distance between player and grapple point
-
             Vector3 grappleOffset = new Vector3(grapplePoint.x, grapplePoint.y - 1f, grapplePoint.z);
 
             Vector3 direction = grappleOffset - transform.position;
