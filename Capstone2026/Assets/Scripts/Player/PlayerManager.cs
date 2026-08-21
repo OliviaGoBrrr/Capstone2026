@@ -41,6 +41,7 @@ public class PlayerManager : MonoBehaviour
     public CinemachineCamera playerCam;
     public ParticleSystem[] sparks;
     private Tweener fovTween;
+    [SerializeField] private InputActionReference toggleUI;
 
     [Header("Settings")]
     public Settings settings;
@@ -142,6 +143,11 @@ public class PlayerManager : MonoBehaviour
         if (recenterCameraAction.action.WasPressedThisFrame())
         {
             SnapRecenterCamera();
+        }
+
+        if(toggleUI.action.WasPressedThisFrame()) // entirely for screenshots and marketing, feel free to remove from final
+        {
+            pauseMenu.gameObject.SetActive(!pauseMenu.gameObject.activeSelf);
         }
     }
 
