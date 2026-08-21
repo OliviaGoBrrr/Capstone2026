@@ -46,6 +46,7 @@ public class PlayerCCMovement : MonoBehaviour
     public float grappleLockoutTimer = 0.0f;
     private Collider[] grappleColliders;
     private const int maxGrappleColliders = 10;
+    public LayerMask obstacleLayerMask;
     public LayerMask grappleTargetLayer;
     public Vector3 grapplePoint;
     [SerializeField]
@@ -360,6 +361,17 @@ public class PlayerCCMovement : MonoBehaviour
             {
                 RaycastHit hit;
 
+                // Stop people from grappling through walls (maybe costly?)
+
+                if (Physics.Raycast(playerCamera.transform.position, closestGrapple, out hit, grappleMaxDistance, obstacleLayerMask))
+                {
+                    Debug.DrawLine(playerCamera.transform.position, hit.transform.position, Color.cyan);
+                    closestGrapple = Vector3.zero;
+                    DisableGrappleUI();
+                    return false;
+                }
+
+
                 // Sends a ray towards the closest grapple point
                 if (Physics.Raycast(playerCamera.transform.position, closestGrapple, out hit, grappleMaxDistance, grappleTargetLayer))
                 {
@@ -485,7 +497,7 @@ public class PlayerCCMovement : MonoBehaviour
             // LineRenderer
             grappleLine.SetPosition(0, grappleShootPoint.position);
 
-            if (Vector3.Distance(transform.position, grappleOffset) < 0.5f)
+            if (Vector3.Distance(transform.position, grappleOffset) < 1f)
             {
                 transform.position = grappleOffset;
                 playerInput.y = -0.1f;
@@ -499,7 +511,7 @@ public class PlayerCCMovement : MonoBehaviour
         // Reset and clear everything
         gravityOn = true;
         grappling = false;
-        
+        playerInput = Vector3.zero;
         grappleArmOnModel.SetActive(true);
 
         if (grappleArmCopy != null)
