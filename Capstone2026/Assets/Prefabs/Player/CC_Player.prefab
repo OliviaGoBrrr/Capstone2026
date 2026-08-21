@@ -1683,6 +1683,7 @@ MonoBehaviour:
   sparks:
   - {fileID: 2641044879308500538}
   - {fileID: 6685773425867787845}
+  toggleUI: {fileID: 0}
   settings: {fileID: 0}
   grapplePullSFX: {fileID: 8300000, guid: 8115b5387b5fbe942ba81faec6749f05, type: 3}
   batteryDrainSFX: {fileID: 8300000, guid: f825873fa00ff50499fd59f8fe2f73d8, type: 3}
@@ -1732,10 +1733,13 @@ MonoBehaviour:
   gravityOn: 1
   grappling: 0
   grappleAngle: 30
-  grappleMaxDistance: 20
+  grappleMaxDistance: 15
   grappleSpeed: 5
   grappleLockoutTime: 1
   grappleLockoutTimer: 0
+  obstacleLayerMask:
+    serializedVersion: 2
+    m_Bits: 12296
   grappleTargetLayer:
     serializedVersion: 2
     m_Bits: 512
@@ -1770,7 +1774,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCamera: {fileID: 0}
-  maxDistance: 20
+  maxDistance: 10
   interactAction: {fileID: 1781555164194001046, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   InteractLayerMask:
     serializedVersion: 2

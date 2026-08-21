@@ -145,10 +145,15 @@ public class PlayerManager : MonoBehaviour
             SnapRecenterCamera();
         }
 
-        if(toggleUI.action.WasPressedThisFrame()) // entirely for screenshots and marketing, feel free to remove from final
+
+        if(toggleUI != null)
         {
-            pauseMenu.gameObject.SetActive(!pauseMenu.gameObject.activeSelf);
+            if (toggleUI.action.WasPressedThisFrame()) // entirely for screenshots and marketing, feel free to remove from final
+            {
+                pauseMenu.gameObject.SetActive(!pauseMenu.gameObject.activeSelf);
+            }
         }
+
     }
 
     private void FixedUpdate()
