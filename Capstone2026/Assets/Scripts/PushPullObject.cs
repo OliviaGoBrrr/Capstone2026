@@ -45,34 +45,37 @@ public class PushPullObject : MonoBehaviour, IInteractable
 
     void Update()
     {
-        if(Held)
+        if(!Held) 
         {
-            playerM.canPickUp = false;
-            
-            if (levelTerrain != Terrain.activeTerrain)
-            {
-                levelTerrain = Terrain.activeTerrain;
-            }
+            return;
+        }
+        
+        playerM.canPickUp = false;
+        
+        if (levelTerrain != Terrain.activeTerrain)
+        {
+            levelTerrain = Terrain.activeTerrain;
+        }
 
-            if (playerM.isPushPulling == true)
-            {
-                float finalDistance = playerToObjDist + forwardOffset;
-                transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, finalDistance);
+        if (playerM.isPushPulling == true)
+        {
+            float finalDistance = playerToObjDist + forwardOffset;
+            transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, finalDistance);
 
-                // find terrain height & set it
-                if (levelTerrain != null) // makes it so it can be used in testing scene without terrain
-                {
-                    float terrainHeight = levelTerrain.SampleHeight(transform.position);
-                    transform.position = new Vector3(transform.position.x, terrainHeight, transform.position.z);
-                }
-            }
-
-            else
+            // find terrain height & set it
+            if (levelTerrain != null) // makes it so it can be used in testing scene without terrain
             {
-                Held = false;
-                return;
+                float terrainHeight = levelTerrain.SampleHeight(transform.position);
+                transform.position = new Vector3(transform.position.x, terrainHeight, transform.position.z);
             }
         }
+
+        else if (!playerM.isPushPulling)
+        {
+            StopHolding();
+            return;
+        }
+        
     }
 
     public void OnInteract()
