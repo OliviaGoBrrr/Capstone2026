@@ -108,6 +108,8 @@ public class PlayerCCMovement : MonoBehaviour
     private void LateUpdate()
     {
         InputBuffers();
+
+        if(Input.GetKeyDown(KeyCode.P)) {animator.SetTrigger("Wave");}
     }
 
     private void InputBuffers()
