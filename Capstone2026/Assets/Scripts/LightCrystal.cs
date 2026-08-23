@@ -124,6 +124,8 @@ public class LightCrystal : MonoBehaviour
                 }
                 lineRenderer.SetPosition(1, hitPos);
             }
+
+            //else if (hit.transform.TryGetComponent<>(out ))
         }
         else
         {
