@@ -6,8 +6,17 @@ public class PressurePlate : MonoBehaviour
     [SerializeField] private GameObject door;
     [SerializeField] private Vector3 changeToDoorPosition;
 
+    [SerializeField] private bool oneShotDoor;
+
     private void OnTriggerEnter(Collider other)
     {
+        if (oneShotDoor)
+        {
+            Destroy(door);
+            Destroy(this);
+
+            print("AAA");
+        }
         door.transform.position += changeToDoorPosition;
     }
 
