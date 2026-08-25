@@ -28,15 +28,12 @@ public class PlayerCCMovement : MonoBehaviour
     public Vector3 playerInput;
     public Vector3 playerVelocity;
     private float timeFalling = 0f;
-    [HideInInspector]
-    public Vector3 desiredMove;
 
     [HideInInspector]
     public bool groundedPlayer;
     public bool prevFrameGrounded;
     [HideInInspector]
     public bool running { private set; get; }
-    private Tweener fovTween;
 
     public bool gravityOn = true;
     public float gravityValue = -9.81f;
@@ -235,7 +232,7 @@ public class PlayerCCMovement : MonoBehaviour
         float checkSpeed = moveSpeed;
         if (playerManager.isPushPulling)
         {
-            checkSpeed = moveSpeed / 2f;
+            checkSpeed = moveSpeed * pushPullPenalty;
         }
 
         playerController.Move(checkSpeed * Time.deltaTime * cameraRelativeMovement);

@@ -17,8 +17,6 @@ public class PlayerPushPullState : PlayerCanMoveSuperState
 
     public override void EnterState()
     {
-        Debug.Log("Boom");
-
         prevRotationRate = player.movement.rotationSpeed;
         player.movement.rotationSpeed = holdingRotationRate;
 
@@ -34,9 +32,6 @@ public class PlayerPushPullState : PlayerCanMoveSuperState
     public override void ExitState()
     {
         player.movement.rotationSpeed = prevRotationRate;
-
-        Debug.Log("Yikes");
-
         player.isPushPulling = false;
         player.canPickUp = true;
 

@@ -83,6 +83,7 @@ public class PushPullObject : MonoBehaviour, IInteractable
 
     public void OnInteract()
     {
+        // Stops the player from picking up objects while jumping
         if (!playerM.movement.groundedPlayer) { return; }
 
         PostGameDataLog.pushpullInteractInt++;
@@ -98,8 +99,6 @@ public class PushPullObject : MonoBehaviour, IInteractable
         {
             Held = true;
             transform.SetParent(PlayerTransform);
-
-            Debug.Log("PICKED UP");
 
             //playerM.PushPullState.EnterState();
             playerM.StateMachine.ChangeState(playerM.PushPullState);
