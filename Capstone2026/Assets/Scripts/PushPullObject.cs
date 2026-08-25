@@ -18,10 +18,6 @@ public class PushPullObject : MonoBehaviour, IInteractable
     public bool inFinalPosition;
     public Vector3 setDownLocation;
 
-    [SerializeField]
-    private GameObject interactUI;
-
-
     Terrain levelTerrain;
     [SerializeField] private Vector3 resetPos;
     [SerializeField] private Quaternion resetRot;
@@ -98,13 +94,10 @@ public class PushPullObject : MonoBehaviour, IInteractable
             Held = true;
             transform.SetParent(PlayerTransform);
 
+            Debug.Log("PICKED UP");
+
             //playerM.PushPullState.EnterState();
             playerM.StateMachine.ChangeState(playerM.PushPullState);
-
-            if(interactUI != null)
-            {
-                interactUI.SetActive(false);
-            }
         }
         
     }
@@ -113,7 +106,11 @@ public class PushPullObject : MonoBehaviour, IInteractable
     {
         Held = false;
         transform.SetParent(null);
-        playerM.PushPullState.ExitState();
+
+        if(playerM.StateMachine.CurrentState == playerM.PushPullState)
+        {
+            playerM.StateMachine.ChangeState(playerM.IdleSubState);
+        }
     }
 
     // Actions

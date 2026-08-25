@@ -136,7 +136,7 @@ public class PlayerManager : MonoBehaviour
         PlayerReset.AddListener(HandleReset);
         ChangeFOV.AddListener(SprintFOVChange);
 
-
+        canPickUp = true;
     }
 
     // Update is called once per frame

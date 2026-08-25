@@ -55,7 +55,15 @@ public class PlayerJumpState : PlayerCanMoveSuperState
         // GROUNDED STATE
         if (player.movement.playerController.isGrounded)
         {
-            playerStateMachine.ChangeState(player.IdleSubState);
+            if(player.movement.playerInput != Vector3.zero)
+            {
+                if(player.movement.running) { playerStateMachine.ChangeState(player.RunSubState); }
+                else { playerStateMachine.ChangeState(player.WalkSubState); }
+            }
+            else
+            {
+                playerStateMachine.ChangeState(player.IdleSubState);
+            }
         }
     }
 }

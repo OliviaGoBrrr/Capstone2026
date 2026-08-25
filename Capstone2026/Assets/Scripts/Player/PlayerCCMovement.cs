@@ -235,7 +235,7 @@ public class PlayerCCMovement : MonoBehaviour
         float checkSpeed = moveSpeed;
         if (playerManager.isPushPulling)
         {
-            checkSpeed = moveSpeed * pushPullPenalty;
+            checkSpeed = moveSpeed / 2f;
         }
 
         playerController.Move(checkSpeed * Time.deltaTime * cameraRelativeMovement);
@@ -303,12 +303,11 @@ public class PlayerCCMovement : MonoBehaviour
         }
         else
         {
-            if (running) { 
+            if (running) {
                 playerManager.ChangeFOV.Invoke(playerManager.settings.FOVslider.value);
                 moveSpeed = walkSpeed;
                 running = false;
             }
-
         }
     }
 

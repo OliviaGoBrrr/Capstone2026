@@ -17,6 +17,10 @@ public class PlayerInteract : MonoBehaviour
     public LayerMask obstacleLayerMask;
     public Collider[] interactColliders;
 
+    public GameObject interactUI;
+    private GameObject interactUIObject;
+
+
     [Header("Debug Options")]
     public bool debug;
 
@@ -85,6 +89,22 @@ public class PlayerInteract : MonoBehaviour
             else if (Physics.Raycast(playerCamera.transform.position, closestInteraction, out hit, maxDistance, InteractLayerMask))
             {
                 Debug.DrawLine(transform.position, hit.point, Color.green);
+                
+                /*
+                if(interactUI != null)
+                {
+                    if(interactUIObject != null && interactUIObject.transform.parent != hit.transform)
+                    {
+                        Destroy(interactUIObject);
+                    }
+
+                    Vector3 uiPos = hit.transform.position;
+                    uiPos.y = uiPos.y + hit.collider.bounds.extents.y;
+
+                    interactUIObject = Instantiate(interactUI, uiPos, Quaternion.identity);
+                }
+                */
+
 
                 // It should find a target, but it allows the disabling of the grapple point
                 IInteractable target = hit.transform.GetComponent<IInteractable>();
@@ -103,6 +123,8 @@ public class PlayerInteract : MonoBehaviour
                         }
                     }
                     */
+
+
 
                     // Action is taken
                     if (interactAction.action.WasPressedThisFrame()) // If there was an input buffered
