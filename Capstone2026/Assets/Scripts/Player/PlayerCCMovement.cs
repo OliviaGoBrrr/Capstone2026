@@ -1,4 +1,6 @@
 using System;
+using DG.Tweening;
+using Unity.Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -30,10 +32,13 @@ public class PlayerCCMovement : MonoBehaviour
     [HideInInspector]
     public bool groundedPlayer;
     public bool prevFrameGrounded;
-    public float acceleration = 10f;
-    public float deccceleration = 45f;
-    public float gravityValue = -9.81f;
+    [HideInInspector]
+    public bool running { private set; get; }
+    private Tweener fovTween;
+
     public bool gravityOn = true;
+    public float gravityValue = -9.81f;
+
 
     [HideInInspector] public bool grappling;
     [HideInInspector] bool grappleArmAtPoint;
@@ -64,9 +69,10 @@ public class PlayerCCMovement : MonoBehaviour
     [Header("Grapple UI")]
     private GameObject currentGrappleUI;
 
-    [Header("Player Camera Values")]
+    [Header("Player Component Values")]
     public CharacterController playerController;
-    public Camera playerCamera;
+    public CinemachineCamera playerCamera;
+    public PlayerManager playerManager;
 
     [Header("Input Actions")]
     public InputActionReference moveAction;
@@ -103,6 +109,11 @@ public class PlayerCCMovement : MonoBehaviour
         }
 
         grappleColliders = new Collider[maxGrappleColliders];
+    }
+
+    private void Start()
+    {
+        playerManager = GetComponent<PlayerManager>();
     }
 
     private void LateUpdate()
@@ -277,10 +288,14 @@ public class PlayerCCMovement : MonoBehaviour
         if (runAction.action.IsPressed())
         {
             moveSpeed = runSpeed;
+            if (!running) { playerManager.ChangeFOV.Invoke(playerManager.settings.FOVslider.value + 10f); }
+            running = true;  
         }
         else
         {
             moveSpeed = walkSpeed;
+            if (running) { playerManager.ChangeFOV.Invoke(playerManager.settings.FOVslider.value); }
+            running = false;
         }
     }
 

@@ -55,6 +55,7 @@ public class PlayerManager : MonoBehaviour
     [Header("Events")]
     public UnityEvent OnPlayerDeath = new();
     public UnityEvent PlayerReset = new();
+    public UnityEvent<float> ChangeFOV = new();
 
     [Header("Player State Bools")]
     #region State Bools
@@ -132,6 +133,8 @@ public class PlayerManager : MonoBehaviour
 
         OnPlayerDeath.AddListener(HandleDeath);
         PlayerReset.AddListener(HandleReset);
+        ChangeFOV.AddListener(SprintFOVChange);
+
 
     }
 
@@ -178,7 +181,6 @@ public class PlayerManager : MonoBehaviour
 
         //apparently cinemachine doesnt work with DOFieldOfView
         fovTween = DOTween.To( () => playerCam.Lens.FieldOfView, x => playerCam.Lens.FieldOfView = x, targetFOV, 0.2f).SetEase(Ease.OutQuad);
-
     }
 
     public void HandleTeleport(Vector3 pos)

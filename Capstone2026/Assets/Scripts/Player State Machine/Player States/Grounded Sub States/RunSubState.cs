@@ -12,7 +12,7 @@ public class PlayerRunSubState : PlayerGroundedSuperState
     {
         base.EnterState();
 
-        player.SprintFOVChange(player.settings.FOVslider.value + 10);
+        //player.SprintFOVChange(player.settings.FOVslider.value + 10);
         
         if(player.isCurrentlyGrounded)
         {
@@ -30,7 +30,7 @@ public class PlayerRunSubState : PlayerGroundedSuperState
             spark.Stop();
         }
 
-        player.SprintFOVChange(player.settings.FOVslider.value);
+        //player.SprintFOVChange(player.settings.FOVslider.value);
         
         base.ExitState();
     }
