@@ -88,7 +88,7 @@ public class PlayerInteract : MonoBehaviour
             // Sends a ray towards the closest grapple point
             else if (Physics.Raycast(playerCamera.transform.position, closestInteraction, out hit, maxDistance, InteractLayerMask))
             {
-                Debug.DrawLine(transform.position, hit.point, Color.green);
+                Debug.DrawLine(playerCamera.transform.position, hit.point, Color.green);
                 
                 /*
                 if(interactUI != null)

@@ -405,7 +405,7 @@ public class PlayerCCMovement : MonoBehaviour
                     // It should find a target, but it allows the disabling of the grapple point
                     GrappleableObject target = hit.transform.GetComponent<GrappleableObject>();
 
-                    Debug.DrawLine(target.anchorPoint.position, transform.position, Color.magenta);
+                    Debug.DrawLine(target.anchorPoint.position, playerCamera.transform.position, Color.magenta);
 
                     if (target != null) // If the grapple point isn't disabled
                     {
