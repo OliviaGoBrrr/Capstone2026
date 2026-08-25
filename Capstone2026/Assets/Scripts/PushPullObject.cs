@@ -50,11 +50,14 @@ public class PushPullObject : MonoBehaviour, IInteractable
             return;
         }
         
-        playerM.canPickUp = false;
-        
         if (levelTerrain != Terrain.activeTerrain)
         {
             levelTerrain = Terrain.activeTerrain;
+        }
+
+        if(playerM.StateMachine.CurrentState == playerM.PushPullState)
+        {
+            playerM.canPickUp = false;
         }
 
         if (playerM.isPushPulling == true)
@@ -80,8 +83,10 @@ public class PushPullObject : MonoBehaviour, IInteractable
 
     public void OnInteract()
     {
+        if (!playerM.movement.groundedPlayer) { return; }
+
         PostGameDataLog.pushpullInteractInt++;
-        
+
         if(Held)
         {
             if(canBeSetDown) transform.position = setDownLocation;
@@ -107,7 +112,7 @@ public class PushPullObject : MonoBehaviour, IInteractable
         Held = false;
         transform.SetParent(null);
 
-        if(playerM.StateMachine.CurrentState == playerM.PushPullState)
+        if (playerM.StateMachine.CurrentState == playerM.PushPullState)
         {
             playerM.StateMachine.ChangeState(playerM.IdleSubState);
         }
