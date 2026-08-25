@@ -32,9 +32,10 @@ public class PlayerIdleSubState : PlayerGroundedSuperState
         base.TransitionChecks();
 
         // WALK STATE
-        if (player.movement.moveAction.action.ReadValue<Vector2>() != Vector2.zero)
+        if (player.movement.playerInput != Vector3.zero)
         {
-            playerStateMachine.ChangeState(player.WalkSubState);
+            if (player.movement.running) { playerStateMachine.ChangeState(player.RunSubState); }
+            else { playerStateMachine.ChangeState(player.WalkSubState); }
         }
     }
 
