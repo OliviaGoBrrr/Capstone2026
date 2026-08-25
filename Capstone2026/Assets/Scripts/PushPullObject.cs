@@ -13,7 +13,7 @@ public class PushPullObject : MonoBehaviour, IInteractable
     public PlayerManager playerM;
     public bool Held = false;
     private float forwardOffset;
-    public const float playerToObjDist = 1.5f;
+    public const float playerToObjDist = 0.2f;
     public bool canBeSetDown;
     public bool inFinalPosition;
     public Vector3 setDownLocation;
@@ -38,7 +38,7 @@ public class PushPullObject : MonoBehaviour, IInteractable
         resetPos = transform.position;
         resetRot = transform.rotation;
 
-        forwardOffset = GetComponent<Collider>().bounds.extents.z;
+        forwardOffset = GetComponent<Collider>().bounds.extents.magnitude / 2f;
 
         playerM.PlayerReset.AddListener(PlayerDeathReset);
     }
@@ -60,7 +60,7 @@ public class PushPullObject : MonoBehaviour, IInteractable
         if (playerM.isPushPulling == true)
         {
             float finalDistance = playerToObjDist + forwardOffset;
-            transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, finalDistance);
+            transform.localPosition = new Vector3(0, transform.localPosition.y, finalDistance);
 
             // find terrain height & set it
             if (levelTerrain != null) // makes it so it can be used in testing scene without terrain
@@ -94,7 +94,8 @@ public class PushPullObject : MonoBehaviour, IInteractable
             Held = true;
             transform.SetParent(PlayerTransform);
 
-            playerM.PushPullState.EnterState();
+            //playerM.PushPullState.EnterState();
+            playerM.StateMachine.ChangeState(playerM.PushPullState);
         }
         
     }

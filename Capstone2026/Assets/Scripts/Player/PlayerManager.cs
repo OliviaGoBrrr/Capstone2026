@@ -34,6 +34,7 @@ public class PlayerManager : MonoBehaviour
 
     public Vector3 lastCheckpoint;
     public InputActionReference recenterCameraAction;
+    public InputActionReference interact;
     [HideInInspector] public bool fallenInWater;
 
     [Header("References")] //remove this if i've done it wrong, this is just the solution im thinking of rn

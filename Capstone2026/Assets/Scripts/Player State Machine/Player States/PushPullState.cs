@@ -7,12 +7,29 @@ public class PlayerPushPullState : PlayerCanMoveSuperState
     {
     }
 
+    [SerializeField]
+    private float inputInteractBuffer = 0.2f;
+    private float bufferTimer;
+
+    [SerializeField]
+    private float holdingRotationRate = 3f;
+    private float prevRotationRate;
+
+  
+
     public override void EnterState()
     {
         player.movement.moveSpeed = 5f;
-        
+
+        Debug.Log("Boom");
+
+        prevRotationRate = player.movement.rotationSpeed;
+        player.movement.rotationSpeed = holdingRotationRate;
+
         player.isPushPulling = true;
         player.canPickUp = false;
+
+        bufferTimer = inputInteractBuffer;
 
         base.EnterState();
         //Debug.Log("Entered PushPull State");
@@ -21,6 +38,7 @@ public class PlayerPushPullState : PlayerCanMoveSuperState
     public override void ExitState()
     {
         player.movement.moveSpeed = 10f;
+        player.movement.rotationSpeed = prevRotationRate;
 
         player.isPushPulling = false;
         player.canPickUp = true;
@@ -32,6 +50,10 @@ public class PlayerPushPullState : PlayerCanMoveSuperState
     public override void FrameUpdate()
     {
         base.FrameUpdate();
+
+        if(bufferTimer > 0) { bufferTimer -= Time.deltaTime; }
+        else if (player.interact.action.IsPressed()) { ExitState(); }
+
         // audio if player is moving play sfx (maybe do one depending on each object and chuck it in that script? cuz there are diff objects like wooden and rocky and stuff)
     }
 

@@ -14,6 +14,7 @@ public class PlayerInteract : MonoBehaviour
     public float maxDistance;
     public InputActionReference interactAction;
     public LayerMask InteractLayerMask;
+    public LayerMask obstacleLayerMask;
     public Collider[] interactColliders;
 
     [Header("Debug Options")]
@@ -43,7 +44,7 @@ public class PlayerInteract : MonoBehaviour
 
     private void FindIntertactable()
     {
-        int numColliders = Physics.OverlapSphereNonAlloc(playerCamera.transform.position, maxDistance, interactColliders, InteractLayerMask);
+        int numColliders = Physics.OverlapSphereNonAlloc(transform.position, maxDistance, interactColliders, InteractLayerMask);
 
         Vector3 closestInteraction = Vector3.zero;
         float closestDot = 0f;
@@ -72,10 +73,19 @@ public class PlayerInteract : MonoBehaviour
         if (closestInteraction != Vector3.zero)
         {
             RaycastHit hit;
+            
+            // will stop the raycast if it hits a wall or terrain
+            if (Physics.Raycast(playerCamera.transform.position, closestInteraction, out hit, maxDistance, obstacleLayerMask))
+            {
+                Debug.DrawLine(transform.position, hit.point, Color.red);
+                return;
+            }
 
             // Sends a ray towards the closest grapple point
-            if (Physics.Raycast(playerCamera.transform.position, closestInteraction, out hit, maxDistance, InteractLayerMask))
+            else if (Physics.Raycast(playerCamera.transform.position, closestInteraction, out hit, maxDistance, InteractLayerMask))
             {
+                Debug.DrawLine(transform.position, hit.point, Color.green);
+
                 // It should find a target, but it allows the disabling of the grapple point
                 IInteractable target = hit.transform.GetComponent<IInteractable>();
 

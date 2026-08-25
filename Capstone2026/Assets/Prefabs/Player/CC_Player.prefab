@@ -1677,6 +1677,7 @@ MonoBehaviour:
   backBatteryImage: {fileID: 5237298044365404991}
   lastCheckpoint: {x: 0, y: 0, z: 0}
   recenterCameraAction: {fileID: 1100282742043652526, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  interact: {fileID: 0}
   fallenInWater: 0
   deathfade: {fileID: 0}
   playerCam: {fileID: 0}
@@ -1724,6 +1725,7 @@ MonoBehaviour:
   walkSpeed: 4
   runSpeed: 6
   jumpHeight: 1.2
+  currentPlayerRotation: 0
   rotationSpeed: 10
   playerInput: {x: 0, y: 0, z: 0}
   playerVelocity: {x: 0, y: 0, z: 0}
@@ -1781,6 +1783,9 @@ MonoBehaviour:
   InteractLayerMask:
     serializedVersion: 2
     m_Bits: 256
+  obstacleLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
   interactColliders: []
   debug: 1
 --- !u!114 &3620456610392008294

@@ -17,9 +17,11 @@ public class PlayerCCMovement : MonoBehaviour
     public float walkSpeed = 10f;
     public float runSpeed = 15f;
     public float jumpHeight = 0.5f;
-   
+
+    public float pushPullPenalty = 0.5f;
 
     // Rotation (1 = snap to rotation direction)
+    public float currentPlayerRotation;
     [Range(0f, 180f)] public float rotationSpeed;
 
     // Physics
@@ -171,7 +173,6 @@ public class PlayerCCMovement : MonoBehaviour
         }
 
 
-
         HandlePlayerAnimations();
 
         // Timers
@@ -231,7 +232,14 @@ public class PlayerCCMovement : MonoBehaviour
         animator.SetFloat("Speed", newAnimSpeed);
 
         // Move player
-        playerController.Move(moveSpeed * Time.deltaTime * cameraRelativeMovement);
+        float checkSpeed = moveSpeed;
+        if (playerManager.isPushPulling)
+        {
+            checkSpeed = moveSpeed * pushPullPenalty;
+        }
+
+        playerController.Move(checkSpeed * Time.deltaTime * cameraRelativeMovement);
+
     }
 
     private Vector3 ConvertToCameraSpace(Vector3 vectorToRotate)
@@ -287,15 +295,20 @@ public class PlayerCCMovement : MonoBehaviour
     {
         if (runAction.action.IsPressed())
         {
-            moveSpeed = runSpeed;
-            if (!running) { playerManager.ChangeFOV.Invoke(playerManager.settings.FOVslider.value + 10f); }
-            running = true;  
+            if (!running) { 
+                playerManager.ChangeFOV.Invoke(playerManager.settings.FOVslider.value + 10f);
+                running = true;
+                moveSpeed = runSpeed;
+            }
         }
         else
         {
-            moveSpeed = walkSpeed;
-            if (running) { playerManager.ChangeFOV.Invoke(playerManager.settings.FOVslider.value); }
-            running = false;
+            if (running) { 
+                playerManager.ChangeFOV.Invoke(playerManager.settings.FOVslider.value);
+                moveSpeed = walkSpeed;
+                running = false;
+            }
+
         }
     }
 
@@ -308,6 +321,7 @@ public class PlayerCCMovement : MonoBehaviour
 
         // Rotates the model over time
         playerModel.transform.rotation = Quaternion.Slerp(playerModel.transform.rotation, target, rotSpeed * Time.deltaTime);
+        currentPlayerRotation = playerModel.transform.rotation.y;
     }
 
     private void HandlePlayerAnimations()
