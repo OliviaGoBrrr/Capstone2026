@@ -18,6 +18,10 @@ public class PushPullObject : MonoBehaviour, IInteractable
     public bool inFinalPosition;
     public Vector3 setDownLocation;
 
+    [SerializeField]
+    private GameObject interactUI;
+
+
     Terrain levelTerrain;
     [SerializeField] private Vector3 resetPos;
     [SerializeField] private Quaternion resetRot;
@@ -96,6 +100,11 @@ public class PushPullObject : MonoBehaviour, IInteractable
 
             //playerM.PushPullState.EnterState();
             playerM.StateMachine.ChangeState(playerM.PushPullState);
+
+            if(interactUI != null)
+            {
+                interactUI.SetActive(false);
+            }
         }
         
     }

@@ -1289,7 +1289,7 @@ Transform:
   m_GameObject: {fileID: 5226025059985597121}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.00034, y: -0.001091, z: -0.000715}
+  m_LocalPosition: {x: -0.00713, y: 0.00386, z: 0.00355}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1677,14 +1677,14 @@ MonoBehaviour:
   backBatteryImage: {fileID: 5237298044365404991}
   lastCheckpoint: {x: 0, y: 0, z: 0}
   recenterCameraAction: {fileID: 1100282742043652526, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  interact: {fileID: 0}
+  interact: {fileID: 1781555164194001046, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   fallenInWater: 0
   deathfade: {fileID: 0}
   playerCam: {fileID: 0}
   sparks:
   - {fileID: 2641044879308500538}
   - {fileID: 6685773425867787845}
-  toggleUI: {fileID: 0}
+  toggleUI: {fileID: 4959886535910606352, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   settings: {fileID: 0}
   grapplePullSFX: {fileID: 8300000, guid: 8115b5387b5fbe942ba81faec6749f05, type: 3}
   batteryDrainSFX: {fileID: 8300000, guid: f825873fa00ff50499fd59f8fe2f73d8, type: 3}
@@ -1706,7 +1706,7 @@ MonoBehaviour:
   isGrappling: 0
   isFalling: 0
   isDead: 0
-  canPickUp: 1
+  canPickUp: 0
 --- !u!114 &2228826731360664703
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1725,8 +1725,9 @@ MonoBehaviour:
   walkSpeed: 4
   runSpeed: 6
   jumpHeight: 1.2
+  pushPullPenalty: 0.5
   currentPlayerRotation: 0
-  rotationSpeed: 10
+  rotationSpeed: 10.108
   playerInput: {x: 0, y: 0, z: 0}
   playerVelocity: {x: 0, y: 0, z: 0}
   desiredMove: {x: 0, y: 0, z: 0}
@@ -1785,7 +1786,7 @@ MonoBehaviour:
     m_Bits: 256
   obstacleLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8712
   interactColliders: []
   debug: 1
 --- !u!114 &3620456610392008294
