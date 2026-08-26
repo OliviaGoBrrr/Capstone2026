@@ -20,6 +20,9 @@ public class LightCrystal : MonoBehaviour
 
     public LineRenderer lineRenderer;
 
+    private bool hitPlayer = false;
+    private PlayerManager playerManager;
+
     private void Awake()
     {
         if(beamStartPoint == null) // Throws an error if the beam's start point isn't attached
@@ -81,6 +84,11 @@ public class LightCrystal : MonoBehaviour
         {
             Vector3 hitPos = hit.transform.position;
 
+            if (hitPlayer)
+            {
+                playerManager.isPoweredByLightBeam = false;
+            }
+
             if (hit.transform.TryGetComponent<LightCrystal>(out LightCrystal crystal))
             {
                 if (crystal.beamsHitting.Count >= crystal.lightsNeededToIlluminate)
@@ -108,7 +116,13 @@ public class LightCrystal : MonoBehaviour
             {
                 if (player.TryGetComponent<PlayerSolarDetector>(out PlayerSolarDetector solarDetector))
                 {
-                    solarDetector.ChangeBatteryPercent(player.batteryPercent, player.batteryLightRateOfChangePerSecond);
+                    hitPlayer = true;
+
+                    playerManager = player; // used to turn off isPoweredByLightBeam
+
+                    player.isPoweredByLightBeam = true;
+
+                    //solarDetector.ChangeBatteryPercent(player.batteryPercent, player.batteryLightRateOfChangePerSecond);
                 }
 
                 lineRenderer.SetPosition(1, rayStart + (direction * (Vector3.Distance(rayStart, player.transform.position))));
@@ -116,6 +130,7 @@ public class LightCrystal : MonoBehaviour
 
             else if (hit.transform.TryGetComponent<DisableGrapplePoint>(out DisableGrapplePoint grapple))
             {
+
                 if (grappleHitting == null)
                 {
                     grappleHitting = grapple;
@@ -126,6 +141,8 @@ public class LightCrystal : MonoBehaviour
             }
 
             //else if (hit.transform.TryGetComponent<>(out ))
+
+            
         }
         else
         {

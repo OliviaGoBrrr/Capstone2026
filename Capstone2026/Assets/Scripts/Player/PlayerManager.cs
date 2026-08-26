@@ -26,6 +26,7 @@ public class PlayerManager : MonoBehaviour
     public float batteryShadeRateOfChangePerSecond;
     public float batteryPercent = 100;
     public int numberOfSunRaysForPower = 2;
+    public bool isPoweredByLightBeam = false;
 
     public TMP_Text batteryText;
     public Image batteryImage;

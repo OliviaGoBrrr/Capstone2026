@@ -46,7 +46,7 @@ public class PlayerState
     public virtual void FixedUpdate()
     {
         // Change battery % regardless of current state
-        if (player.solarPanel.CheckIfInLight() <= player.numberOfSunRaysForPower) // in light
+        if (player.solarPanel.CheckIfInLight() <= player.numberOfSunRaysForPower || player.isPoweredByLightBeam) // in light
         {
             player.batteryPercent = player.solarPanel.ChangeBatteryPercent(player.batteryPercent, player.batteryLightRateOfChangePerSecond);
             player.batteryText.text = Mathf.Round(player.batteryPercent).ToString();
