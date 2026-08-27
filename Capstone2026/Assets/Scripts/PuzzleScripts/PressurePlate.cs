@@ -1,4 +1,5 @@
 using UnityEngine;
+using DG.Tweening;
 
 public class PressurePlate : MonoBehaviour
 {
@@ -8,20 +9,37 @@ public class PressurePlate : MonoBehaviour
 
     [SerializeField] private bool oneShotDoor;
 
+    [SerializeField] private float timeToMove = 1;
+
+    private Vector3 originalPosition;
+
+
+    private void Start()
+    {
+        originalPosition = door.transform.position;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (oneShotDoor)
         {
             Destroy(door);
             Destroy(this);
-
-            print("AAA");
         }
-        door.transform.position += changeToDoorPosition;
+        else
+        {
+            DOTween.Kill("moving door");
+            door.transform.DOMove(originalPosition + changeToDoorPosition, timeToMove).SetId("moving door");
+
+            //door.transform.position += changeToDoorPosition;
+        }
+
+            
     }
 
     private void OnTriggerExit(Collider other)
     {
-        door.transform.position -= changeToDoorPosition;
+        DOTween.Kill("moving door");
+        door.transform.DOMove(originalPosition, timeToMove).SetId("moving door");
     }
 }
