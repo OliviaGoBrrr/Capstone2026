@@ -34,6 +34,10 @@ public class SceneLoader : MonoBehaviour
         {
             StartCoroutine(LoadScene("_MVPDockHub"));
         }
+        else if (currentScene.name == "_MVPTutorial") 
+        {
+            StartCoroutine(LoadScene("_MVPDockHub"));
+        }
         else
         {
             StartCoroutine(LoadScene("_MVPFarmLevel"));
