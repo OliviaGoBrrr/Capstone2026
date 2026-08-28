@@ -41,6 +41,8 @@ public class PushPullObject : MonoBehaviour, IInteractable
         forwardOffset = GetComponent<Collider>().bounds.extents.magnitude / 2f;
 
         playerM.PlayerReset.AddListener(PlayerDeathReset);
+
+        Debug.Log(forwardOffset);
     }
 
     void Update()
