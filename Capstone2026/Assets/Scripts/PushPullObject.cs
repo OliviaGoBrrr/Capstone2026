@@ -9,11 +9,13 @@ using Quaternion = UnityEngine.Quaternion;
 
 public class PushPullObject : MonoBehaviour, IInteractable
 {
+    [Header("Assignments")]
     public Transform PlayerTransform;
     public PlayerManager playerM;
+    [Header("Variables")]
     public bool Held = false;
     private float forwardOffset;
-    public const float playerToObjDist = 0.2f;
+    public const float playerToObjDist = 1.5f;
     public bool canBeSetDown;
     public bool inFinalPosition;
     public Vector3 setDownLocation;
