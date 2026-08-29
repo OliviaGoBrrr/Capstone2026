@@ -84,6 +84,8 @@ public class LightCrystal : MonoBehaviour
         {
             Vector3 hitPos = hit.transform.position;
 
+            lineRenderer.SetPosition(1, hit.point);
+
             if (hitPlayer)
             {
                 playerManager.isPoweredByLightBeam = false;
@@ -114,16 +116,18 @@ public class LightCrystal : MonoBehaviour
 
             else if (hit.transform.TryGetComponent<PlayerManager>(out PlayerManager player))
             {
+                /*
                 if (player.TryGetComponent<PlayerSolarDetector>(out PlayerSolarDetector solarDetector))
                 {
-                    hitPlayer = true;
-
-                    playerManager = player; // used to turn off isPoweredByLightBeam
-
-                    player.isPoweredByLightBeam = true;
-
                     //solarDetector.ChangeBatteryPercent(player.batteryPercent, player.batteryLightRateOfChangePerSecond);
                 }
+                */
+
+                hitPlayer = true;
+
+                playerManager = player; // used to turn off isPoweredByLightBeam
+
+                player.isPoweredByLightBeam = true;
 
                 lineRenderer.SetPosition(1, rayStart + (direction * (Vector3.Distance(rayStart, player.transform.position))));
             }
@@ -150,6 +154,8 @@ public class LightCrystal : MonoBehaviour
             StopLightBeam();
             StopGrapple();
         }
+
+
     }
 
     public void StopLightBeam()
