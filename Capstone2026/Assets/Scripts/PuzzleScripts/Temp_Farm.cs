@@ -39,9 +39,9 @@ public class Temp_Farm : MonoBehaviour
             var endScale = Vector3.one * 0;
             var elapsed = 0f;
 
-            while (elapsed < 0.3f)
+            while (elapsed < 0.5f)
             {
-                var t = elapsed / 0.3f;
+                var t = elapsed / 0.5f;
                 Mask.transform.localScale = new Vector3(
                     Mathf.Lerp(startScale.x, 0f, t),
                     startScale.y, 
