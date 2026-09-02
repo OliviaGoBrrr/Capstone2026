@@ -16,8 +16,11 @@ public class LevelIntroduction : MonoBehaviour
     /// </summary>
     public CinemachineCamera[] cameras;
 
+    [Range(0f, 2f)]
+    public float defaultCamSpeed = 1.0f;
+
     [Range(0f, 5f)]
-    public float introSpeed = 1f;
+    public float[] camSpeeds;
 
     int currentCamIndex = 0;
     private CinemachineCamera currentCam;
@@ -83,8 +86,15 @@ public class LevelIntroduction : MonoBehaviour
 
         if (currentSpline.CameraPosition < splineMaxKnots - 0.1f)
         {
+            // Set the camera's speed
+            float camSpeed;
+
+            if(currentCamIndex > camSpeeds.Length - 1) { camSpeed = defaultCamSpeed; }
+            
+            else{ camSpeed = camSpeeds[currentCamIndex]; }
+
             // Lerp Camera Position
-            float newSplinePos = currSplinePos + ((splineMaxKnots - currSplinePos) * Time.deltaTime * introSpeed);
+            float newSplinePos = currSplinePos + ((splineMaxKnots - currSplinePos) * Time.deltaTime * camSpeed);
             currentSpline.CameraPosition = newSplinePos;
         }
         else
