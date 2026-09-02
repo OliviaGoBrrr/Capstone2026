@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class LevelIntroduction : MonoBehaviour
 {
+    public CinemachineCamera playerCamera;
     /// <summary>
     /// Scene's Cinemachine Brain
     /// </summary>
@@ -13,13 +14,29 @@ public class LevelIntroduction : MonoBehaviour
     /// <summary>
     /// Cameras are chosen in array order. Ensure cameras are placed in order
     /// </summary>
-    public CinemachineCamera playerCamera;
     public CinemachineCamera[] cameras;
 
+    [Range(0f, 5f)]
+    public float introSpeed = 1f;
+
+    int currentCamIndex = 0;
+    private CinemachineCamera currentCam;
+    private CinemachineSplineDolly currentSpline;
+    float splineMaxKnots;
+
+    bool doIntroSequence = false;
 
     private void Start()
     {
         StartIntro();
+    }
+
+    private void Update()
+    {
+        if (doIntroSequence)
+        {
+            IntroSequence();
+        }
     }
 
     public void StartIntro()
@@ -38,20 +55,94 @@ public class LevelIntroduction : MonoBehaviour
 
         Debug.Log("Level Introduction Started");
 
-        // PSEUDO CODE
+        for(int i = 0; i < cameras.Length; i++)
+        {
+            cameras[i].gameObject.SetActive(false);
+        }
 
-        // Make first camera in queue the Live Camera
+        playerCamera.gameObject.SetActive(false);
 
-        // Once camera is Live, fade and wipe into first camera
-        
-        // Start moving along dolly over time allocated
+        // Allocate current camera and reset position
+        currentCam = cameras[0];
+        currentSpline = currentCam.GetComponent<CinemachineSplineDolly>();
+        splineMaxKnots = currentSpline.Spline.Splines[0].Count - 1;
+        currentSpline.CameraPosition = 0f;
 
-        // Once camera has gotten to last point (or within certain range of last point), make next camera live and start moving along dolly
+        // Turn on current cam
+        currentCam.gameObject.SetActive(true);
 
-        // Repeat until last camera
+        doIntroSequence = true;
+    }
 
-        // If camera is last in queue and reaches final destination, or the player presses a button to cancel intro, fade and wipe back, and make player camera live
+    public void IntroSequence()
+    {
+        // If there is no current cam (for some reason), reset so the player's camera is on and that the intro sequence finishes
+        if (currentCam == null) { playerCamera.gameObject.SetActive(true); doIntroSequence = false; return; }
 
+        float currSplinePos = currentSpline.CameraPosition;
+
+        if (currentSpline.CameraPosition < splineMaxKnots - 0.1f)
+        {
+            // Lerp Camera Position
+            float newSplinePos = currSplinePos + ((splineMaxKnots - currSplinePos) * Time.deltaTime * introSpeed);
+            currentSpline.CameraPosition = newSplinePos;
+        }
+        else
+        {
+            // Go to next camera in the list
+            currentCamIndex++;
+
+            currentCam.gameObject.SetActive(false);
+
+            // If there are no more cameras left in the count, cancel the intro
+            if(currentCamIndex > cameras.Length - 1)
+            {
+                CancelIntroSequence();
+                return;
+            }
+
+            // Ensure that the next camera is selected
+            currentCam = cameras[currentCamIndex];
+            currentCam.CancelDamping(true);
+
+            // Find the spline and allocated 
+            currentSpline = currentCam.GetComponent<CinemachineSplineDolly>();
+            splineMaxKnots = currentSpline.Spline.Splines[0].Count - 1;
+            currentSpline.CameraPosition = 0f;
+
+            // Teleport brain straight to camera and snap to location
+            currentCam.ForceCameraPosition(currentCam.transform.position, currentCam.transform.rotation);
+            currentCam.CancelDamping(false);
+            currentCam.gameObject.SetActive(true);
+
+            Debug.Log($"Switch Cameras for Intro Sequence - Cam:{currentCam.name}, Start Pos:{currentSpline.CameraPosition}, End Pos:{splineMaxKnots}");
+        }
+    }
+
+    public void CancelIntroSequence()
+    {
+        // Fade out
+
+        // Once fade is done, make player cam live, and turn off all other cams\
+
+        for( int i = 0; i < cameras.Length; i++)
+        {
+            cameras[i].gameObject.SetActive(false);
+            cameras[i] = null;
+        }
+
+        playerCamera.gameObject.SetActive(true);
+
+        doIntroSequence = false;
+
+        currentCam = null;
+        currentSpline = null;
+
+        Debug.Log("Cancelling Intro Sequence");
+
+        // Fade back in
+
+        // Give player movement
     }
 
     /// <summary>
