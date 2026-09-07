@@ -6,6 +6,7 @@ public class ActivateMovingPlatform : MonoBehaviour
     public bool isPlatformActive = false;
 
     [SerializeField] private GameObject platform;
+    [SerializeField] private GameObject platformParent;
     [SerializeField] private Vector3 activePosition;
     [SerializeField] private Vector3 deactivePosition;
 
@@ -28,6 +29,7 @@ public class ActivateMovingPlatform : MonoBehaviour
             if (Vector3.Distance(platform.transform.localPosition, activePosition) < 0.1f) return;
 
             platform.transform.position -= new Vector3(0, 0, 2 * Time.deltaTime);
+            //Vector3.MoveTowards(platform.transform.localPosition, activePosition, 2 * Time.deltaTime);
 
             if (platformScript.isPlayerOn)
             {
@@ -37,6 +39,8 @@ public class ActivateMovingPlatform : MonoBehaviour
         else
         {
             if (Vector3.Distance(platform.transform.localPosition, deactivePosition) < 0.1f) return;
+
+            //Vector3 localDeactivePos = deactivePosition - platformParent.transform.position;
 
             platform.transform.position += new Vector3(0, 0, 2 * Time.deltaTime);
 
