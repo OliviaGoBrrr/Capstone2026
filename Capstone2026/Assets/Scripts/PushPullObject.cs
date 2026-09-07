@@ -10,9 +10,13 @@ using Quaternion = UnityEngine.Quaternion;
 public class PushPullObject : MonoBehaviour, IInteractable
 {
     [Header("Assignments")]
-    public Transform PlayerTransform;
+    
+    [SerializeField] private PlayerCCMovement player;
+    private Transform playerTransform;
     public PlayerManager playerM;
+    
     [Header("Variables")]
+    [SerializeField] private float speedPenalty = 0.5f;
     public bool Held = false;
     private float forwardOffset;
     public const float playerToObjDist = 1.5f;
@@ -27,7 +31,8 @@ public class PushPullObject : MonoBehaviour, IInteractable
     private void Awake()
     {
         playerM = FindFirstObjectByType<PlayerManager>().GetComponent<PlayerManager>();
-        PlayerTransform = playerM.GetComponent<PlayerCCMovement>().playerModel.transform;
+        player = playerM.GetComponent<PlayerCCMovement>();
+        playerTransform = player.playerModel.transform;
     }
 
     void Start()
@@ -61,6 +66,7 @@ public class PushPullObject : MonoBehaviour, IInteractable
 
         if(playerM.StateMachine.CurrentState == playerM.PushPullState)
         {
+            player.pushPullPenalty = speedPenalty;
             playerM.canPickUp = false;
         }
 
@@ -102,7 +108,7 @@ public class PushPullObject : MonoBehaviour, IInteractable
         else if(playerM.canPickUp == true)
         {
             Held = true;
-            transform.SetParent(PlayerTransform);
+            transform.SetParent(playerTransform);
 
             //playerM.PushPullState.EnterState();
             playerM.StateMachine.ChangeState(playerM.PushPullState);
