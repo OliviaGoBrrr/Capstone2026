@@ -26,6 +26,7 @@ public class CameraSequencer : MonoBehaviour
     private bool seqCancellable = false;
     #endregion
 
+    #region Private Variables
     [Header("Cameras")]
     [Tooltip("Player's Camera - Necessary to reset after intro sequence concludes")]
     [SerializeField]
@@ -45,15 +46,6 @@ public class CameraSequencer : MonoBehaviour
     [SerializeField]
     private CinemachineCamera[] cameras;
 
-    [Header("Spline Values")]
-    [Range(0f, 10f)]
-    public float DefaultCamSpeed = 1.0f;
-    [Range(0f, 10f)]
-    public float[] CamSpeeds;
-
-    [Range(0.01f, 0.5f)]
-    public float CameraOffsetBeforeSwitching = 0.1f;
-
     // Private Values
     private CinemachineCamera currentCam;
     private CinemachineSplineDolly currentSpline;
@@ -65,6 +57,19 @@ public class CameraSequencer : MonoBehaviour
     bool playSequence = false;
     int currentCamIndex = 0;
     float splineMaxDistance = 0f;
+
+    #endregion
+
+    #region Public Variables
+    [Header("Spline Values")]
+    [Range(0f, 10f)]
+    public float DefaultCamSpeed = 1.0f;
+    [Range(0f, 10f)]
+    public float[] CamSpeeds;
+
+    [Range(0.01f, 0.5f)]
+    public float CameraOffsetBeforeSwitching = 0.1f;
+    #endregion
 
     #region Sequence Events
 
@@ -123,27 +128,6 @@ public class CameraSequencer : MonoBehaviour
 
         }
     }
-
-    #region Coroutines
-
-    /*
-    private IEnumerator LetterboxFadeIn
-    {
-        // Fade in bars on top of bottom
-
-        // 
-
-    }
-
-
-    private IEnumerator LetterboxFadeOut
-    {
-
-    }
-    */
-    #endregion
-
-
 
     #region Camera Sequence Methods
     public virtual void StartSequence()
