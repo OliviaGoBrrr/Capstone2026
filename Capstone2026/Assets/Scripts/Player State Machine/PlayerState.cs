@@ -114,7 +114,7 @@ public class PlayerState
         // DEAD STATE
         if (player.batteryPercent <= 0)
         {
-            player.OnPlayerDeath.Invoke();
+            //player.OnPlayerDeath.Invoke();
             playerStateMachine.ChangeState(player.DeadState);
         }
 
