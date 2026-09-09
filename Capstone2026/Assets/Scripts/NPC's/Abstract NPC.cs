@@ -115,7 +115,7 @@ public abstract class AbstractNPC : MonoBehaviour, IInteractable
 
     private IEnumerator DialogueCooldown()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.5f);
         index = -1;
     }
 
@@ -126,7 +126,6 @@ public abstract class AbstractNPC : MonoBehaviour, IInteractable
 
     private IEnumerator TurnToPlayer()
     {
-        
         Transform target = playerM.transform;
         Vector3 direction = playerM.transform.position - transform.position;
         direction.y = 0;
@@ -139,7 +138,5 @@ public abstract class AbstractNPC : MonoBehaviour, IInteractable
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
             yield return new WaitForFixedUpdate();
         }
-        
-        
     }
 }
