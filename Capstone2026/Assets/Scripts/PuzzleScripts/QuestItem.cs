@@ -8,7 +8,8 @@ public class QuestItem : MonoBehaviour, IInteractable
 
     public void OnInteract()
     {
-        playerM.invArray[invArrayNum] = true;
+        Debug.Log("Hello!");
+        PlayerManager.invArray[invArrayNum] = true;
         Destroy(gameObject);
     }
 }

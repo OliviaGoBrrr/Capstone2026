@@ -12,8 +12,8 @@ public class NPC : AbstractNPC
     [SerializeField] private string[] endDialogue; //dialogue when quest is complete
     [SerializeField] private string[] completedRepeatDialogue; //same thing but end of quest
     [HideInInspector] public bool QuestAchieved = false; // Has the player gotten the item needed
-    private bool QuestComplete = false;
-    private bool dialogueFinish = false;
+    public bool QuestComplete = false;
+    public bool dialogueFinish = false;
 
     [Header("Questing")]
     [SerializeField] public int questArrayItem;
@@ -28,8 +28,8 @@ public class NPC : AbstractNPC
     public override void Update()
     {
         base.Update(); //reflects update
-
-        if (playerM.invArray[questArrayItem] == true) { QuestAchieved = true; }
+        Debug.Log(PlayerManager.invArray[questArrayItem]);
+        if (PlayerManager.invArray[questArrayItem] == true) { QuestAchieved = true; }
 
         if (QuestAchieved && !QuestComplete && currentDialogue == repeatedDialogue)
         {
