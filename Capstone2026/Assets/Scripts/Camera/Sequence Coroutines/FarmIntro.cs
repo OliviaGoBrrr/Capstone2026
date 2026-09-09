@@ -9,9 +9,11 @@ public class FarmIntro : CameraSequencer
     public float inSequenceBarHeight = 70f;
     public Image topBar, bottomBar, fadeScreen;
 
+    public float FadeInTime, FadeOutTime;
+
     public override void StartSequence()
     {
-        StartCoroutine(LetterBoxIn(inSequenceBarHeight, 0.3f));
+        StartCoroutine(LetterBoxIn(inSequenceBarHeight, 0.2f));
         base.StartSequence();
     }
 
@@ -23,21 +25,25 @@ public class FarmIntro : CameraSequencer
     // Coroutine to make sure that certain functions go off after other coroutines
     IEnumerator FadeInOutCamera()
     {
-        yield return StartCoroutine(LetterBoxIn(Screen.currentResolution.height / 2f));
+        yield return LetterBoxIn(Screen.currentResolution.height / 2f);
 
-        base.CancelCameraSequence();
+        for (int i = 0; i < cameras.Length; i++)
+        {
+            cameras[i].gameObject.SetActive(false);
+        }
 
-        yield return StartCoroutine(LetterBoxOut(0.1f));
+        Debug.Log("Cancel");
 
-        Debug.Log("Giving Player Movement");
+        playerCamera.gameObject.SetActive(true);
 
-        StopCoroutine(FadeInOutCamera());
+        playSequence = false;
+
+        yield return LetterBoxOut(0.1f);
     }
 
     #region UI Coroutines
     IEnumerator LetterBoxInOut(float fadeToHeight, float totalTime = 1f)
     {
-        Debug.Log("Letter Box Fading In");
         topBar.gameObject.SetActive(true);
         bottomBar.gameObject.SetActive(true);
 
@@ -68,13 +74,14 @@ public class FarmIntro : CameraSequencer
 
     IEnumerator LetterBoxIn(float fadeToHeight, float fadeInTime = 0.5f)
     {
-        Debug.Log("Letter Box Fading In");
         topBar.gameObject.SetActive(true);
         bottomBar.gameObject.SetActive(true);
 
         Vector2 newHeight = bottomBar.rectTransform.sizeDelta;
 
         float initialHeight = newHeight.y;
+
+        Debug.Log("Fading in");
 
         for (float currentHeight = initialHeight; currentHeight < fadeToHeight; currentHeight += ((fadeToHeight * (Time.deltaTime / fadeInTime))))
         {
@@ -87,21 +94,18 @@ public class FarmIntro : CameraSequencer
 
     IEnumerator LetterBoxOut(float fadeToHeight, float fadeInTime = 0.5f)
     {
-        Debug.Log("Letter Box Fading Out");
 
         Vector2 newHeight = bottomBar.rectTransform.sizeDelta;
 
         float initialHeight = newHeight.y;
 
-        Debug.Log(initialHeight);
+        Debug.Log("Fading out");
 
         for (float currentHeight = initialHeight; currentHeight > fadeToHeight; currentHeight -= ((initialHeight/fadeInTime) * Time.deltaTime))
         {
             newHeight.y = currentHeight;
             topBar.rectTransform.sizeDelta = newHeight;
             bottomBar.rectTransform.sizeDelta = newHeight;
-
-            Debug.Log("Doing the shrinking");
 
             yield return null;
         }

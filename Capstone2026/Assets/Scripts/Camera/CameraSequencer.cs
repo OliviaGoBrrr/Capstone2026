@@ -30,31 +30,29 @@ public class CameraSequencer : MonoBehaviour
     [Header("Cameras")]
     [Tooltip("Player's Camera - Necessary to reset after intro sequence concludes")]
     [SerializeField]
-    private CinemachineCamera playerCamera;
+    protected CinemachineCamera playerCamera;
 
     /// <summary>
     /// Scene's Cinemachine Brain
     /// </summary>
     [Tooltip("Scene's Cinemachine Brain (Will try to allocate on start, if possible)")]
     [SerializeField]
-    private CinemachineBrain camBrain;
+    protected CinemachineBrain camBrain;
 
     /// <summary>
     /// Cameras are chosen in array order. Ensure cameras are placed in order
     /// </summary>
     [Tooltip("Cameras will play in array order (first to last element)")]
     [SerializeField]
-    private CinemachineCamera[] cameras;
-
-    // Private Values
-    private CinemachineCamera currentCam;
-    private CinemachineSplineDolly currentSpline;
+    protected CinemachineCamera[] cameras;
+    protected CinemachineCamera currentCam;
+    protected CinemachineSplineDolly currentSpline;
 
     // Check to see if whether or not we can do intro sequence
 
     // true for skippable or false for cancellable
     bool skipCheck = false;
-    bool playSequence = false;
+    protected bool playSequence = false;
     int currentCamIndex = 0;
     float splineMaxDistance = 0f;
 
@@ -103,6 +101,7 @@ public class CameraSequencer : MonoBehaviour
         if (playSequence)
         {
             PlayCameraSequence();
+            MoveCameraAlongSpline();
         }
     }
 
@@ -144,8 +143,6 @@ public class CameraSequencer : MonoBehaviour
             return;
         }
 
-        Debug.Log("Level Introduction Started");
-
         for (int i = 0; i < cameras.Length; i++)
         {
             cameras[i].gameObject.SetActive(false);
@@ -161,8 +158,6 @@ public class CameraSequencer : MonoBehaviour
 
         // Turn on current cam
         currentCam.gameObject.SetActive(true);
-
-        //StartSequenceEvent.Invoke();
 
         playSequence = true;
     }
@@ -190,29 +185,27 @@ public class CameraSequencer : MonoBehaviour
             }
         }
 
+        if ((currentSpline.CameraPosition > (splineMaxDistance * (1 - CameraOffsetBeforeSwitching))) && seqPlayAuto)
+        {
+            Debug.Log(splineMaxDistance);
+            Debug.Log((splineMaxDistance - (splineMaxDistance * CameraOffsetBeforeSwitching)));
+            NextCameraInSequence();
+        }
+    }
+
+    protected void MoveCameraAlongSpline()
+    {
         float currSplinePos = currentSpline.CameraPosition;
 
-        if (currentSpline.CameraPosition < splineMaxDistance - (splineMaxDistance * CameraOffsetBeforeSwitching))
-        {
-            // Set the camera's speed
-            float camSpeed;
+        // Set the camera's speed
+        float camSpeed;
 
-            if (currentCamIndex > CamSpeeds.Length - 1) { camSpeed = DefaultCamSpeed; }
+        if (currentCamIndex > CamSpeeds.Length - 1) { camSpeed = DefaultCamSpeed; }
+        else { camSpeed = CamSpeeds[currentCamIndex]; }
 
-            else { camSpeed = CamSpeeds[currentCamIndex]; }
-
-            // Lerp Camera Position
-            float newSplinePos = currSplinePos + ((splineMaxDistance - currSplinePos) * Time.deltaTime * camSpeed);
-            currentSpline.CameraPosition = newSplinePos;
-        }
-        else
-        {
-            if (seqPlayAuto || Input.anyKeyDown)  // || player presses key to go to next sequence)
-            {
-                NextCameraInSequence();
-                //dsdsdsd
-            }
-        }
+        // Lerp Camera Position
+        float newSplinePos = currSplinePos + ((splineMaxDistance - currSplinePos) * Time.deltaTime * camSpeed);
+        currentSpline.CameraPosition = newSplinePos;
     }
 
     public void NextCameraInSequence()
@@ -220,14 +213,16 @@ public class CameraSequencer : MonoBehaviour
         // Go to next camera in the list
         currentCamIndex++;
 
-        currentCam.gameObject.SetActive(false);
-
         // If there are no more cameras left in the count, cancel the intro
         if (currentCamIndex > cameras.Length - 1)
         {
+            currentCamIndex--;
+            seqPlayAuto = false;
             CancelCameraSequence();
             return;
         }
+
+        currentCam.gameObject.SetActive(false);
 
         // Ensure that the next camera is selected
         currentCam = cameras[currentCamIndex];
@@ -242,8 +237,6 @@ public class CameraSequencer : MonoBehaviour
         currentCam.ForceCameraPosition(currentCam.transform.position, currentCam.transform.rotation);
         currentCam.CancelDamping(false);
         currentCam.gameObject.SetActive(true);
-
-        //NextCamSequenceEvent.Invoke();
 
         Debug.Log($"Switch Cameras for Intro Sequence - Cam:{currentCam.name}, Start Pos:{currentSpline.CameraPosition}, End Pos:{splineMaxDistance}");
     }
@@ -268,10 +261,6 @@ public class CameraSequencer : MonoBehaviour
 
         currentCam = null;
         currentSpline = null;
-
-        Debug.Log("Cancelling Intro Sequence");
-
-        //EndSequenceEvent.Invoke();
     }
 
     /// <summary>
