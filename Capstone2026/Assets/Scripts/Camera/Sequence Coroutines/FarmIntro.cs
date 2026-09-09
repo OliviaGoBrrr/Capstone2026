@@ -9,7 +9,16 @@ public class FarmIntro : CameraSequencer
     public float inSequenceBarHeight = 70f;
     public Image topBar, bottomBar, fadeScreen;
 
-    public float FadeInTime, FadeOutTime;
+    [Header("Letter Box Effect Variables")]
+    public float FadeInTime;
+    public float FadeOutTime;
+    public float FadeDelay;
+
+
+    [Header("Audio Variables")]
+    public AudioClip fadeInClip;
+    public AudioClip fadeOutClip;
+    public AudioSource introAduioSource;
 
     public override void StartSequence()
     {
@@ -25,20 +34,24 @@ public class FarmIntro : CameraSequencer
     // Coroutine to make sure that certain functions go off after other coroutines
     IEnumerator FadeInOutCamera()
     {
-        yield return LetterBoxIn(Screen.currentResolution.height / 2f);
+        introAduioSource.PlayOneShot(fadeInClip);
+
+        yield return LetterBoxIn(545f, FadeInTime);
 
         for (int i = 0; i < cameras.Length; i++)
         {
             cameras[i].gameObject.SetActive(false);
         }
 
-        Debug.Log("Cancel");
-
         playerCamera.gameObject.SetActive(true);
 
         playSequence = false;
 
-        yield return LetterBoxOut(0.1f);
+        yield return new WaitForSeconds(FadeDelay);
+
+        introAduioSource.PlayOneShot(fadeOutClip);
+
+        yield return LetterBoxOut(0.1f, FadeOutTime);
     }
 
     #region UI Coroutines
