@@ -7,14 +7,18 @@ using UnityEngine;
 /// </summary>
 public class NPC : AbstractNPC
 {
-    [Header("Quest")]
+    [Header("Dialogue 2")]
     [SerializeField] private string[] repeatedDialogue; // Dialogue for after the original dialogue is finished
     [SerializeField] private string[] endDialogue; //dialogue when quest is complete
     [SerializeField] private string[] completedRepeatDialogue; //same thing but end of quest
-    [HideInInspector] public bool PlayerHasItem = false;
     [HideInInspector] public bool QuestAchieved = false; // Has the player gotten the item needed
     private bool QuestComplete = false;
     private bool dialogueFinish = false;
+
+    [Header("Questing")]
+    [SerializeField] public int questArrayItem;
+
+    
 
     public override void Start()
     {
@@ -24,6 +28,8 @@ public class NPC : AbstractNPC
     public override void Update()
     {
         base.Update(); //reflects update
+
+        if (playerM.invArray[questArrayItem] == true) { QuestAchieved = true; }
 
         if (QuestAchieved && !QuestComplete && currentDialogue == repeatedDialogue)
         {
@@ -37,21 +43,7 @@ public class NPC : AbstractNPC
     }
 
     protected override void OnDialogueFinish()
-    {
-        /* item collection set up
-        
-        // If it has not been interacted with before this, give the player the item
-        if (!PlayerHasItem)
-        {
-            if (itemToGive != null)
-            {
-                Destroy(itemToGive);
-            }
-
-            PlayerHasItem = true;
-        }
-        */
-
+    {  
         // Set future dialogue to the second/ending dialogue and then reset the line number
         if (!QuestComplete) currentDialogue = repeatedDialogue;
 

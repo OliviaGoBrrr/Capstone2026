@@ -16,18 +16,18 @@ public abstract class AbstractNPC : MonoBehaviour, IInteractable
     protected string[] currentDialogue;
     protected int index = -1; // Current Line being displayed
 
-    public PlayerInteract playerI;
-    public PlayerManager playerM;
-
-
     public TextMeshProUGUI textBox;
     public GameObject moveOnPrompt;
-    private float textSpeed = 10f;
+    private float textSpeed = 5f;
     private bool isTyping = false;
     private bool finishTyping = false;
 
     private Coroutine currentTyping;
     private const string HTML_ALPHA = "<color=#00000000>";
+
+    [Header("Questing")]
+    public PlayerInteract playerI;
+    public PlayerManager playerM;
     
 
     public void OnInteract()
@@ -38,14 +38,7 @@ public abstract class AbstractNPC : MonoBehaviour, IInteractable
 
     public virtual void Start()
     {
-        //should probably find a way to set the player scripts and text box without the inspector cuz the inspector is annoyinnngggg
-
         currentDialogue = startDialogue;
-
-        /*if (exclamationMark != null)
-        {
-            exclamationMark = Instantiate(exclamationMark, transform.position + new Vector3(0, 4, 0), Quaternion.identity);
-        }*/
     }
 
     public virtual void Update()

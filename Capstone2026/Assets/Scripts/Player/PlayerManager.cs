@@ -28,6 +28,9 @@ public class PlayerManager : MonoBehaviour
     public int numberOfSunRaysForPower = 2;
     public bool isPoweredByLightBeam = false;
 
+    [Header("Inventory")] 
+    public bool[] invArray = new bool[1]; //change to be how many bools there are
+
     public TMP_Text batteryText;
     public Image batteryImage;
 
