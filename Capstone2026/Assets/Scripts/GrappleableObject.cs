@@ -3,9 +3,9 @@ using UnityEngine;
 public class GrappleableObject : MonoBehaviour
 {
     public Transform anchorPoint;
-    //public Canvas grappleUICanvas;
+    public Canvas grappleUICanvas;
     private Transform player;
-    /*
+    
     private void Awake()
     {
         if (grappleUICanvas == null)
@@ -33,5 +33,5 @@ public class GrappleableObject : MonoBehaviour
         grappleUICanvas.transform.LookAt(transform.position + Camera.main.transform.rotation * Vector3.forward, 
             Camera.main.transform.rotation * Vector3.up);
     }
-    */
+    
 }
