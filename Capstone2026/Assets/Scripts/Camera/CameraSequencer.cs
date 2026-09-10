@@ -16,6 +16,10 @@ public class CameraSequencer : MonoBehaviour
     [SerializeField]
     protected InputActionReference nextCameraAction;
 
+    [Tooltip("Hide Player UI during Camera Sequence")]
+    [SerializeField]
+    protected bool seqHidePlayerUI = false;
+
     [Tooltip("Will require a box collider with the IsTrigger flag set to true and a rigidbody to work")]
     [SerializeField]
     protected bool seqPlayOnTrigger = false;
@@ -43,7 +47,6 @@ public class CameraSequencer : MonoBehaviour
     [Tooltip("If true, player input will stop the entire sequence")]
     [SerializeField]
     protected bool seqCancellable = false;
-
 
     [Tooltip("Determines how the camera will move to the next camera in the sequence (i.e. Cut = instantly)")]
     [SerializeField]
@@ -255,6 +258,7 @@ public class CameraSequencer : MonoBehaviour
 
 
         // Stop player from moving
+        if (seqHidePlayerUI) { playerManager.batterUIContainer.SetActive(false); }
         playerManager.StateMachine.ChangeState(playerManager.DialogueState);
         playerCamera.gameObject.SetActive(false);
 
@@ -342,7 +346,7 @@ public class CameraSequencer : MonoBehaviour
             currentSpline.CameraPosition = newSplinePos;
         }
 
-        if(newSplinePos > (splineTargetKnot * (1 - CameraOffsetBeforeSwitching)))
+        if(newSplinePos > (splineTargetKnot - CameraOffsetBeforeSwitching))
         {
             if (nextCameraAction.action.WasPressedThisFrame() || seqPlayAuto)
             {
@@ -407,6 +411,7 @@ public class CameraSequencer : MonoBehaviour
         Debug.Log("Cancelling Cam Sequence");
 
         // Give player movement again
+        playerManager.batterUIContainer.SetActive(true);
         playerManager.StateMachine.ChangeState(playerManager.IdleSubState);
         playerCamera.gameObject.SetActive(true);
 

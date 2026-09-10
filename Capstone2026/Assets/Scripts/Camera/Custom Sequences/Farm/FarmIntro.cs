@@ -39,20 +39,26 @@ public class FarmIntro : CameraSequencer
 
         Debug.Log(transitionCanvas.renderingDisplaySize.y);
 
-        yield return LetterBoxIn(Screen.currentResolution.height / 2f, FadeInTime);
+        yield return LetterBoxIn(Screen.currentResolution.height / 2f + 30f, FadeInTime);
 
+        base.CancelCameraSequence();
+
+        /*
         for (int i = 0; i < cameras.Length; i++)
         {
             cameras[i].gameObject.SetActive(false);
         }
 
         // Give player movement again
+        playerManager.batterUIContainer.SetActive(true);
         playerManager.StateMachine.ChangeState(playerManager.IdleSubState);
         playerCamera.gameObject.SetActive(true);
 
         playSequence = false;
 
         camBrain.DefaultBlend = camBrainDefaultBlend;
+
+        */
 
         yield return new WaitForSeconds(FadeDelay);
 
@@ -105,7 +111,7 @@ public class FarmIntro : CameraSequencer
 
         Debug.Log(fadeToHeight);
 
-        for (float currentHeight = initialHeight; currentHeight < fadeToHeight; currentHeight += (fadeToHeight / (fadeInTime / Time.deltaTime)))
+        for (float currentHeight = initialHeight; currentHeight < fadeToHeight; currentHeight += (fadeToHeight / (fadeInTime / Time.fixedDeltaTime)))
         {
             newHeight.y = currentHeight;
             Debug.Log(currentHeight);
@@ -122,7 +128,7 @@ public class FarmIntro : CameraSequencer
 
         float initialHeight = newHeight.y;
 
-        for (float currentHeight = initialHeight; currentHeight > fadeToHeight; currentHeight -= (fadeToHeight * (fadeOutTime / Time.deltaTime)))
+        for (float currentHeight = initialHeight; currentHeight > fadeToHeight; currentHeight -= (fadeToHeight * (fadeOutTime / Time.fixedDeltaTime)))
         {
             newHeight.y = currentHeight;
             topBar.rectTransform.sizeDelta = newHeight;
