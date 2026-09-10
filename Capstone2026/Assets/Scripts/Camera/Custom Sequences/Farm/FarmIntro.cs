@@ -83,6 +83,8 @@ public class FarmIntro : CameraSequencer
 
         float topHeight = bottomBar.rectTransform.sizeDelta.y;
 
+        Debug.Log(fadeToHeight);
+
         for (float currentHeight = topHeight; currentHeight > 0f; currentHeight -= ((fadeToHeight * (Time.deltaTime / (totalTime / 2f)))))
         {
             newHeight.y = currentHeight;
@@ -101,23 +103,26 @@ public class FarmIntro : CameraSequencer
 
         float initialHeight = newHeight.y;
 
-        for (float currentHeight = initialHeight; currentHeight < fadeToHeight; currentHeight += ((fadeToHeight * (Time.deltaTime / fadeInTime))))
+        Debug.Log(fadeToHeight);
+
+        for (float currentHeight = initialHeight; currentHeight < fadeToHeight; currentHeight += (fadeToHeight / (fadeInTime / Time.deltaTime)))
         {
             newHeight.y = currentHeight;
+            Debug.Log(currentHeight);
             topBar.rectTransform.sizeDelta = newHeight;
             bottomBar.rectTransform.sizeDelta = newHeight;
             yield return null;
         }
     }
 
-    IEnumerator LetterBoxOut(float fadeToHeight, float fadeInTime = 0.5f)
+    IEnumerator LetterBoxOut(float fadeToHeight, float fadeOutTime = 0.5f)
     {
 
         Vector2 newHeight = bottomBar.rectTransform.sizeDelta;
 
         float initialHeight = newHeight.y;
 
-        for (float currentHeight = initialHeight; currentHeight > fadeToHeight; currentHeight -= ((initialHeight/fadeInTime) * Time.deltaTime))
+        for (float currentHeight = initialHeight; currentHeight > fadeToHeight; currentHeight -= (fadeToHeight * (fadeOutTime / Time.deltaTime)))
         {
             newHeight.y = currentHeight;
             topBar.rectTransform.sizeDelta = newHeight;
