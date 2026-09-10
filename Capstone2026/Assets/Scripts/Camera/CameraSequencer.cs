@@ -5,11 +5,16 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 public class CameraSequencer : MonoBehaviour
 {
     #region Sequence Setting Variables
     [Header("Sequence Variables")]
+
+    [Tooltip("Input key for next camera/skip")]
+    [SerializeField]
+    protected InputActionReference nextCameraAction;
 
     [Tooltip("Will require a box collider with the IsTrigger flag set to true and a rigidbody to work")]
     [SerializeField]
@@ -268,7 +273,7 @@ public class CameraSequencer : MonoBehaviour
         if (currentCam == null) { playerCamera.gameObject.SetActive(true); playSequence = false; return; }
 
         // If the play can just skip to the next camera
-        if (Input.anyKeyDown)
+        if (nextCameraAction)
         {
             if (seqCancellable)
             {
@@ -303,7 +308,8 @@ public class CameraSequencer : MonoBehaviour
         currentSpline.CameraPosition = newSplinePos;
 
         // If the camera is past the offset, move on to next camera (either automatically or when input is detected)
-        if ((currentSpline.CameraPosition > (splineMaxDistance * (1 - CameraOffsetBeforeSwitching))) && (seqPlayAuto || Input.anyKeyDown))
+        if ((currentSpline.CameraPosition > (splineMaxDistance * (1 - CameraOffsetBeforeSwitching))) && 
+            (nextCameraAction.action.WasPressedThisFrame() || seqPlayAuto))
         {
             NextCameraInSequence();
         }
@@ -333,7 +339,7 @@ public class CameraSequencer : MonoBehaviour
 
         if(splineTargetKnot > (splineTargetKnot * (1 - CameraOffsetBeforeSwitching)))
         {
-            if (Input.anyKeyDown || seqPlayAuto)
+            if (nextCameraAction.action.WasPressedThisFrame() || seqPlayAuto)
             {
                 splineTargetKnot++;
                 // will check to see if its the last knot and cancel the sequence if it is
@@ -410,11 +416,14 @@ public class CameraSequencer : MonoBehaviour
     /// <exception cref="ArgumentNullException"></exception>
     public void SequenceErrorCheck()
     {
+        // An action needs to be assigned from the Input System
+        if(nextCameraAction == null) { throw new ArgumentNullException(paramName: this.gameObject.name, message: "A next camera action needs to be assigned to this camera sequence"); }
+
         // If there is no fly through introduction set up, stop function
         if (cameras.Length == 0) { throw new ArgumentException(message: "No Cameras Allocated to Level Intro"); }
 
         // If there is no playerCamera allocated
-        if (playerCamera == null) { throw new ArgumentNullException(paramName: this.gameObject.name, message: "No Player Camera Allocated to LevelIntro"); }
+        if (playerCamera == null) { throw new ArgumentNullException(paramName: this.gameObject.name, message: "No Player Camera Allocated to Camera Sequence"); }
 
         // If there is no CineMachine Brain allocated
         if (camBrain == null)
