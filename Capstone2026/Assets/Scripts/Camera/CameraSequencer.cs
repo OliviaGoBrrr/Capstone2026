@@ -273,7 +273,7 @@ public class CameraSequencer : MonoBehaviour
         if (currentCam == null) { playerCamera.gameObject.SetActive(true); playSequence = false; return; }
 
         // If the play can just skip to the next camera
-        if (nextCameraAction)
+        if (nextCameraAction.action.WasPressedThisFrame())
         {
             if (seqCancellable)
             {
@@ -308,8 +308,7 @@ public class CameraSequencer : MonoBehaviour
         currentSpline.CameraPosition = newSplinePos;
 
         // If the camera is past the offset, move on to next camera (either automatically or when input is detected)
-        if ((currentSpline.CameraPosition > (splineMaxDistance * (1 - CameraOffsetBeforeSwitching))) && 
-            (nextCameraAction.action.WasPressedThisFrame() || seqPlayAuto))
+        if ((currentSpline.CameraPosition > (splineMaxDistance * (1 - CameraOffsetBeforeSwitching))) && (seqPlayAuto || nextCameraAction.action.WasPressedThisFrame()))
         {
             NextCameraInSequence();
         }
