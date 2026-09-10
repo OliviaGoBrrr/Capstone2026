@@ -31,9 +31,6 @@ public class RotationLever : MonoBehaviour, IInteractable
             AnimController.Play("rotatePrism");
         }
     }
-    public void ActivateOutline() { }
-
-    public void DeactivateOutline() { }
 }
 
 //if rotating, do not allow input - OnStateEnter

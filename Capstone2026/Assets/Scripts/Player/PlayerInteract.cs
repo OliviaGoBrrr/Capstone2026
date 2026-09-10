@@ -12,7 +12,6 @@ public class PlayerInteract : MonoBehaviour
     public Camera playerCamera;
     public IInteractable interactable;
     public float maxDistance;
-    public float interactAngle = 20f;
     public InputActionReference interactAction;
     public LayerMask InteractLayerMask;
     public LayerMask obstacleLayerMask;
@@ -24,9 +23,6 @@ public class PlayerInteract : MonoBehaviour
 
     [Header("Debug Options")]
     public bool debug;
-
-
-    private IInteractable lastTarget;
 
     private void Awake()
     {
@@ -53,7 +49,7 @@ public class PlayerInteract : MonoBehaviour
     private void FindIntertactable()
     {
         int numColliders = Physics.OverlapSphereNonAlloc(transform.position, maxDistance, interactColliders, InteractLayerMask);
-        
+
         Vector3 closestInteraction = Vector3.zero;
         float closestDot = 0f;
 
@@ -67,7 +63,7 @@ public class PlayerInteract : MonoBehaviour
                 float dirDot = Vector3.Dot(playerCamera.transform.forward, direction);
 
                 // ... and which one is closest to what the player is looking at.
-                if (dirDot >= Mathf.Cos(Mathf.Deg2Rad * 20f)) // if its within the search angle
+                if (dirDot >= Mathf.Cos(Mathf.Deg2Rad * 35f)) // if its within the search angle
                 {
                     if (dirDot > closestDot) // saves the closest interact target
                     {
@@ -86,9 +82,6 @@ public class PlayerInteract : MonoBehaviour
             if (Physics.Raycast(playerCamera.transform.position, closestInteraction, out hit, maxDistance, obstacleLayerMask))
             {
                 Debug.DrawLine(transform.position, hit.point, Color.red);
-
-                lastTarget.DeactivateOutline();
-                
                 return;
             }
 
@@ -115,22 +108,6 @@ public class PlayerInteract : MonoBehaviour
 
                 // It should find a target, but it allows the disabling of the grapple point
                 IInteractable target = hit.transform.GetComponent<IInteractable>();
-                if (lastTarget != null)
-                {
-                    if (lastTarget != target)
-                    {
-                        lastTarget.DeactivateOutline();
-                    }
-                }
-                
-                lastTarget = target;
-
-                
-                
-                
-
-                
-
 
                 if (target != null) // If the grapple point isn't disabled
                 {
@@ -147,8 +124,6 @@ public class PlayerInteract : MonoBehaviour
                     }
                     */
 
-                    // if currently hit target is interactable ActivateOutline
-                    target.ActivateOutline();
 
 
                     // Action is taken
@@ -160,10 +135,6 @@ public class PlayerInteract : MonoBehaviour
                     }
                 }
             }
-        }
-        else
-        {
-            if (lastTarget != null) lastTarget.DeactivateOutline();
         }
     }
 
