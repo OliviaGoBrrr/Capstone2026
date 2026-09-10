@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Unity.Cinemachine;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
@@ -9,21 +10,39 @@ public class CameraSequencer : MonoBehaviour
 {
     #region Sequence Setting Variables
     [Header("Sequence Variables")]
+
+    [Tooltip("Will require a box collider with the IsTrigger flag set to true and a rigidbody to work")]
+    [SerializeField]
+    protected bool seqPlayOnTrigger = false;
+    
+    [SerializeField]
+    protected BoxCollider seqTriggerCollider;
+    protected bool seqPlayed = false; 
+
     [Tooltip("Does sequence play when scene loads in")]
     [SerializeField]
-    private bool seqPlayOnStart = false;
+    protected bool seqPlayOnStart = false;
 
     [Tooltip("If true, will move to next camera in sequence once it reaches the end of the spline, without player input")]
     [SerializeField]
-    private bool seqPlayAuto = false;
+    protected bool seqPlayAuto = false;
+
+    [Tooltip("Allows the sequence to be played multiple times - pair with PlayOnTrigger to happen each time the player sets the trigger condiition")]
+    [SerializeField]
+    protected bool seqPlayMultipleTimes = false;
 
     [Tooltip("If true, player input will go to next camera in sequence")]
     [SerializeField]
-    private bool seqSkippable = false;
+    protected bool seqSkippable = false;
 
     [Tooltip("If true, player input will stop the entire sequence")]
     [SerializeField]
-    private bool seqCancellable = false;
+    protected bool seqCancellable = false;
+
+
+    [Tooltip("Determines how the camera will move to the next camera in the sequence (i.e. Cut = instantly)")]
+    [SerializeField]
+    protected CinemachineBlendDefinition seqTransitionToNextCamType;
     #endregion
 
     #region Private Variables
@@ -47,14 +66,20 @@ public class CameraSequencer : MonoBehaviour
     protected CinemachineCamera[] cameras;
     protected CinemachineCamera currentCam;
     protected CinemachineSplineDolly currentSpline;
+    protected CinemachineBlendDefinition camBrainDefaultBlend;
+    protected UnityEngine.Splines.PathIndexUnit camPositionUnits;
 
     // Check to see if whether or not we can do intro sequence
-
     // true for skippable or false for cancellable
     bool skipCheck = false;
     protected bool playSequence = false;
     int currentCamIndex = 0;
     float splineMaxDistance = 0f;
+    
+    [SerializeField]
+    private float splineMaxKnots = 0f;
+    [SerializeField]
+    private float splineTargetKnot;
 
     #endregion
 
@@ -80,18 +105,38 @@ public class CameraSequencer : MonoBehaviour
 
     #endregion
 
+    #region Unity Methods
     private void Start()
     {
+        // Check for errors
+        try
+        {
+            SequenceErrorCheck();
+        }
+        catch (Exception e)
+        {
+            // If theres any errors caught, will throw a message and cancel all other start functions for the camera sequence
+            Debug.LogError($"({this.name}) Sequence Failed To Load - Error: {e}");
+            return;
+        }
+
+
+        // Turn off all sequence cameras - ensures that sequences don't start/the wrong camera is live on start
+        for (int i = 0; i < cameras.Length; i++)
+        {
+            cameras[i].gameObject.SetActive(false);
+        }
+
+        // Store how the brain transitions between cameras by default
+        camBrainDefaultBlend = camBrain.DefaultBlend;
+
+        // Checks to see if we auto play on scene start
         if (seqPlayOnStart)
         {
             StartSequence();
         }
         else
         {
-            for (int i = 0; i < cameras.Length; i++)
-            {
-                cameras[i].gameObject.SetActive(false);
-            }
             playerCamera.gameObject.SetActive(true);
         }
     }
@@ -101,7 +146,26 @@ public class CameraSequencer : MonoBehaviour
         if (playSequence)
         {
             PlayCameraSequence();
-            MoveCameraAlongSpline();
+
+            // Depending on how the camera calculates its position, will change how the camera moves
+            switch (currentSpline.PositionUnits)
+            {
+                case (UnityEngine.Splines.PathIndexUnit.Distance):
+                    MoveCameraAlongSpline();
+                    break;
+
+                case (UnityEngine.Splines.PathIndexUnit.Knot):
+                    MoveCameraToNextKnot();
+                    break;
+
+                case (UnityEngine.Splines.PathIndexUnit.Normalized):
+                    MoveCameraAlongSplineNormalized();
+                    break;
+
+                default:
+                    MoveCameraAlongSpline();
+                    break;
+            }
         }
     }
 
@@ -128,19 +192,52 @@ public class CameraSequencer : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Player")
+        {
+            if (seqPlayOnTrigger && !seqPlayed)
+            {
+                Debug.Log($"{this.name}: Sequence Triggered By Collider");
+                StartSequence();
+            }
+        }
+    }
+
+    #endregion
+
     #region Camera Sequence Methods
+
+    protected virtual void AllocateCameraVariables(CinemachineCamera camera)
+    {
+        // Find the spline and allocate it
+        currentCam = camera;
+        currentSpline = currentCam.GetComponent<CinemachineSplineDolly>();
+        camPositionUnits = currentSpline.PositionUnits;
+
+        if(camPositionUnits == UnityEngine.Splines.PathIndexUnit.Knot)
+        {
+            splineMaxKnots = currentSpline.Spline.Splines[0].Count - 1;
+            splineTargetKnot = 1;
+        }
+
+        splineMaxDistance = currentSpline.Spline.Spline.GetLength();
+        currentSpline.CameraPosition = 0f;
+    }
+
     public virtual void StartSequence()
     {
-        // Check for errors
-        try
+        // Ensure that if a sequence is only meant to trigger once, it can not trigger again
+        if(!seqPlayMultipleTimes) 
         {
-            SequenceErrorCheck();
-        }
-        catch (Exception e)
-        {
-
-            Debug.LogError($"Intro Failed - Error: {e}");
-            return;
+            if (seqPlayed)
+            {
+                return;
+            }
+            else
+            {
+                seqPlayed = true;
+            }
         }
 
         for (int i = 0; i < cameras.Length; i++)
@@ -150,11 +247,11 @@ public class CameraSequencer : MonoBehaviour
 
         playerCamera.gameObject.SetActive(false);
 
+        // Set brain's transition style
+        camBrain.DefaultBlend = seqTransitionToNextCamType;
+
         // Allocate current camera and reset position
-        currentCam = cameras[0];
-        currentSpline = currentCam.GetComponent<CinemachineSplineDolly>();
-        splineMaxDistance = currentSpline.Spline.Spline.GetLength();
-        currentSpline.CameraPosition = 0f;
+        AllocateCameraVariables(cameras[0]);
 
         // Turn on current cam
         currentCam.gameObject.SetActive(true);
@@ -165,7 +262,7 @@ public class CameraSequencer : MonoBehaviour
     /// <summary>
     /// Plays the camera sequence, moving between 
     /// </summary>
-    public void PlayCameraSequence()
+    public virtual void PlayCameraSequence()
     {
         // If there is no current cam (for some reason), reset so the player's camera is on and that the intro sequence finishes
         if (currentCam == null) { playerCamera.gameObject.SetActive(true); playSequence = false; return; }
@@ -184,16 +281,12 @@ public class CameraSequencer : MonoBehaviour
                 return;
             }
         }
-
-        if ((currentSpline.CameraPosition > (splineMaxDistance * (1 - CameraOffsetBeforeSwitching))) && seqPlayAuto)
-        {
-            Debug.Log(splineMaxDistance);
-            Debug.Log((splineMaxDistance - (splineMaxDistance * CameraOffsetBeforeSwitching)));
-            NextCameraInSequence();
-        }
     }
 
-    protected void MoveCameraAlongSpline()
+    /// <summary>
+    /// Moves the camera along the specified spline
+    /// </summary>
+    protected virtual void MoveCameraAlongSpline()
     {
         float currSplinePos = currentSpline.CameraPosition;
 
@@ -203,12 +296,62 @@ public class CameraSequencer : MonoBehaviour
         if (currentCamIndex > CamSpeeds.Length - 1) { camSpeed = DefaultCamSpeed; }
         else { camSpeed = CamSpeeds[currentCamIndex]; }
 
+        float step = splineMaxDistance * (camSpeed * Time.deltaTime);
+
         // Lerp Camera Position
-        float newSplinePos = currSplinePos + ((splineMaxDistance - currSplinePos) * Time.deltaTime * camSpeed);
+        float newSplinePos = currSplinePos + step;
         currentSpline.CameraPosition = newSplinePos;
+
+        // If the camera is past the offset, move on to next camera (either automatically or when input is detected)
+        if ((currentSpline.CameraPosition > (splineMaxDistance * (1 - CameraOffsetBeforeSwitching))) && (seqPlayAuto || Input.anyKeyDown))
+        {
+            NextCameraInSequence();
+        }
     }
 
-    public void NextCameraInSequence()
+    /// <summary>
+    /// For moving a camera along a spline with knots - will go to each knot and wait for input
+    /// </summary>
+    private void MoveCameraToNextKnot()
+    {
+        float currSplinePos = currentSpline.CameraPosition;
+
+        float camSpeed;
+
+        if (splineTargetKnot > CamSpeeds.Length) { camSpeed = DefaultCamSpeed; }
+        else { camSpeed = CamSpeeds[(int)splineTargetKnot - 1]; }
+
+
+        float step = camSpeed * Time.deltaTime;
+
+        float newSplinePos = currSplinePos + step;
+
+        if (newSplinePos < splineTargetKnot)
+        {
+            currentSpline.CameraPosition = newSplinePos;
+        }
+
+        if(splineTargetKnot > (splineTargetKnot * (1 - CameraOffsetBeforeSwitching)))
+        {
+            if (Input.anyKeyDown || seqPlayAuto)
+            {
+                splineTargetKnot++;
+                // will check to see if its the last knot and cancel the sequence if it is
+                if (splineTargetKnot > splineMaxKnots)
+                {
+                    CancelCameraSequence();
+                    return;
+                }
+            }
+        }
+    }
+
+    private void MoveCameraAlongSplineNormalized()
+    {
+        // Need to make
+    }
+
+    public virtual void NextCameraInSequence()
     {
         // Go to next camera in the list
         currentCamIndex++;
@@ -225,17 +368,11 @@ public class CameraSequencer : MonoBehaviour
         currentCam.gameObject.SetActive(false);
 
         // Ensure that the next camera is selected
-        currentCam = cameras[currentCamIndex];
-        currentCam.CancelDamping(true);
-
-        // Find the spline and allocated 
-        currentSpline = currentCam.GetComponent<CinemachineSplineDolly>();
-        splineMaxDistance = currentSpline.Spline.Spline.GetLength();
-        currentSpline.CameraPosition = 0f;
+        AllocateCameraVariables(cameras[currentCamIndex]);
 
         // Teleport brain straight to camera and snap to location
         currentCam.ForceCameraPosition(currentCam.transform.position, currentCam.transform.rotation);
-        currentCam.CancelDamping(false);
+        //currentCam.CancelDamping(false);
         currentCam.gameObject.SetActive(true);
 
         Debug.Log($"Switch Cameras for Intro Sequence - Cam:{currentCam.name}, Start Pos:{currentSpline.CameraPosition}, End Pos:{splineMaxDistance}");
@@ -246,21 +383,24 @@ public class CameraSequencer : MonoBehaviour
     /// </summary>
     public virtual void CancelCameraSequence()
     {
-        // Fade out
-
-        // Once fade is done, make player cam live, and turn off all other cams\
-
+        // Ensure that the sequence has finished, and won't trigger again
         for (int i = 0; i < cameras.Length; i++)
         {
             cameras[i].gameObject.SetActive(false);
         }
 
+        Debug.Log("Cancelling Cam Sequence");
+
         playerCamera.gameObject.SetActive(true);
+
+        camBrain.DefaultBlend = camBrainDefaultBlend;
 
         playSequence = false;
 
         currentCam = null;
         currentSpline = null;
+
+        if (!seqPlayMultipleTimes) { seqPlayed = true; } //Destroy(this); }
     }
 
     /// <summary>
@@ -289,8 +429,5 @@ public class CameraSequencer : MonoBehaviour
             }
         }
     }
-
     #endregion
-
-
 }

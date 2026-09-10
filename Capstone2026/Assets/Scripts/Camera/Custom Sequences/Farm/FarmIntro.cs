@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -8,12 +9,12 @@ public class FarmIntro : CameraSequencer
     [Header("UI Variables")]
     public float inSequenceBarHeight = 70f;
     public Image topBar, bottomBar, fadeScreen;
+    public Canvas transitionCanvas;
 
     [Header("Letter Box Effect Variables")]
     public float FadeInTime;
     public float FadeOutTime;
     public float FadeDelay;
-
 
     [Header("Audio Variables")]
     public AudioClip fadeInClip;
@@ -36,7 +37,9 @@ public class FarmIntro : CameraSequencer
     {
         introAduioSource.PlayOneShot(fadeInClip);
 
-        yield return LetterBoxIn(545f, FadeInTime);
+        Debug.Log(transitionCanvas.renderingDisplaySize.y);
+
+        yield return LetterBoxIn(Screen.currentResolution.height / 2f, FadeInTime);
 
         for (int i = 0; i < cameras.Length; i++)
         {
@@ -46,6 +49,8 @@ public class FarmIntro : CameraSequencer
         playerCamera.gameObject.SetActive(true);
 
         playSequence = false;
+
+        camBrain.DefaultBlend = camBrainDefaultBlend;
 
         yield return new WaitForSeconds(FadeDelay);
 
@@ -94,8 +99,6 @@ public class FarmIntro : CameraSequencer
 
         float initialHeight = newHeight.y;
 
-        Debug.Log("Fading in");
-
         for (float currentHeight = initialHeight; currentHeight < fadeToHeight; currentHeight += ((fadeToHeight * (Time.deltaTime / fadeInTime))))
         {
             newHeight.y = currentHeight;
@@ -111,8 +114,6 @@ public class FarmIntro : CameraSequencer
         Vector2 newHeight = bottomBar.rectTransform.sizeDelta;
 
         float initialHeight = newHeight.y;
-
-        Debug.Log("Fading out");
 
         for (float currentHeight = initialHeight; currentHeight > fadeToHeight; currentHeight -= ((initialHeight/fadeInTime) * Time.deltaTime))
         {
