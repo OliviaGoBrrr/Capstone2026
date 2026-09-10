@@ -12,4 +12,8 @@ public class QuestItem : MonoBehaviour, IInteractable
         PlayerManager.invArray[invArrayNum] = true;
         Destroy(gameObject);
     }
+
+    public void ActivateOutline() { }
+
+    public void DeactivateOutline() { }
 }

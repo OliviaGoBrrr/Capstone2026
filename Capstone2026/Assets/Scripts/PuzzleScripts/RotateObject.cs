@@ -3,6 +3,9 @@ using DG.Tweening;
 
 public class YRotateObject : MonoBehaviour, IInteractable
 {
+    [SerializeField] private GameObject crystalHead;
+    [SerializeField] private GameObject crystalBase;
+
     [SerializeField] private GameObject objectToBeRotated;
     [SerializeField] private int originalRotation;
     [SerializeField] private int rotationStep;
@@ -31,5 +34,19 @@ public class YRotateObject : MonoBehaviour, IInteractable
         objectToBeRotated.transform.DORotate(new Vector3(0, originalRotation + rotationStep * currentNumberOfRotations, 0), 0.5f).SetEase(Ease.OutCubic);
 
         //objectToBeRotated.transform.Rotate(0, rotationStep, 0, Space.World);
+    }
+
+    public void ActivateOutline()
+    {
+        Debug.Log("ACTIVATE");
+        crystalHead.layer = 29; // Outline100Scale
+        crystalBase.layer = 29; // Outline100Scale
+    }
+
+    public void DeactivateOutline()
+    {
+        Debug.Log("DEACTIVATE");
+        crystalHead.layer = 0; // default
+        crystalBase.layer = 0; // default
     }
 }

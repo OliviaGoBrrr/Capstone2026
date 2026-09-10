@@ -64,5 +64,7 @@ public class TEMPLeverActivateLightCrystal : MonoBehaviour, IInteractable
         });
     }
 
+    public void ActivateOutline() { }
 
+    public void DeactivateOutline() { }
 }

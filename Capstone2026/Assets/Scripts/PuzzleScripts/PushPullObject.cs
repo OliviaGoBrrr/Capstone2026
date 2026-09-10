@@ -107,6 +107,9 @@ public class PushPullObject : MonoBehaviour, IInteractable
         }
         
     }
+    public void ActivateOutline() { }
+
+    public void DeactivateOutline() { }
 
     void StopHolding()
     {
