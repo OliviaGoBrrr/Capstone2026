@@ -6,8 +6,13 @@ public class PlatformSwitch : MonoBehaviour, IInteractable
 {
     public GameObject bridge;
     public GameObject leverHandle;
+    public GameObject leverBase;
+
     public GameObject bridgePivot;
     public float rotationFloat;
+
+    private bool isDown;
+
     public void OnInteract()
     {
         leverHandle.transform.DOLocalRotate(new Vector3(rotationFloat, 0, 0), 0.25f).OnComplete(() =>
@@ -15,12 +20,25 @@ public class PlatformSwitch : MonoBehaviour, IInteractable
             //bridge.SetActive(!bridge.activeSelf);
             bridgePivot.transform.DOLocalRotate(new Vector3(2, 58, 3), 1f);
         });
-            
+
+        isDown = true;
+        leverHandle.layer = 0;
+        leverBase.layer = 0;
+
     }
 
-    public void ActivateOutline() { }
+    public void ActivateOutline()
+    {
+        if (isDown) return;
+        leverHandle.layer = 30;
+        leverBase.layer = 30;
+    }
 
-    public void DeactivateOutline() { }
+    public void DeactivateOutline()
+    {
+        leverHandle.layer = 0;
+        leverBase.layer = 0;
+    }
 
     /*
      public GameObject[] platforms;

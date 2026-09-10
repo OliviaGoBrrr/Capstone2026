@@ -38,14 +38,13 @@ public class YRotateObject : MonoBehaviour, IInteractable
 
     public void ActivateOutline()
     {
-        Debug.Log("ACTIVATE");
+        if (totalNumberOfRotations == 0) return;
         crystalHead.layer = 29; // Outline100Scale
         crystalBase.layer = 29; // Outline100Scale
     }
 
     public void DeactivateOutline()
     {
-        Debug.Log("DEACTIVATE");
         crystalHead.layer = 0; // default
         crystalBase.layer = 0; // default
     }

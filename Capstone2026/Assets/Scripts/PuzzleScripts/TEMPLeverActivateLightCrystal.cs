@@ -14,7 +14,7 @@ public class TEMPLeverActivateLightCrystal : MonoBehaviour, IInteractable
     private float timerCounter;
 
     [SerializeField] GameObject leverHandle;
-
+    [SerializeField] GameObject leverBase;
 
     // this script takes a light crystal and makes it a source for a set time
 
@@ -64,7 +64,15 @@ public class TEMPLeverActivateLightCrystal : MonoBehaviour, IInteractable
         });
     }
 
-    public void ActivateOutline() { }
+    public void ActivateOutline()
+    {
+        leverHandle.layer = 30;
+        leverBase.layer = 30;
+    }
 
-    public void DeactivateOutline() { }
+    public void DeactivateOutline()
+    {
+        leverHandle.layer = 0;
+        leverBase.layer = 0;
+    }
 }
