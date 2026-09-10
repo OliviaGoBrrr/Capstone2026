@@ -36,6 +36,10 @@ public abstract class AbstractNPC : MonoBehaviour, IInteractable
         if (index == -1) StartDialogue();
     }
 
+    public void ActivateOutline() { }
+
+    public void DeactivateOutline() { }
+
     public virtual void Start()
     {
         currentDialogue = startDialogue;

@@ -1672,6 +1672,7 @@ MonoBehaviour:
   batteryShadeRateOfChangePerSecond: -20
   batteryPercent: 100
   numberOfSunRaysForPower: 2
+  isPoweredByLightBeam: 0
   batteryText: {fileID: 0}
   batteryImage: {fileID: 0}
   backBatteryImage: {fileID: 5237298044365404991}
@@ -1730,7 +1731,6 @@ MonoBehaviour:
   rotationSpeed: 10.108
   playerInput: {x: 0, y: 0, z: 0}
   playerVelocity: {x: 0, y: 0, z: 0}
-  desiredMove: {x: 0, y: 0, z: 0}
   groundedPlayer: 0
   prevFrameGrounded: 0
   gravityOn: 1
@@ -1788,6 +1788,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8712
   interactColliders: []
+  interactUI: {fileID: 0}
   debug: 1
 --- !u!114 &3620456610392008294
 MonoBehaviour:
@@ -2435,7 +2436,7 @@ Transform:
   m_GameObject: {fileID: 8982059956556774915}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.2, z: 0}
+  m_LocalPosition: {x: 0, y: 0.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

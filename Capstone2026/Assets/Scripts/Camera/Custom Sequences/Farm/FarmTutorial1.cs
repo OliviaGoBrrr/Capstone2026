@@ -68,7 +68,7 @@ public class FarmTutorial1 : CameraSequencer
 
         Debug.Log("Fading in");
 
-        for (float currentHeight = initialHeight; currentHeight < fadeToHeight; currentHeight += (fadeToHeight / (fadeInTime / Time.fixedDeltaTime)))
+        for (float currentHeight = initialHeight; currentHeight < fadeToHeight; currentHeight += (fadeToHeight / (fadeInTime / Time.deltaTime)))
         {
             newHeight.y = currentHeight;
             TopBar.rectTransform.sizeDelta = newHeight;
@@ -90,7 +90,7 @@ public class FarmTutorial1 : CameraSequencer
 
         Debug.Log("Fading out");
 
-        for (float currentHeight = initialHeight; currentHeight > fadeToHeight; currentHeight -= (fadeToHeight * (fadeOutTime / Time.fixedDeltaTime)))
+        for (float currentHeight = initialHeight; currentHeight > fadeToHeight; currentHeight -= (fadeToHeight * (fadeOutTime / Time.deltaTime)))
         {
             newHeight.y = currentHeight;
             TopBar.rectTransform.sizeDelta = newHeight;

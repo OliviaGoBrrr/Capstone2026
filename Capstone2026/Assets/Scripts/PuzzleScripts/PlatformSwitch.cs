@@ -1,36 +1,50 @@
 using UnityEngine;
+using DG.Tweening;
+
 
 public class PlatformSwitch : MonoBehaviour, IInteractable
 {
-    public GameObject grapplePoint;
-
+    public GameObject bridge;
+    public GameObject leverHandle;
+    public GameObject bridgePivot;
+    public float rotationFloat;
     public void OnInteract()
     {
-        grapplePoint.SetActive(!grapplePoint.activeSelf);
+        leverHandle.transform.DOLocalRotate(new Vector3(rotationFloat, 0, 0), 0.25f).OnComplete(() =>
+        {
+            //bridge.SetActive(!bridge.activeSelf);
+            bridgePivot.transform.DOLocalRotate(new Vector3(2, 58, 3), 1f);
+        });
+            
     }
-   /*
-    public GameObject[] platforms;
-    public GameObject[] flipOnAwake;
 
-    private void Awake()
-    {
-        if(flipOnAwake.Length > 0) 
-        {
-            for(int i = 0; i < flipOnAwake.Length; i++)
-            {
-                flipOnAwake[i].SetActive(!flipOnAwake[i].activeSelf);
-            }
-        }
-    }
-    public void OnInteract()
-    {
-        PostGameDataLog.lightMazeInteractInt++;
-        if(platforms.Length > 0) // For all platforms that the switch flips
-        {
-            for(int i = 0; i < platforms.Length; i++)
-            {
-                platforms[i].SetActive(!platforms[i].activeSelf); // Flips the active state (active -> inactive and vice versa)
-            }
-        }
-    }*/
+    public void ActivateOutline() { }
+
+    public void DeactivateOutline() { }
+
+    /*
+     public GameObject[] platforms;
+     public GameObject[] flipOnAwake;
+
+     private void Awake()
+     {
+         if(flipOnAwake.Length > 0) 
+         {
+             for(int i = 0; i < flipOnAwake.Length; i++)
+             {
+                 flipOnAwake[i].SetActive(!flipOnAwake[i].activeSelf);
+             }
+         }
+     }
+     public void OnInteract()
+     {
+         PostGameDataLog.lightMazeInteractInt++;
+         if(platforms.Length > 0) // For all platforms that the switch flips
+         {
+             for(int i = 0; i < platforms.Length; i++)
+             {
+                 platforms[i].SetActive(!platforms[i].activeSelf); // Flips the active state (active -> inactive and vice versa)
+             }
+         }
+     }*/
 }
