@@ -36,7 +36,7 @@ public class CameraSequencer : MonoBehaviour
     [SerializeField]
     protected bool seqPlayMultipleTimes = false;
 
-    [Tooltip("If true, player input will go to next camera in sequence")]
+    [Tooltip("If true, player input will go to next camera in sequence * Note: Does not work with cameras that use the knot position unit type")]
     [SerializeField]
     protected bool seqSkippable = false;
 
@@ -73,6 +73,10 @@ public class CameraSequencer : MonoBehaviour
     protected CinemachineSplineDolly currentSpline;
     protected CinemachineBlendDefinition camBrainDefaultBlend;
     protected UnityEngine.Splines.PathIndexUnit camPositionUnits;
+
+    // Player Manager Reference
+
+    protected PlayerManager playerManager;
 
     // Check to see if whether or not we can do intro sequence
     // true for skippable or false for cancellable
@@ -193,7 +197,6 @@ public class CameraSequencer : MonoBehaviour
                 seqCancellable = false;
                 skipCheck = true;
             }
-
         }
     }
 
@@ -250,6 +253,9 @@ public class CameraSequencer : MonoBehaviour
             cameras[i].gameObject.SetActive(false);
         }
 
+
+        // Stop player from moving
+        playerManager.StateMachine.ChangeState(playerManager.DialogueState);
         playerCamera.gameObject.SetActive(false);
 
         // Set brain's transition style
@@ -336,7 +342,7 @@ public class CameraSequencer : MonoBehaviour
             currentSpline.CameraPosition = newSplinePos;
         }
 
-        if(splineTargetKnot > (splineTargetKnot * (1 - CameraOffsetBeforeSwitching)))
+        if(newSplinePos > (splineTargetKnot * (1 - CameraOffsetBeforeSwitching)))
         {
             if (nextCameraAction.action.WasPressedThisFrame() || seqPlayAuto)
             {
@@ -356,6 +362,10 @@ public class CameraSequencer : MonoBehaviour
         // Need to make
     }
 
+
+    /// <summary>
+    /// Changes to next camera in the camera array. Note: Does not work with cameras that use the knot position unit type
+    /// </summary>
     public virtual void NextCameraInSequence()
     {
         // Go to next camera in the list
@@ -396,6 +406,8 @@ public class CameraSequencer : MonoBehaviour
 
         Debug.Log("Cancelling Cam Sequence");
 
+        // Give player movement again
+        playerManager.StateMachine.ChangeState(playerManager.IdleSubState);
         playerCamera.gameObject.SetActive(true);
 
         camBrain.DefaultBlend = camBrainDefaultBlend;
@@ -415,6 +427,17 @@ public class CameraSequencer : MonoBehaviour
     /// <exception cref="ArgumentNullException"></exception>
     public void SequenceErrorCheck()
     {
+        // Check for the player manager in the scene
+        if(playerManager == null)
+        {
+            playerManager = FindFirstObjectByType<PlayerManager>();
+
+            if(playerManager == null)
+            {
+                throw new ArgumentNullException(paramName: this.gameObject.name, message: "Sequence couldn't find the player manager");
+            }
+        }
+
         // An action needs to be assigned from the Input System
         if(nextCameraAction == null) { throw new ArgumentNullException(paramName: this.gameObject.name, message: "A next camera action needs to be assigned to this camera sequence"); }
 

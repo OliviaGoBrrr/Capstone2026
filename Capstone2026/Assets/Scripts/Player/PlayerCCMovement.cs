@@ -159,8 +159,9 @@ public class PlayerCCMovement : MonoBehaviour
         {
             HandleGrapple();
         }
-        else
+        else if(playerManager.canMove)
         {
+            // Changed for Camera sequences on 10/09/26 by Liv
             MovePlayer();
         }
 

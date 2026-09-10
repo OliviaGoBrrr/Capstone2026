@@ -46,6 +46,8 @@ public class FarmIntro : CameraSequencer
             cameras[i].gameObject.SetActive(false);
         }
 
+        // Give player movement again
+        playerManager.StateMachine.ChangeState(playerManager.IdleSubState);
         playerCamera.gameObject.SetActive(true);
 
         playSequence = false;

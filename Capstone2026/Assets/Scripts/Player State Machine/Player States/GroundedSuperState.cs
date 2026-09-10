@@ -12,7 +12,6 @@ public class PlayerGroundedSuperState : PlayerCanMoveSuperState
     public override void EnterState()
     {
         player.isCurrentlyGrounded = true;
-        player.canMove = true;
 
         base.EnterState();
         //Debug.Log("Entered Grounded State");
