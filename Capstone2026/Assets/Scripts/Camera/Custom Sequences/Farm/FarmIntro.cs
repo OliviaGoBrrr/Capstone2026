@@ -39,20 +39,9 @@ public class FarmIntro : CameraSequencer
 
         Debug.Log(transitionCanvas.renderingDisplaySize.y);
 
-        yield return LetterBoxIn(Screen.currentResolution.height / 2f, FadeInTime);
+        yield return LetterBoxIn((Screen.currentResolution.height / 2f) + 20f, FadeInTime);
 
-        for (int i = 0; i < cameras.Length; i++)
-        {
-            cameras[i].gameObject.SetActive(false);
-        }
-
-        // Give player movement again
-        playerManager.StateMachine.ChangeState(playerManager.IdleSubState);
-        playerCamera.gameObject.SetActive(true);
-
-        playSequence = false;
-
-        camBrain.DefaultBlend = camBrainDefaultBlend;
+        base.CancelCameraSequence();
 
         yield return new WaitForSeconds(FadeDelay);
 

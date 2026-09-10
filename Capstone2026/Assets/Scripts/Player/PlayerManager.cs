@@ -31,6 +31,7 @@ public class PlayerManager : MonoBehaviour
     [Header("Inventory")] 
     public static bool[] invArray = new bool[1]; //change to be how many bools there are
 
+    public GameObject batteryContainer;
     public TMP_Text batteryText;
     public Image batteryImage;
 
