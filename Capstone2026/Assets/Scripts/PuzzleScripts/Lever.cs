@@ -10,4 +10,8 @@ public class Lever : MonoBehaviour, IInteractable
         DoorAnim.SetBool("LeverTrigger", true);
         LeverAnim.SetBool("doorOpen", true);
     }
+
+    public void ActivateOutline() { }
+
+    public void DeactivateOutline() { }
 }
