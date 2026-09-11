@@ -12,6 +12,10 @@ public class PushPullObject : MonoBehaviour, IInteractable
     [Header("Assignments")]
     public Transform PlayerTransform;
     public PlayerManager playerM;
+
+    [SerializeField] private GameObject moveableObject;
+    [SerializeField] private int outlineLayer = 29;
+
     [Header("Variables")]
     public bool Held = false;
     private float forwardOffset;
@@ -106,6 +110,22 @@ public class PushPullObject : MonoBehaviour, IInteractable
             playerM.StateMachine.ChangeState(playerM.PushPullState);
         }
         
+    }
+    public void ActivateOutline()
+    {
+        if (!playerM.isPushPulling)
+        {
+            moveableObject.layer = outlineLayer;
+        }
+        else
+        {
+            moveableObject.layer = 0;
+        }
+    }
+
+    public void DeactivateOutline()
+    {
+        moveableObject.layer = 0;
     }
 
     void StopHolding()

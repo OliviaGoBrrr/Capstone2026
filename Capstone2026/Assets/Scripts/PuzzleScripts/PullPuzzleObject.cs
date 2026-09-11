@@ -42,4 +42,7 @@ public class PullPuzzleObject : MonoBehaviour, IInteractable
         transform.localPosition = endPosition;
     }
 
+    public void ActivateOutline() { }
+
+    public void DeactivateOutline() { }
 }

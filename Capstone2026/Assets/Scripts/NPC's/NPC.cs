@@ -28,7 +28,7 @@ public class NPC : AbstractNPC
     public override void Update()
     {
         base.Update(); //reflects update
-        Debug.Log(PlayerManager.invArray[questArrayItem]);
+        //Debug.Log(PlayerManager.invArray[questArrayItem]);
         if (PlayerManager.invArray[questArrayItem] == true) { QuestAchieved = true; }
 
         if (QuestAchieved && !QuestComplete && currentDialogue == repeatedDialogue)

@@ -31,6 +31,7 @@ public class PlayerManager : MonoBehaviour
     [Header("Inventory")] 
     public static bool[] invArray = new bool[1]; //change to be how many bools there are
 
+    public GameObject batteryContainer;
     public TMP_Text batteryText;
     public Image batteryImage;
 
@@ -188,6 +189,11 @@ public class PlayerManager : MonoBehaviour
 
         //apparently cinemachine doesnt work with DOFieldOfView
         fovTween = DOTween.To( () => playerCam.Lens.FieldOfView, x => playerCam.Lens.FieldOfView = x, targetFOV, 0.2f).SetEase(Ease.OutQuad);
+    }
+
+    public void ShowAndHidePlayerUI(bool uiActive)
+    {
+        batteryContainer.SetActive(uiActive);
     }
 
     public void HandleTeleport(Vector3 pos)
