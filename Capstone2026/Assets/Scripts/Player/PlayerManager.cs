@@ -191,6 +191,11 @@ public class PlayerManager : MonoBehaviour
         fovTween = DOTween.To( () => playerCam.Lens.FieldOfView, x => playerCam.Lens.FieldOfView = x, targetFOV, 0.2f).SetEase(Ease.OutQuad);
     }
 
+    public void ShowAndHidePlayerUI(bool uiActive)
+    {
+        batteryContainer.SetActive(uiActive);
+    }
+
     public void HandleTeleport(Vector3 pos)
     {
         Debug.Log($"Teleporting the player to position to {pos}");
