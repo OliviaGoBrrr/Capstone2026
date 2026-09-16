@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class DiscordWebhooks : MonoBehaviour
 {
-    public static string WEBHOOK_URL = "https://discord.com/api/webhooks/1498946439571832862/pP2N2jLfWmpnhSLmBiAeY1v4pj-JLSYGLbLbsSfOCa6mHLjsTNlqySgwXwqP431mNyxC";
+    public static string WEBHOOK_URL = "https://discord.com/api/webhooks/1549908361900855418/R6AyFW9uCsCM4jB0_99heOk4W_OD52jxj7PWk5uvZqYtwLgccasnwnqpHj51SaFzUUkq";
 
     public static void SendMessage(string message, string username = "", string avatar_url = "")
     {
