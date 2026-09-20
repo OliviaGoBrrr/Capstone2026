@@ -28,7 +28,6 @@ public abstract class AbstractNPC : MonoBehaviour, IInteractable
     [Header("Questing")]
     public PlayerInteract playerI;
     public PlayerManager playerM;
-    
 
     public void OnInteract()
     {

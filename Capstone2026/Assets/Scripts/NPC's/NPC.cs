@@ -18,6 +18,21 @@ public class NPC : AbstractNPC
     [Header("Questing")]
     [SerializeField] public int questArrayItem;
 
+    public static NPC Phinn;
+
+    private void Awake()
+    {
+        if (Phinn != null && Phinn != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Phinn = this;
+
+        DontDestroyOnLoad(gameObject);
+    }
+
     
 
     public override void Start()
