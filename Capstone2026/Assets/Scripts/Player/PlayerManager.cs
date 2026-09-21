@@ -42,7 +42,7 @@ public class PlayerManager : MonoBehaviour
     public InputActionReference interact;
     [HideInInspector] public bool fallenInWater;
 
-    [Header("References")] //remove this if i've done it wrong, this is just the solution im thinking of rn
+    [Header("References")] 
     public DeathFade deathfade;
     public CinemachineCamera playerCam;
     public ParticleSystem[] sparks;
@@ -56,7 +56,6 @@ public class PlayerManager : MonoBehaviour
     public AudioClip grapplePullSFX;
     public AudioClip batteryDrainSFX;
     [HideInInspector] public List<AudioSource> batteryDownClipsPlayed = new List<AudioSource>();
-
 
     [Header("Events")]
     public UnityEvent OnPlayerDeath = new();
@@ -75,8 +74,6 @@ public class PlayerManager : MonoBehaviour
     public bool isFalling = false;
     public bool isDead = false;
     public bool canPickUp = true;
-
-
 
     #endregion
 

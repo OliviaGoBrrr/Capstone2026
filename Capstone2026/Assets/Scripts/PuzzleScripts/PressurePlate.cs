@@ -13,6 +13,7 @@ public class PressurePlate : MonoBehaviour
 
     private Vector3 originalPosition;
 
+    private int objectsOnPlate = 0;
 
     private void Start()
     {
@@ -21,6 +22,8 @@ public class PressurePlate : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        objectsOnPlate += 1;
+
         if (oneShotDoor)
         {
             Destroy(door);
@@ -36,9 +39,13 @@ public class PressurePlate : MonoBehaviour
 
             
     }
-
+    //OnTriggerExit(Collider other)
     private void OnTriggerExit(Collider other)
     {
+        objectsOnPlate -= 1;
+
+        if (objectsOnPlate != 0) return;
+
         DOTween.Kill("moving door");
         door.transform.DOMove(originalPosition, timeToMove).SetId("moving door");
     }
