@@ -35,7 +35,6 @@ public class NPC : AbstractNPC
 
         DontDestroyOnLoad(gameObject);
     }
-
     
 
     public override void Start()
