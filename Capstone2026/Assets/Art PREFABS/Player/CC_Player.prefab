@@ -1673,6 +1673,7 @@ MonoBehaviour:
   batteryPercent: 100
   numberOfSunRaysForPower: 2
   isPoweredByLightBeam: 0
+  batteryContainer: {fileID: 0}
   batteryText: {fileID: 0}
   batteryImage: {fileID: 0}
   backBatteryImage: {fileID: 5237298044365404991}
@@ -1687,8 +1688,9 @@ MonoBehaviour:
   - {fileID: 6685773425867787845}
   toggleUI: {fileID: 4959886535910606352, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   settings: {fileID: 0}
-  grapplePullSFX: {fileID: 8300000, guid: 8115b5387b5fbe942ba81faec6749f05, type: 3}
-  batteryDrainSFX: {fileID: 8300000, guid: f825873fa00ff50499fd59f8fe2f73d8, type: 3}
+  PlayerDeadWaterSFX: {fileID: 8300000, guid: 1ed8cfbedb009b24b907b6d65589e86e, type: 3}
+  PlayerDeadSolarSFX: {fileID: 8300000, guid: b9aebfb912a75a542b71c050b0d8e8e4, type: 3}
+  PlayerRespawnSFX: {fileID: 8300000, guid: 635bff696a2240d4f8bf72777beddeba, type: 3}
   batteryDownClipsPlayed: []
   OnPlayerDeath:
     m_PersistentCalls:
@@ -1766,6 +1768,11 @@ MonoBehaviour:
   grappleBufferTimer: 0
   jumpBuffer: 0.2
   jumpBufferTimer: 0
+  PlayerWalkSFX: {fileID: 8300000, guid: 665c40dadf417184ab56155e4fff97d2, type: 3}
+  PlayerRunSFX: {fileID: 8300000, guid: d157200c872a0dc4d9b33309faf9caad, type: 3}
+  PlayerGrappleStartSFX: {fileID: 8300000, guid: 1f9978d578e60504fae230929fa0aaf4, type: 3}
+  PlayerGrappleCaughtSFX: {fileID: 8300000, guid: 1821d7ed324917c41804d8af4ddd8be2, type: 3}
+  playerJumpSFX: {fileID: 8300000, guid: 71f12106a834e3646a819101591b5c5f, type: 3}
 --- !u!114 &3021316637416306007
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1780,6 +1787,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCamera: {fileID: 0}
   maxDistance: 10
+  interactAngle: 20
   interactAction: {fileID: 1781555164194001046, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   InteractLayerMask:
     serializedVersion: 2

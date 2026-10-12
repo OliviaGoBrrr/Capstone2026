@@ -90,7 +90,7 @@ public class PlayerCCMovement : MonoBehaviour
     [HideInInspector] public float jumpBufferTimer;
 
     [Header("SFX")]
-    public AudioClip playerWalkSFX;
+    public AudioClip PlayerWalkSFX;
     public AudioClip PlayerRunSFX;
     public AudioClip PlayerGrappleStartSFX;
     public AudioClip PlayerGrappleCaughtSFX;
@@ -305,6 +305,9 @@ public class PlayerCCMovement : MonoBehaviour
                 playerManager.ChangeFOV.Invoke(playerManager.settings.FOVslider.value + 10f);
                 running = true;
                 moveSpeed = runSpeed;
+                //AudioManager.Instance.StopAllSounds();
+                //AudioManager.Instance.PlaySFX(PlayerRunSFX, transform, 0.5f);
+
             }
         }
         else
@@ -313,6 +316,8 @@ public class PlayerCCMovement : MonoBehaviour
                 playerManager.ChangeFOV.Invoke(playerManager.settings.FOVslider.value);
                 moveSpeed = walkSpeed;
                 running = false;
+                //AudioManager.Instance.StopAllSounds();
+                //AudioManager.Instance.PlaySFX(PlayerWalkSFX, transform, 0.5f);
             }
         }
     }
@@ -470,6 +475,7 @@ public class PlayerCCMovement : MonoBehaviour
 
     private void StartGrapple(GrappleableObject grappleTarget)
     {
+        //AudioManager.Instance.PlaySFX(PlayerGrappleStartSFX, transform, 0.25f);
         // Set grapple location
         grapplePoint = grappleTarget.anchorPoint.transform.position;
         grappleLockoutTimer = grappleLockoutTime;
@@ -517,6 +523,8 @@ public class PlayerCCMovement : MonoBehaviour
 
     public void GrappleToTarget()
     {
+        //AudioManager.Instance.PlaySFX(PlayerGrappleCaughtSFX, transform, 0.25f);
+
         if (grappling && grappleArmAtPoint)
         {
             // Find the distance between player and grapple point
