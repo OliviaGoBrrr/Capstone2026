@@ -288,7 +288,7 @@ public class PlayerCCMovement : MonoBehaviour
             {
                 playerInput.y = jumpHeight;
                 animator.SetTrigger("Jump");
-
+                AudioManager.Instance.PlaySFX(playerJumpSFX, transform, 0.25f);
             }
             else if (playerVelocity.y < 0f) // caps the falling speed of the player when on the ground
             {
@@ -356,7 +356,6 @@ public class PlayerCCMovement : MonoBehaviour
         // Idle, Walking, Running
 
     }
-
 
     public bool FindValidGrappleTarget() // returns true if valid target selected
     {
@@ -496,10 +495,12 @@ public class PlayerCCMovement : MonoBehaviour
         grappleLine.SetPosition(0, grappleShootPoint.position);
         grappleLine.SetPosition(1, grappleArmCopy.transform.position);
         grappleLine.enabled = true;
+        //AudioManager.Instance.PlaySFX(PlayerGrappleCaughtSFX, transform, 0.25f);
+
     }
 
     public void HandleGrapple()
-    { 
+    {
         RotatePlayer(grapplePoint - transform.position, rotationSpeed * 1.5f);
 
         Vector3 armPos = grappleArmCopy.transform.position;
@@ -523,8 +524,6 @@ public class PlayerCCMovement : MonoBehaviour
 
     public void GrappleToTarget()
     {
-        //AudioManager.Instance.PlaySFX(PlayerGrappleCaughtSFX, transform, 0.25f);
-
         if (grappling && grappleArmAtPoint)
         {
             // Find the distance between player and grapple point
