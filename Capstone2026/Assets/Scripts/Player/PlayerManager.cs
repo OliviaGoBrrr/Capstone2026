@@ -53,8 +53,9 @@ public class PlayerManager : MonoBehaviour
     public Settings settings;
 
     [Header("Player SFX")]
-    public AudioClip grapplePullSFX;
-    public AudioClip batteryDrainSFX;
+    public AudioClip PlayerDeadWaterSFX;
+    public AudioClip PlayerDeadSolarSFX;
+    public AudioClip PlayerRespawnSFX;
     [HideInInspector] public List<AudioSource> batteryDownClipsPlayed = new List<AudioSource>();
 
     [Header("Events")]
@@ -204,6 +205,16 @@ public class PlayerManager : MonoBehaviour
 
     void HandleDeath()
     {
+        //SFX for Death
+        if (this.fallenInWater) //if player has fallen in water
+        {
+            AudioManager.Instance.PlaySFX(PlayerDeadWaterSFX, transform, 0.5f);
+        }
+        else if (!this.fallenInWater) //if player has died to lack of solar
+        {
+            AudioManager.Instance.PlaySFX(PlayerDeadSolarSFX, transform, 0.5f);
+        }
+
         isDead = true;
         canMove = false;
         movement.playerController.enabled = false;
@@ -212,6 +223,8 @@ public class PlayerManager : MonoBehaviour
 
     void HandleReset()
     {
+        //SFX RESPAWN
+        AudioManager.Instance.PlaySFX(PlayerRespawnSFX, transform, 0.5f);
         // Teleport player to checkpoint
         transform.position = lastCheckpoint;
         isDead = false;

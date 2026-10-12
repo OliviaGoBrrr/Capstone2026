@@ -89,6 +89,13 @@ public class PlayerCCMovement : MonoBehaviour
     public float jumpBuffer = 0.2f;
     [HideInInspector] public float jumpBufferTimer;
 
+    [Header("SFX")]
+    public AudioClip playerWalkSFX;
+    public AudioClip PlayerRunSFX;
+    public AudioClip PlayerGrappleStartSFX;
+    public AudioClip PlayerGrappleCaughtSFX;
+    public AudioClip playerJumpSFX;
+
     private void Awake()
     {
         if(playerController == null)
@@ -281,6 +288,7 @@ public class PlayerCCMovement : MonoBehaviour
             {
                 playerInput.y = jumpHeight;
                 animator.SetTrigger("Jump");
+
             }
             else if (playerVelocity.y < 0f) // caps the falling speed of the player when on the ground
             {
