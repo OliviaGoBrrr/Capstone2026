@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -5,7 +6,6 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
     public AudioSource playerBatteryAudioSource, playerMovementAudioSource;
-    public bool isPlayingAlready;
     [SerializeField] private AudioSource SFXObject;
 
     void Awake()
@@ -19,10 +19,8 @@ public class AudioManager : MonoBehaviour
     // at some point it might be a good idea to put in something for cancelling audio clips early, 
     public void PlaySFX(AudioClip audioClip, Transform spawnTransform, float volume)
     {
-
         // Spawn sound object
         AudioSource audioSource = Instantiate(SFXObject, spawnTransform.position, Quaternion.identity);
-
 
         audioSource.clip = audioClip;
 
@@ -80,27 +78,25 @@ public class AudioManager : MonoBehaviour
     {
         AudioSource target = movementOrBattery == 0 ? playerBatteryAudioSource : playerMovementAudioSource;
 
-        // It is already playing the requested loop—leave it alone.
-        if (SFXObject == target && target.isPlaying && target.clip == audioClip)
-            return;
-
-        StopLoop();
-
-        SFXObject = target;
+        if (target.isPlaying && target.clip == audioClip) return;
+        
         target.clip = audioClip;
         target.volume = volume;
+        target.DOFade(volume, 1f);
         target.loop = true;
         target.Play();
     }
 
-    public void StopLoop()
+    public void StopLoop(int movementOrBattery)
     {
-        if (SFXObject != null)
+        AudioSource target = movementOrBattery == 0 ? playerBatteryAudioSource : playerMovementAudioSource;
+        if (target.volume != 0f)
         {
-            SFXObject.Stop();
-            SFXObject.loop = false;
-            SFXObject = null;
+            target.DOFade(0f, 0.5f);
+            target.loop = false;
+            target.Stop();
         }
+        
     }
 
     public void StopAllSounds()
@@ -108,7 +104,6 @@ public class AudioManager : MonoBehaviour
         foreach (AudioSource source in FindObjectsByType<AudioSource>(FindObjectsSortMode.None))
         {
             source.Stop();
-            isPlayingAlready = false;
         }
     }
 }

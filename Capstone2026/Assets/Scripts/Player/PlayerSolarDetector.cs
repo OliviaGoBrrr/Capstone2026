@@ -52,17 +52,15 @@ public class PlayerSolarDetector : MonoBehaviour
     {
         if (batteryPercent >= 100f || batteryPercent <= 0f)
         {
-            AudioManager.Instance.StopLoop();
+            AudioManager.Instance.StopLoop(0);
         }
         else if (ROC == 40)
         {
-            AudioManager.Instance.StartSFXLoop(
-                PlayerBatteryChargeSFX, transform, 0.15f, 0);
+            AudioManager.Instance.StartSFXLoop(PlayerBatteryChargeSFX, transform, 0.15f, 0);
         }
         else if (ROC == -20)
         {
-            AudioManager.Instance.StartSFXLoop(
-                PlayerBatteryDrainSFX, transform, 0.15f, 0);
+            AudioManager.Instance.StartSFXLoop(PlayerBatteryDrainSFX, transform, 0.15f, 0);
         }
 
         return Mathf.Clamp(batteryPercent + ROC * Time.deltaTime, 0f, 100f);

@@ -18,7 +18,7 @@ public class Checkpoint : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        if (!activated)
+        if (!activated && other.tag == "Player")
         {
             PostGameDataLog.updateCheckpointTimes($"Checkpoint {checkpointNumber}: " + $"{Time.timeSinceLevelLoad}");
             SaveIconSpin();
