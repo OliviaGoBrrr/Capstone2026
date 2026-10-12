@@ -475,7 +475,7 @@ public class PlayerCCMovement : MonoBehaviour
 
     private void StartGrapple(GrappleableObject grappleTarget)
     {
-        //AudioManager.Instance.PlaySFX(PlayerGrappleStartSFX, transform, 0.25f);
+        AudioManager.Instance.PlaySFX(PlayerGrappleStartSFX, transform, 0.25f);
         // Set grapple location
         grapplePoint = grappleTarget.anchorPoint.transform.position;
         grappleLockoutTimer = grappleLockoutTime;
