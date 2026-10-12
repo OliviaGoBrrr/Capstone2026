@@ -305,9 +305,6 @@ public class PlayerCCMovement : MonoBehaviour
                 playerManager.ChangeFOV.Invoke(playerManager.settings.FOVslider.value + 10f);
                 running = true;
                 moveSpeed = runSpeed;
-                //AudioManager.Instance.StopAllSounds();
-                //AudioManager.Instance.PlaySFX(PlayerRunSFX, transform, 0.5f);
-
             }
         }
         else
@@ -316,8 +313,6 @@ public class PlayerCCMovement : MonoBehaviour
                 playerManager.ChangeFOV.Invoke(playerManager.settings.FOVslider.value);
                 moveSpeed = walkSpeed;
                 running = false;
-                //AudioManager.Instance.StopAllSounds();
-                //AudioManager.Instance.PlaySFX(PlayerWalkSFX, transform, 0.5f);
             }
         }
     }

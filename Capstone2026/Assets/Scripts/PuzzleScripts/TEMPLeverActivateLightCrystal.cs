@@ -17,6 +17,8 @@ public class TEMPLeverActivateLightCrystal : MonoBehaviour, IInteractable
     [SerializeField] GameObject leverBase;
 
     public AudioClip TimerSFX;
+    public AudioClip LeverPullSFX;
+
 
     // this script takes a light crystal and makes it a source for a set time
 
@@ -51,6 +53,7 @@ public class TEMPLeverActivateLightCrystal : MonoBehaviour, IInteractable
     {
         if (alreadyInteracted) return;
         AudioManager.Instance.PlaySFX(TimerSFX, transform, 0.15f);
+        AudioManager.Instance.PlaySFX(LeverPullSFX, transform, 0.15f);
 
         leverHandle.transform.DOLocalRotate(new Vector3(-120, 0, 0), 0.25f).OnComplete(() =>
         {

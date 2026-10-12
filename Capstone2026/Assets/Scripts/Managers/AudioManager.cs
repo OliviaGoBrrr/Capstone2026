@@ -1,9 +1,11 @@
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
-
+    public AudioSource playerBatteryAudioSource, playerMovementAudioSource;
+    public bool isPlayingAlready;
     [SerializeField] private AudioSource SFXObject;
 
     void Awake()
@@ -74,12 +76,39 @@ public class AudioManager : MonoBehaviour
 
         Destroy(audioSource.gameObject, clipLength);
     }
+    public void StartSFXLoop(AudioClip audioClip, Transform spawnTransform, float volume, int movementOrBattery)
+    {
+        AudioSource target = movementOrBattery == 0 ? playerBatteryAudioSource : playerMovementAudioSource;
+
+        // It is already playing the requested loop—leave it alone.
+        if (SFXObject == target && target.isPlaying && target.clip == audioClip)
+            return;
+
+        StopLoop();
+
+        SFXObject = target;
+        target.clip = audioClip;
+        target.volume = volume;
+        target.loop = true;
+        target.Play();
+    }
+
+    public void StopLoop()
+    {
+        if (SFXObject != null)
+        {
+            SFXObject.Stop();
+            SFXObject.loop = false;
+            SFXObject = null;
+        }
+    }
 
     public void StopAllSounds()
     {
         foreach (AudioSource source in FindObjectsByType<AudioSource>(FindObjectsSortMode.None))
         {
             source.Stop();
+            isPlayingAlready = false;
         }
     }
 }

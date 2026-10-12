@@ -14,18 +14,14 @@ public class LightCrystal : MonoBehaviour
     public DisableGrapplePoint grappleHitting;
     public ActivateMovingPlatform activatorHitting;
     public PlayerManager playerManager;
-
     public List<LightCrystal> beamsHitting = new List<LightCrystal>();
-
     public bool illuminated;
     public LayerMask beamLayerMask;
-
     public LineRenderer lineRenderer;
-
     private bool hitPlayer = false;
-    
-
     public bool debug = false;
+    public AudioClip CrystalRotateSFX;
+    public AudioClip CrystalActivateSFX;
 
     private void Awake()
     {
