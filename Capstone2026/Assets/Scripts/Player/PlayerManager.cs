@@ -27,6 +27,7 @@ public class PlayerManager : MonoBehaviour
     public float batteryPercent = 100;
     public int numberOfSunRaysForPower = 2;
     public bool isPoweredByLightBeam = false;
+    public int screwPickUpCount;
 
     [Header("Inventory")] 
     public static bool[] invArray = new bool[1]; //change to be how many bools there are
