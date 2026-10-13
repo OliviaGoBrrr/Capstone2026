@@ -20,8 +20,7 @@ public class LightCrystal : MonoBehaviour
     public LineRenderer lineRenderer;
     private bool hitPlayer = false;
     public bool debug = false;
-    public AudioClip CrystalRotateSFX;
-    public AudioClip CrystalActivateSFX;
+    [Header("Audio")]    public AudioClip CrystalActivateSFX;
 
     private void Awake()
     {

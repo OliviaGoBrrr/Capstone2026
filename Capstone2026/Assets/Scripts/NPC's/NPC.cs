@@ -20,9 +20,6 @@ public class NPC : AbstractNPC
 
     public static NPC Phinn;
 
-    [Header("DEMO")]
-    [SerializeField] public GameObject EndOfDemoCanvas;
-
     private void Awake()
     {
         if (Phinn != null && Phinn != this)
@@ -69,7 +66,6 @@ public class NPC : AbstractNPC
             currentDialogue = completedRepeatDialogue;
 
             dialogueFinish = true;
-            EndOfDemoCanvas.SetActive(true);
         }
     }
 

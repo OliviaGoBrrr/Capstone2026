@@ -136,11 +136,11 @@ public class PlayerCCMovement : MonoBehaviour
         }
         else if (running)
         {
-            AudioManager.Instance.StartSFXLoop(PlayerRunSFX, transform, 0.15f, 1);
+            AudioManager.Instance.StartSFXLoop(PlayerRunSFX, transform, 0.2f, 1);
         }
         else
         {
-            AudioManager.Instance.StartSFXLoop(PlayerWalkSFX, transform, 0.15f, 1);
+            AudioManager.Instance.StartSFXLoop(PlayerWalkSFX, transform, 0.2f, 1);
         }
     }
 
@@ -484,7 +484,7 @@ public class PlayerCCMovement : MonoBehaviour
 
     private void StartGrapple(GrappleableObject grappleTarget)
     {
-        AudioManager.Instance.PlaySFX(PlayerGrappleStartSFX, transform, 0.25f);
+        AudioManager.Instance.PlaySFX(PlayerGrappleStartSFX, transform, 0.15f);
         // Set grapple location
         grapplePoint = grappleTarget.anchorPoint.transform.position;
         grappleLockoutTimer = grappleLockoutTime;

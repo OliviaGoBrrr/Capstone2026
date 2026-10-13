@@ -11,6 +11,8 @@ public class YRotateObject : MonoBehaviour, IInteractable
     [SerializeField] private int rotationStep;
     [SerializeField] private int totalNumberOfRotations; // number of rotations before loop back to start
     private int currentNumberOfRotations = 0;
+    [Header("Audio")]
+    public AudioClip CrystalRotateSFX;
 
     // Update is called once per frame
     void Start()
@@ -20,6 +22,7 @@ public class YRotateObject : MonoBehaviour, IInteractable
 
     public void OnInteract()
     {
+        AudioManager.Instance.PlaySFX(CrystalRotateSFX, transform, 1f);
         if (totalNumberOfRotations == currentNumberOfRotations)
         {
             objectToBeRotated.transform.DORotate(new Vector3(0, originalRotation, 0), 0.5f).SetEase(Ease.OutCubic);

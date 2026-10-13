@@ -29,10 +29,15 @@ public abstract class AbstractNPC : MonoBehaviour, IInteractable
     public PlayerInteract playerI;
     public PlayerManager playerM;
 
+    [Header("Audio")]
+    public AudioClip SharkTalkingSFX;
+
     public void OnInteract()
     {
         // If no line has been displayed, start dialogue
         if (index == -1) StartDialogue();
+        AudioManager.Instance.StopAllSounds();
+        AudioManager.Instance.PlaySFX(SharkTalkingSFX, transform, 0.2f);
     }
 
     public void ActivateOutline() { }
@@ -61,7 +66,6 @@ public abstract class AbstractNPC : MonoBehaviour, IInteractable
         playerM.DialogueState.EnterState();
         //StartCoroutine(TurnToPlayer());
         NextLine();
-        
     }
 
     private IEnumerator TypeLine()

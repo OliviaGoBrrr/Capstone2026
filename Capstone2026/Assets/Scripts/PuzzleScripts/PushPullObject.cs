@@ -28,6 +28,9 @@ public class PushPullObject : MonoBehaviour, IInteractable
     [SerializeField] private Vector3 resetPos;
     [SerializeField] private Quaternion resetRot;
 
+    [Header("Sounds")]
+    public AudioClip MovingBoulderSFX;
+
     private void Awake()
     {
         playerM = FindFirstObjectByType<PlayerManager>().GetComponent<PlayerManager>();
@@ -108,6 +111,11 @@ public class PushPullObject : MonoBehaviour, IInteractable
 
             //playerM.PushPullState.EnterState();
             playerM.StateMachine.ChangeState(playerM.PushPullState);
+        }
+
+        if(this.tag == "Boulder")
+        {
+            AudioManager.Instance.PlaySFX(MovingBoulderSFX, transform, 0.2f);
         }
         
     }

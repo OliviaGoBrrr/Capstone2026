@@ -92,11 +92,10 @@ public class AudioManager : MonoBehaviour
         AudioSource target = movementOrBattery == 0 ? playerBatteryAudioSource : playerMovementAudioSource;
         if (target.volume != 0f)
         {
-            target.DOFade(0f, 0.5f);
+            target.DOFade(0f, 1f);
             target.loop = false;
             target.Stop();
         }
-        
     }
 
     public void StopAllSounds()

@@ -13,8 +13,12 @@ public class PlatformSwitch : MonoBehaviour, IInteractable
 
     private bool isDown;
 
+    [Header("Audio")]
+    public AudioClip BridgeLoweringSFX;
+
     public void OnInteract()
     {
+        AudioManager.Instance.PlaySFX(BridgeLoweringSFX, transform, 0.4f);
         leverHandle.transform.DOLocalRotate(new Vector3(rotationFloat, 0, 0), 0.25f).OnComplete(() =>
         {
             //bridge.SetActive(!bridge.activeSelf);
