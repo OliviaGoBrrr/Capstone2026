@@ -97,7 +97,6 @@ public class FarmIntro : CameraSequencer
         for (float currentHeight = initialHeight; currentHeight < fadeToHeight; currentHeight += (fadeToHeight / (fadeInTime / Time.deltaTime)))
         {
             newHeight.y = currentHeight;
-            Debug.Log(currentHeight);
             topBar.rectTransform.sizeDelta = newHeight;
             bottomBar.rectTransform.sizeDelta = newHeight;
             yield return null;

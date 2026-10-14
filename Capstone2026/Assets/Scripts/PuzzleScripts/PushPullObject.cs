@@ -72,15 +72,19 @@ public class PushPullObject : MonoBehaviour, IInteractable
         if (playerM.isPushPulling == true)
         {
             float finalDistance = playerToObjDist + forwardOffset;
-            transform.localPosition = new Vector3(0, transform.localPosition.y, finalDistance);
-
+            float terrainHeight = 0f;
             // find terrain height & set it
             if (levelTerrain != null) // makes it so it can be used in testing scene without terrain
             {
-                float terrainHeight = levelTerrain.SampleHeight(transform.position);
-                transform.position = new Vector3(transform.position.x, terrainHeight, transform.position.z);
+                terrainHeight = levelTerrain.SampleHeight(transform.position);
+                Debug.Log(terrainHeight);
+
             }
+            transform.position = new Vector3(transform.position.x, terrainHeight, transform.position.z);
+
+            transform.localPosition = new Vector3(0, transform.position.y, finalDistance);
         }
+
 
         else if (!playerM.isPushPulling)
         {
