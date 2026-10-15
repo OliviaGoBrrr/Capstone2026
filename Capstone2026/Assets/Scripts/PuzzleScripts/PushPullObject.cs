@@ -19,10 +19,12 @@ public class PushPullObject : MonoBehaviour, IInteractable
     [Header("Variables")]
     public bool Held = false;
     private float forwardOffset;
-    public const float playerToObjDist = 1.5f;
+    public const float playerToObjDist = 0.5f;
     public bool canBeSetDown;
     public bool inFinalPosition;
     public Vector3 setDownLocation;
+
+    private LayerMask terrainLayer;
 
     Terrain levelTerrain;
     [SerializeField] private Vector3 resetPos;
@@ -35,13 +37,19 @@ public class PushPullObject : MonoBehaviour, IInteractable
     {
         playerM = FindFirstObjectByType<PlayerManager>().GetComponent<PlayerManager>();
         PlayerTransform = playerM.GetComponent<PlayerCCMovement>().playerModel.transform;
+
+        terrainLayer = LayerMask.NameToLayer("Terrain");
     }
 
     void Start()
     {
         if(levelTerrain == null)
         {
-            levelTerrain = Terrain.activeTerrain;
+
+            if(Physics.Raycast(transform.position, this.transform.up * -1.0f, out RaycastHit hitInfo, terrainLayer))
+            {
+                levelTerrain = hitInfo.transform.GetComponent<Terrain>();
+            }
         }
 
         resetPos = transform.position;
@@ -59,10 +67,12 @@ public class PushPullObject : MonoBehaviour, IInteractable
             return;
         }
         
+        /*
         if (levelTerrain != Terrain.activeTerrain)
         {
             levelTerrain = Terrain.activeTerrain;
         }
+        */
 
         if(playerM.StateMachine.CurrentState == playerM.PushPullState)
         {
@@ -76,13 +86,14 @@ public class PushPullObject : MonoBehaviour, IInteractable
             // find terrain height & set it
             if (levelTerrain != null) // makes it so it can be used in testing scene without terrain
             {
-                terrainHeight = levelTerrain.SampleHeight(transform.position);
+                terrainHeight = levelTerrain.SampleHeight(transform.position) + levelTerrain.transform.position.y;
+                float playerHeight = levelTerrain.SampleHeight(playerM.transform.position) + levelTerrain.transform.position.y;
+
+                float heightoffset = terrainHeight - playerHeight;
                 Debug.Log(terrainHeight);
-
+                transform.localPosition = new Vector3(0, heightoffset, finalDistance);
             }
-            transform.position = new Vector3(transform.position.x, terrainHeight, transform.position.z);
-
-            transform.localPosition = new Vector3(0, transform.position.y, finalDistance);
+            //transform.position = new Vector3(transform.position.x, terrainHeight, transform.position.z);
         }
 
 
