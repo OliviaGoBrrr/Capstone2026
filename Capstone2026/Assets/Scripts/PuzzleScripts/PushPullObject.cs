@@ -24,7 +24,7 @@ public class PushPullObject : MonoBehaviour, IInteractable
     public bool inFinalPosition;
     public Vector3 setDownLocation;
 
-    private LayerMask terrainLayer;
+    public LayerMask terrainLayer;
 
     Terrain levelTerrain;
     [SerializeField] private Vector3 resetPos;
@@ -37,19 +37,18 @@ public class PushPullObject : MonoBehaviour, IInteractable
     {
         playerM = FindFirstObjectByType<PlayerManager>().GetComponent<PlayerManager>();
         PlayerTransform = playerM.GetComponent<PlayerCCMovement>().playerModel.transform;
-
-        terrainLayer = LayerMask.NameToLayer("Terrain");
     }
 
     void Start()
     {
-        if(levelTerrain == null)
-        {
+        Ray ray = new Ray(transform.position, -Vector3.up);
 
-            if(Physics.Raycast(transform.position, this.transform.up * -1.0f, out RaycastHit hitInfo, terrainLayer))
-            {
-                levelTerrain = hitInfo.transform.GetComponent<Terrain>();
-            }
+        if (Physics.Raycast(ray, out RaycastHit hitInfo, Mathf.Infinity, terrainLayer))
+        {
+            Debug.Log(hitInfo.transform.gameObject.name);
+            levelTerrain = hitInfo.transform.GetComponent<Terrain>();
+            Debug.Log("Found the terrain layer");
+            Debug.Log(levelTerrain.gameObject.ToString());
         }
 
         resetPos = transform.position;
@@ -62,7 +61,10 @@ public class PushPullObject : MonoBehaviour, IInteractable
 
     void Update()
     {
-        if(!Held) 
+
+        Debug.DrawRay(transform.position, Vector3.up * -1.0f, Color.red, 100f);
+        
+        if (!Held) 
         {
             return;
         }
