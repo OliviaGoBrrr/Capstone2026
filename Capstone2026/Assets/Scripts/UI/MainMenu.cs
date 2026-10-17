@@ -199,7 +199,7 @@ public class MainMenu : MonoBehaviour
     {
         // need to add animations
         DOTween.KillAll();
-        sceneLoader.LoadNewScene("_MVPTutorial");
+        sceneLoader.LoadNewScene("OpenCutscene");
     }
 
     public void OptionsButtonPressed()
