@@ -7,15 +7,22 @@ public class OpenCutsceneScript : MonoBehaviour
     public SceneLoader sceneLoader;
     void Start()
     {
+        if(cutscene.clip != null)
+        {
+            cutscene.loopPointReached += OnLoopPointReached;
 
-        cutscene.loopPointReached += OnLoopPointReached;
+            cutscene.Play();
+        }
 
-        cutscene.Play();
+        else
+        {
+            sceneLoader.LoadNewScene("_MVPTutorial");
+            Debug.LogError("Opening Cutscene Unable To Play - Missing Video File");
+        }
     }
 
     void OnLoopPointReached(VideoPlayer vp)
     {
         sceneLoader.LoadNewScene("_MVPTutorial");
-        Debug.Log("Loop Finished");
     }
 }

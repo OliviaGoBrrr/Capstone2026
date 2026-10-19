@@ -7,6 +7,7 @@ public class AudioManager : MonoBehaviour
     public static AudioManager Instance;
     public AudioSource playerBatteryAudioSource, playerMovementAudioSource;
     [SerializeField] private AudioSource SFXObject;
+    [SerializeField] private AudioSource musicObject;
 
     void Awake()
     {
