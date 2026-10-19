@@ -30,14 +30,12 @@ public abstract class AbstractNPC : MonoBehaviour, IInteractable
     public PlayerManager playerM;
 
     [Header("Audio")]
-    public AudioClip SharkTalkingSFX;
+    public AudioSource SharkTalkingSFX;
 
     public void OnInteract()
     {
         // If no line has been displayed, start dialogue
         if (index == -1) StartDialogue();
-        AudioManager.Instance.StopAllSounds();
-        AudioManager.Instance.PlaySFX(SharkTalkingSFX, transform, 0.2f);
     }
 
     public void ActivateOutline() { }
@@ -62,7 +60,7 @@ public abstract class AbstractNPC : MonoBehaviour, IInteractable
     protected virtual void StartDialogue()
     {
         DialogueBoxState(true);
-        
+        if (!SharkTalkingSFX.isPlaying) { SharkTalkingSFX.Play(); }
         playerM.DialogueState.EnterState();
         //StartCoroutine(TurnToPlayer());
         NextLine();
@@ -104,6 +102,8 @@ public abstract class AbstractNPC : MonoBehaviour, IInteractable
             EndDialogue();
             return;
         }
+        
+        if (!SharkTalkingSFX.isPlaying) { SharkTalkingSFX.Play(); }
 
         index++;
         if (currentTyping != null) StopCoroutine(currentTyping);
@@ -116,6 +116,7 @@ public abstract class AbstractNPC : MonoBehaviour, IInteractable
         playerM.DialogueState.ExitState();
         OnDialogueFinish();
         StartCoroutine(DialogueCooldown());
+        SharkTalkingSFX.Stop();
     }
 
     protected abstract void OnDialogueFinish(); // Abstract Function for when Dialogue Finishes (For stuff like getting/giving items)

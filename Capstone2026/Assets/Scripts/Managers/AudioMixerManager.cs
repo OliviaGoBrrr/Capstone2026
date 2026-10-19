@@ -24,6 +24,6 @@ public class AudioMixerManager : MonoBehaviour
 
     public void SetVoiceVolume()
     {
-        audioMixer.SetFloat("musicVolume", Mathf.Log10(voiceSlider.value) * 20f);
+        audioMixer.SetFloat("voiceVolume", Mathf.Log10(voiceSlider.value) * 20f);
     }
 }
