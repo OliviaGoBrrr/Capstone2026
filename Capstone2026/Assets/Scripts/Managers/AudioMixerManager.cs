@@ -17,10 +17,10 @@ public class AudioMixerManager : MonoBehaviour
 
     public void AssignSliders(AudioMixerManager b)
     {
-        this.sfxSlider = b.sfxSlider;
-        this.masterSlider = b.masterSlider;
-        this.voiceSlider = b.voiceSlider;
-        this.musicSlider = b.musicSlider;
+        sfxSlider = b.sfxSlider;
+        masterSlider = b.masterSlider;
+        voiceSlider = b.voiceSlider;
+        musicSlider = b.musicSlider;
     }
 
     public void SetSliderValues()
