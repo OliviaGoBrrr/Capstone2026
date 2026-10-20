@@ -23,6 +23,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private GameObject optionsContents;
     [SerializeField] private GameObject optionsButton;
     [SerializeField] private GameObject settingsButton;
+    [SerializeField] private GameObject attributionsButton;
 
     [SerializeField] private GameObject optionsBg;
     [SerializeField] private GameObject turnOnEffect; // used for animating the turn on animation
@@ -60,6 +61,7 @@ public class MainMenu : MonoBehaviour
         optionsContents.SetActive(false);
         optionsButton.SetActive(false);
         settingsButton.SetActive(false);
+        attributionsButton.SetActive(false);
 
         mainCamera.transform.position = cameraNormalPos.position;
         mainCamera.transform.rotation = cameraNormalPos.rotation;
@@ -118,6 +120,7 @@ public class MainMenu : MonoBehaviour
                     optionsBg.SetActive(true);
                     optionsButton.SetActive(true);
                     settingsButton.SetActive(true);
+                    attributionsButton.SetActive(true);
 
                     blackScreen.SetActive(false); // hide the black screen
 

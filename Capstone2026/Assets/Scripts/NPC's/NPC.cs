@@ -1,6 +1,9 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 /// <summary>
 /// same thing as AbstractNPC
@@ -14,6 +17,7 @@ public class NPC : AbstractNPC
     [HideInInspector] public bool QuestAchieved = false; // Has the player gotten the item needed
     public bool QuestComplete = false;
     public bool dialogueFinish = false;
+    public RawImage progressPrompt;
 
     [Header("Questing")]
     [SerializeField] public int questArrayItem;
@@ -40,6 +44,7 @@ public class NPC : AbstractNPC
     public override void Start()
     {
         base.Start(); //reflects start
+        progressPrompt.gameObject.SetActive(false);
     }
 
     public override void Update()
@@ -73,7 +78,17 @@ public class NPC : AbstractNPC
         }
     }
 
-    
+    public override void NextLine()
+    {
+        progressPrompt.DOKill();
+
+        Sequence sequence = DOTween.Sequence();
+        sequence.Append(progressPrompt.DOFade(0f, 0.5f)); //fade out icon
+        base.NextLine();
+        sequence.AppendInterval(3f);
+        sequence.Append(progressPrompt.DOFade(1f, 1f)); // fade in icon
+        sequence.OnComplete(() => progressPrompt.gameObject.SetActive(true));
+    }
 
     public void EndQuest()
     {

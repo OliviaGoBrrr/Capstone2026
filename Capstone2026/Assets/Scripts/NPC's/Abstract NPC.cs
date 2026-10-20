@@ -1,7 +1,8 @@
-using UnityEngine;
+using DG.Tweening;
 using System.Collections;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
@@ -93,7 +94,7 @@ public abstract class AbstractNPC : MonoBehaviour, IInteractable
         isTyping = false;
     }
 
-    public void NextLine()
+    public virtual void NextLine()
     {
         moveOnPrompt.SetActive(false);
         // If typing is still happening or dialogue is finished, exit early
