@@ -18,8 +18,6 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-
-    public AudioSource playerBatteryAudioSource, playerMovementAudioSource;
     [SerializeField] private AudioSource SFXObject;
 
     private AudioMixerManager mixerManager;

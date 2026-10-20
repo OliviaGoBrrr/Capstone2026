@@ -8,6 +8,8 @@ public class AudioMixerManager : MonoBehaviour
     [SerializeField] private AudioMixer audioMixer;
     [SerializeField] private Slider masterSlider, sfxSlider, musicSlider, voiceSlider;
 
+    private Slider[] sliders;
+
     private void Start()
     {
         audioManager = GetComponent<AudioManager>();
@@ -17,10 +19,12 @@ public class AudioMixerManager : MonoBehaviour
 
     public void AssignSliders(AudioMixerManager b)
     {
-        sfxSlider = b.sfxSlider;
         masterSlider = b.masterSlider;
+        sfxSlider = b.sfxSlider;
         voiceSlider = b.voiceSlider;
         musicSlider = b.musicSlider;
+
+        sliders = new Slider[4] {masterSlider, sfxSlider, voiceSlider, musicSlider };
     }
 
     public void SetSliderValues()
