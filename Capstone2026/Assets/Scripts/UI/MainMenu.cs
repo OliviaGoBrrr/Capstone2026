@@ -8,6 +8,8 @@ using TMPro;
 public class MainMenu : MonoBehaviour
 {
 
+    public bool SkipCutscene = false;
+
     public SceneLoader sceneLoader;
 
     public InputActionReference pauseAction;
@@ -199,7 +201,14 @@ public class MainMenu : MonoBehaviour
     {
         // need to add animations
         DOTween.KillAll();
-        sceneLoader.LoadNewScene("OpenCutscene");
+        if (SkipCutscene)
+        {
+            sceneLoader.LoadNewScene("_MVPTutorial");
+        }
+        else
+        {
+            sceneLoader.LoadNewScene("OpenCutscene");
+        }
     }
 
     public void OptionsButtonPressed()

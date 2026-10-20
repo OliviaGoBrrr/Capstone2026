@@ -4,17 +4,53 @@ using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
-    public static AudioManager Instance;
+    private static AudioManager _instance;
+    public static AudioManager Instance
+    {
+        get 
+        {
+            if (_instance == null)
+            {
+                _instance = FindFirstObjectByType<AudioManager>();
+            }
+
+            return _instance; 
+        }
+    }
+
+
     public AudioSource playerBatteryAudioSource, playerMovementAudioSource;
     [SerializeField] private AudioSource SFXObject;
-    [SerializeField] private AudioSource musicObject;
+
+    private AudioMixerManager mixerManager;
+
+    // Saved values
+    [SerializeField] private float masterVolume = 10f;
+    [SerializeField] private float sfxVolume = 10f;
+    [SerializeField] private float musicVolume = 10f;
+    [SerializeField] private float voiceVolume = 10f;
+
+    public float MasterVolume { get { return masterVolume; } set { masterVolume = value; } }
+    public float SFXVolume { get {return sfxVolume; } set { sfxVolume = value; } }
+
+    public float MusicVolume { get { return musicVolume; } set { musicVolume = value; } }
+    public float VoiceVolume { get { return voiceVolume; } set { voiceVolume = value; } }
+
 
     void Awake()
     {
-        if (Instance == null)
+        mixerManager = GetComponent<AudioMixerManager>();
+
+        if (_instance != null && _instance != this)
         {
-            Instance = this;
+            _instance.mixerManager.AssignSliders(this.mixerManager);
+
+            _instance.mixerManager.SetSliderValues();
+
+            Destroy(this.gameObject);
         }
+
+        DontDestroyOnLoad(this);
     }
 
     // at some point it might be a good idea to put in something for cancelling audio clips early, 
@@ -75,6 +111,8 @@ public class AudioManager : MonoBehaviour
 
         Destroy(audioSource.gameObject, clipLength);
     }
+
+    /*
     public void StartSFXLoop(AudioClip audioClip, Transform spawnTransform, float volume, int movementOrBattery)
     {
         AudioSource target = movementOrBattery == 0 ? playerBatteryAudioSource : playerMovementAudioSource;
@@ -98,6 +136,7 @@ public class AudioManager : MonoBehaviour
             target.Stop();
         }
     }
+    */
 
     public void StopAllSounds()
     {
@@ -106,4 +145,5 @@ public class AudioManager : MonoBehaviour
             source.Stop();
         }
     }
+    
 }

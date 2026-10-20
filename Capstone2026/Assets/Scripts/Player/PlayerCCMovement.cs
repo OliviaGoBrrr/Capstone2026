@@ -131,16 +131,16 @@ public class PlayerCCMovement : MonoBehaviour
         Vector2 actionInput = moveAction.action.ReadValue<Vector2>();
         if (actionInput == Vector2.zero)
         {
-            AudioManager.Instance.StopLoop(1); // 1 = movement audio
+            playerManager.StopLoop(1); // 1 = movement audio
             return;
         }
         else if (running)
         {
-            AudioManager.Instance.StartSFXLoop(PlayerRunSFX, transform, 0.2f, 1);
+            playerManager.StartSFXLoop(PlayerRunSFX, transform, 0.2f, 1);
         }
         else
         {
-            AudioManager.Instance.StartSFXLoop(PlayerWalkSFX, transform, 0.2f, 1);
+            playerManager.StartSFXLoop(PlayerWalkSFX, transform, 0.2f, 1);
         }
     }
 

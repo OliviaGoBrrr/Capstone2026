@@ -57,6 +57,7 @@ public class PlayerManager : MonoBehaviour
     public AudioClip PlayerDeadWaterSFX;
     public AudioClip PlayerDeadSolarSFX;
     public AudioClip PlayerRespawnSFX;
+    public AudioSource playerBatteryAudioSource, playerMovementAudioSource;
     [HideInInspector] public List<AudioSource> batteryDownClipsPlayed = new List<AudioSource>();
 
     [Header("Events")]
@@ -163,7 +164,6 @@ public class PlayerManager : MonoBehaviour
                 pauseMenu.gameObject.SetActive(!pauseMenu.gameObject.activeSelf);
             }
         }
-
     }
 
     private void FixedUpdate()
@@ -178,6 +178,39 @@ public class PlayerManager : MonoBehaviour
             fallenInWater = true;
         }
     }
+
+    public void StartSFXLoop(AudioClip audioClip, Transform spawnTransform, float volume, int movementOrBattery)
+    {
+        AudioSource target = movementOrBattery == 0 ? playerBatteryAudioSource : playerMovementAudioSource;
+
+        if (target.isPlaying && target.clip == audioClip) return;
+
+        target.clip = audioClip;
+        target.volume = volume;
+        target.DOFade(volume, 1f);
+        target.loop = true;
+        target.Play();
+    }
+
+    public void StopLoop(int movementOrBattery)
+    {
+        AudioSource target = movementOrBattery == 0 ? playerBatteryAudioSource : playerMovementAudioSource;
+        if (target.volume != 0f)
+        {
+            target.DOFade(0f, 1f);
+            target.loop = false;
+            target.Stop();
+        }
+    }
+
+    public void StopAllSounds()
+    {
+        foreach (AudioSource source in FindObjectsByType<AudioSource>(FindObjectsSortMode.None))
+        {
+            source.Stop();
+        }
+    }
+
 
     //Tweening for FOV changes
     public void SprintFOVChange(float targetFOV)
