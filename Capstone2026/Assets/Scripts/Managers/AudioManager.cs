@@ -12,6 +12,8 @@ public class AudioManager : MonoBehaviour
             if (_instance == null)
             {
                 _instance = FindFirstObjectByType<AudioManager>();
+
+                _instance.mixerManager.SetSliderValues();
             }
 
             return _instance; 
@@ -28,11 +30,19 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private float musicVolume = 10f;
     [SerializeField] private float voiceVolume = 10f;
 
+    public ref float MasterVolume => ref masterVolume;
+    public ref float SFXVolume => ref sfxVolume;
+    public ref float MusicVolume => ref musicVolume;
+    public ref float VoiceVolume => ref voiceVolume;
+
+    /*
     public float MasterVolume { get { return masterVolume; } set { masterVolume = value; } }
     public float SFXVolume { get {return sfxVolume; } set { sfxVolume = value; } }
 
     public float MusicVolume { get { return musicVolume; } set { musicVolume = value; } }
     public float VoiceVolume { get { return voiceVolume; } set { voiceVolume = value; } }
+    */
+
 
 
     void Awake()
