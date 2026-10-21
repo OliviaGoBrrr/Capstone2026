@@ -73,11 +73,11 @@ public class TEMPLeverActivateLightCrystal : MonoBehaviour, IInteractable
     {
         if (alreadyInteracted) return;
 
-        soundObject.PlayOneShot(LeverPullSFX, sfxVolume);
-
         if(soundObject != null)
         {
             soundObject.Play();
+
+            soundObject.PlayOneShot(LeverPullSFX, sfxVolume);
         }
 
 

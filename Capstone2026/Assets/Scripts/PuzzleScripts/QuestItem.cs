@@ -9,7 +9,7 @@ public class QuestItem : MonoBehaviour, IInteractable
     public void OnInteract()
     {
         gameManager.pickedUpCabbages = true;
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
     public void ActivateOutline() 
