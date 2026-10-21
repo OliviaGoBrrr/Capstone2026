@@ -13,11 +13,14 @@ public class TEMPLeverActivateLightCrystal : MonoBehaviour, IInteractable
     private bool startTimer = false;
     private float timerCounter;
 
-    [SerializeField] GameObject leverHandle;
-    [SerializeField] GameObject leverBase;
+    [SerializeField] private GameObject leverHandle;
+    [SerializeField] private GameObject leverBase;
 
     public AudioClip TimerSFX;
     public AudioClip LeverPullSFX;
+
+    [SerializeField] private AudioSource soundObject;
+    [SerializeField] private float sfxVolume = 0.15f;
 
 
     // this script takes a light crystal and makes it a source for a set time
@@ -27,6 +30,21 @@ public class TEMPLeverActivateLightCrystal : MonoBehaviour, IInteractable
     void Start()
     {
         originalLightsNeededToIlluminate = lightCrystalToTurnOn.lightsNeededToIlluminate;
+
+        // Tries to find an audio source in the object's children, returning the first one found
+        if(soundObject == null)
+        {
+            Transform[] children  = GetComponentsInChildren<Transform>();
+
+            for(int i = 0; i < children.Length; i++)
+            {
+                if(children[i].TryGetComponent<AudioSource>(out AudioSource audio))
+                {
+                    soundObject = audio;
+                    break;
+                }
+            }
+        }
     }
 
     void Update()
@@ -35,8 +53,6 @@ public class TEMPLeverActivateLightCrystal : MonoBehaviour, IInteractable
         {
             timerCounter += Time.deltaTime;
 
-            
-
             if (timerCounter >= timerDuration)
             {
                 lightCrystalToTurnOn.lightsNeededToIlluminate = originalLightsNeededToIlluminate;
@@ -44,7 +60,11 @@ public class TEMPLeverActivateLightCrystal : MonoBehaviour, IInteractable
                 timerCounter = 0;
                 startTimer = false;
                 alreadyInteracted = false;
-                AudioManager.Instance.StopAllSounds(); //this should be changed to simply reset the sound
+
+                if (soundObject != null)
+                {
+                    soundObject.Stop();
+                }
             }
         }
     }
@@ -52,8 +72,14 @@ public class TEMPLeverActivateLightCrystal : MonoBehaviour, IInteractable
     public void OnInteract()
     {
         if (alreadyInteracted) return;
-        AudioManager.Instance.PlaySFX(TimerSFX, transform, 0.15f);
-        AudioManager.Instance.PlaySFX(LeverPullSFX, transform, 0.15f);
+
+        soundObject.PlayOneShot(LeverPullSFX, sfxVolume);
+
+        if(soundObject != null)
+        {
+            soundObject.Play();
+        }
+
 
         leverHandle.transform.DOLocalRotate(new Vector3(-120, 0, 0), 0.25f).OnComplete(() =>
         {
