@@ -44,7 +44,7 @@ public class TEMPLeverActivateLightCrystal : MonoBehaviour, IInteractable
                 timerCounter = 0;
                 startTimer = false;
                 alreadyInteracted = false;
-                AudioManager.Instance.StopAllSounds();
+                AudioManager.Instance.StopAllSounds(); //this should be changed to simply reset the sound
             }
         }
     }
