@@ -16,11 +16,19 @@ public class SceneLoader : MonoBehaviour
     {
         transition.SetTrigger("Start");
 
-        yield return new WaitForSecondsRealtime(transitionTime);
-
         PostGameDataLog.updateSceneTime($"{SceneManager.GetActiveScene().name} " + "Time in level: " + $"{Time.timeSinceLevelLoad}");
 
-        SceneManager.LoadScene(nextScene);
+        yield return new WaitForSecondsRealtime(transitionTime);
+
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(nextScene);
+
+        // Wait until the asynchronous scene fully loads
+        while (!asyncLoad.isDone)
+        {
+            yield return null;
+        }
+
+        //SceneManager.LoadScene(nextScene);
 
         Debug.Log(nextScene);
 
