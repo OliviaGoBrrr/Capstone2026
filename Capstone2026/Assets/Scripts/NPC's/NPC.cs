@@ -19,26 +19,8 @@ public class NPC : AbstractNPC
     public bool dialogueFinish = false;
     public RawImage progressPrompt;
 
-    [Header("Questing")]
-    [SerializeField] public int questArrayItem;
-
-    public static NPC Phinn;
-
-    //[Header("DEMO")]
-    //[SerializeField] public GameObject EndOfDemoCanvas;
-
-    private void Awake()
-    {
-        if (Phinn != null && Phinn != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Phinn = this;
-
-        DontDestroyOnLoad(gameObject);
-    }
+    [Header("Game Manager")]
+    public GameManager gameManager;
     
 
     public override void Start()
@@ -50,18 +32,13 @@ public class NPC : AbstractNPC
     public override void Update()
     {
         base.Update(); //reflects update
-        //Debug.Log(PlayerManager.invArray[questArrayItem]);
-        if (PlayerManager.invArray[questArrayItem] == true) { QuestAchieved = true; }
 
-        if (QuestAchieved && !QuestComplete && currentDialogue == repeatedDialogue)
+        if (gameManager.pickedUpCabbages == true) { QuestAchieved = true; }
+
+        if (QuestAchieved && !QuestComplete && currentDialogue != endDialogue)
         {
             EndQuest();
         }
-        //if (exclamationMark == null) return;
-        if (currentDialogue != repeatedDialogue && currentDialogue != completedRepeatDialogue && index == -1)
-        {
-            //exclamationMark.SetActive(true);
-        } else { /*exclamationMark.SetActive(false);*/ }
     }
 
     protected override void OnDialogueFinish()
@@ -74,7 +51,6 @@ public class NPC : AbstractNPC
             currentDialogue = completedRepeatDialogue;
 
             dialogueFinish = true;
-            //EndOfDemoCanvas.SetActive(true);
         }
     }
 

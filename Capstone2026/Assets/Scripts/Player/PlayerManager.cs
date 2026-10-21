@@ -29,8 +29,8 @@ public class PlayerManager : MonoBehaviour
     public bool isPoweredByLightBeam = false;
     public int screwPickUpCount;
 
-    [Header("Inventory")] 
-    public static bool[] invArray = new bool[1]; //change to be how many bools there are
+    [Header("Inventory")]
+    public bool pickedUpCabbages = false;
 
     public GameObject batteryContainer;
     public TMP_Text batteryText;
@@ -142,8 +142,6 @@ public class PlayerManager : MonoBehaviour
         ChangeFOV.AddListener(SprintFOVChange);
 
         canPickUp = true;
-
-        if (!invArray[0]) { invArray = new bool[1]; } //change to be how many bools there are
     }
 
     // Update is called once per frame

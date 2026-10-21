@@ -3,15 +3,12 @@ using UnityEngine;
 
 public class QuestItem : MonoBehaviour, IInteractable
 {
-    [SerializeField] public int invArrayNum; 
     public GameObject cabbage;
-    public PlayerManager playerM;
-    public NPC Phinn;
+    public GameManager gameManager;
 
     public void OnInteract()
     {
-        PlayerManager.invArray[invArrayNum] = true; // remove
-        NPC.Phinn.QuestAchieved = true; // should work
+        gameManager.pickedUpCabbages = true;
         Destroy(gameObject);
     }
 
