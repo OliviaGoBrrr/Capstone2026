@@ -4,10 +4,12 @@ using DG.Tweening;
 
 public class PlatformSwitch : MonoBehaviour, IInteractable
 {
-    public GameObject bridge;
     public GameObject leverHandle;
     public GameObject leverBase;
 
+
+    public float bridgeLowerTime = 1f;
+    public float bridgeLowerAngle = 87f;
     public GameObject bridgePivot;
     public float rotationFloat;
 
@@ -16,13 +18,28 @@ public class PlatformSwitch : MonoBehaviour, IInteractable
     [Header("Audio")]
     public AudioClip BridgeLoweringSFX;
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.L) && !isDown)
+        {
+            LowerBridge();
+        }
+    }
+
+    public void LowerBridge()
+    {
+        isDown = true;
+        Vector3 bridgeRot = bridgePivot.transform.localRotation.eulerAngles;
+        bridgePivot.transform.DOLocalRotate(new Vector3(bridgeLowerAngle, bridgeRot.y, bridgeRot.z), bridgeLowerTime);
+    }
+
     public void OnInteract()
     {
         AudioManager.Instance.PlaySFX(BridgeLoweringSFX, transform, 0.4f);
         leverHandle.transform.DOLocalRotate(new Vector3(rotationFloat, 0, 0), 0.25f).OnComplete(() =>
         {
             //bridge.SetActive(!bridge.activeSelf);
-            bridgePivot.transform.DOLocalRotate(new Vector3(2, 58, 3), 1f);
+            LowerBridge();
         });
 
         isDown = true;
