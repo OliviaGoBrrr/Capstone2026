@@ -18,14 +18,6 @@ public class PlatformSwitch : MonoBehaviour, IInteractable
     [Header("Audio")]
     public AudioClip BridgeLoweringSFX;
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.L) && !isDown)
-        {
-            LowerBridge();
-        }
-    }
-
     public void LowerBridge()
     {
         isDown = true;
