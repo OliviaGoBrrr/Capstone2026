@@ -1673,6 +1673,8 @@ MonoBehaviour:
   batteryPercent: 100
   numberOfSunRaysForPower: 2
   isPoweredByLightBeam: 0
+  screwPickUpCount: 0
+  pickedUpCabbages: 0
   batteryContainer: {fileID: 0}
   batteryText: {fileID: 0}
   batteryImage: {fileID: 0}
@@ -1691,6 +1693,8 @@ MonoBehaviour:
   PlayerDeadWaterSFX: {fileID: 8300000, guid: 1ed8cfbedb009b24b907b6d65589e86e, type: 3}
   PlayerDeadSolarSFX: {fileID: 8300000, guid: b9aebfb912a75a542b71c050b0d8e8e4, type: 3}
   PlayerRespawnSFX: {fileID: 8300000, guid: 635bff696a2240d4f8bf72777beddeba, type: 3}
+  playerBatteryAudioSource: {fileID: 0}
+  playerMovementAudioSource: {fileID: 0}
   batteryDownClipsPlayed: []
   OnPlayerDeath:
     m_PersistentCalls:
@@ -1730,7 +1734,7 @@ MonoBehaviour:
   jumpHeight: 1.2
   pushPullPenalty: 0.5
   currentPlayerRotation: 0
-  rotationSpeed: 10.108
+  rotationSpeed: 0
   playerInput: {x: 0, y: 0, z: 0}
   playerVelocity: {x: 0, y: 0, z: 0}
   groundedPlayer: 0
