@@ -8,9 +8,17 @@ public class DisableGrapplePoint : MonoBehaviour
     [SerializeField] Material flowerMat;
     private Color originalFlowerColour = new Color(1, 0.4470588f, 0.8470588f);
 
+    private void Awake()
+    {
+        flowerMat.SetColor("_Bottom_Color", Color.white);
+    }
+
+
     // Update is called once per frame
     void Update()
     {
+        
+
         if (isGrappleActive)
         {
             flowerMat.SetColor("_Bottom_Color", originalFlowerColour);
