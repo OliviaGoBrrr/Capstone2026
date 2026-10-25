@@ -17,7 +17,7 @@ public class YRotateObject : MonoBehaviour, IInteractable
     // Update is called once per frame
     void Start()
     {
-        objectToBeRotated.transform.eulerAngles = new Vector3(objectToBeRotated.transform.eulerAngles.x, originalRotation, objectToBeRotated.transform.eulerAngles.z);
+        objectToBeRotated.transform.localEulerAngles = new Vector3(objectToBeRotated.transform.localEulerAngles.x, originalRotation, objectToBeRotated.transform.localEulerAngles.z);
     }
 
     public void OnInteract()
@@ -25,7 +25,7 @@ public class YRotateObject : MonoBehaviour, IInteractable
         AudioManager.Instance.PlaySFX(CrystalRotateSFX, transform, 1f);
         if (totalNumberOfRotations == currentNumberOfRotations)
         {
-            objectToBeRotated.transform.DORotate(new Vector3(0, originalRotation, 0), 0.5f).SetEase(Ease.OutCubic);
+            objectToBeRotated.transform.DOLocalRotate(new Vector3(0, originalRotation, 0), 0.5f).SetEase(Ease.OutCubic);
 
             //objectToBeRotated.transform.eulerAngles = new Vector3(objectToBeRotated.transform.eulerAngles.x, originalRotation, objectToBeRotated.transform.eulerAngles.z);
             currentNumberOfRotations = 0;
@@ -34,7 +34,7 @@ public class YRotateObject : MonoBehaviour, IInteractable
 
         currentNumberOfRotations += 1;
 
-        objectToBeRotated.transform.DORotate(new Vector3(0, originalRotation + rotationStep * currentNumberOfRotations, 0), 0.5f).SetEase(Ease.OutCubic);
+        objectToBeRotated.transform.DOLocalRotate(new Vector3(0, originalRotation + rotationStep * currentNumberOfRotations, 0), 0.5f).SetEase(Ease.OutCubic);
 
         //objectToBeRotated.transform.Rotate(0, rotationStep, 0, Space.World);
     }
