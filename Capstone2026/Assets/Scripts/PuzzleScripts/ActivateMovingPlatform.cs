@@ -33,7 +33,7 @@ public class ActivateMovingPlatform : MonoBehaviour
 
             if (platformScript.isPlayerOn)
             {
-                player.Move(new Vector3(0, 0, -2 * Time.deltaTime));
+                player.Move(new Vector3(1.285575219f * Time.deltaTime, 0, -1.532088886f * Time.deltaTime));
             }
         }
         else
@@ -46,7 +46,7 @@ public class ActivateMovingPlatform : MonoBehaviour
 
             if (platformScript.isPlayerOn)
             {
-                player.Move(new Vector3(0, 0, 2 * Time.deltaTime));
+                player.Move(new Vector3(-1.285575219f * Time.deltaTime, 0, 1.532088886f * Time.deltaTime));
             }
         }
     }
