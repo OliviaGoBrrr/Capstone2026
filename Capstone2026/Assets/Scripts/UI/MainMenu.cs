@@ -20,6 +20,9 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private Transform cameraNormalPos;
 
 
+    [SerializeField] private InputActionReference navigateAction;
+
+
     [Header("Options Screen")]
     // buttons!
     [SerializeField] private GameObject optionsContents;

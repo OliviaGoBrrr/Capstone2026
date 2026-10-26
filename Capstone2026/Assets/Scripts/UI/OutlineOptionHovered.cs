@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
 using UnityEngine.InputSystem;
 
-public class OutlineOptionHovered : MonoBehaviour
+public class OutlineOptionHovered : MonoBehaviour, ISelectHandler, IDeselectHandler
 {
     [SerializeField] private Outline backgroundOutline = null;
 
@@ -31,4 +31,13 @@ public class OutlineOptionHovered : MonoBehaviour
         backgroundOutline.enabled = false;
     }
 
+    public void OnSelect(BaseEventData eventData)
+    {
+        backgroundOutline.enabled = true;
+    }
+
+    public void OnDeselect(BaseEventData eventData)
+    {
+        backgroundOutline.enabled = false;
+    }
 }

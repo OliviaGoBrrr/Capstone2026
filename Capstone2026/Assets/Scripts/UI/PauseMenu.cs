@@ -5,6 +5,8 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -25,6 +27,9 @@ public class PauseMenu : MonoBehaviour
 
     private GameObject currentWindow;
     private List<GameObject> previousWindows = new List<GameObject>();
+
+    [SerializeField] private CanvasGroup pauseButtonsGroup;
+
 
     void Awake()
     {
@@ -99,6 +104,9 @@ public class PauseMenu : MonoBehaviour
 
     public void OnWindowButtonPressed(GameObject window)
     {
+        pauseButtonsGroup.interactable = false;
+        pauseButtonsGroup.blocksRaycasts = false;
+
         DOTween.Kill("WindowScale" + window.name);
 
         // scale set to 0 then tween up
@@ -109,8 +117,6 @@ public class PauseMenu : MonoBehaviour
             window.SetActive(true);
         }));
         windowScaleSequence.Append(window.transform.DOScale(new Vector3(1, 1, 1), 0.25f).SetEase(Ease.OutSine));
-
-        
 
         currentWindow = window;
         previousWindows.Add(window);
@@ -138,8 +144,12 @@ public class PauseMenu : MonoBehaviour
             currentWindow = previousWindows[previousWindows.Count - 2]; // go back to last window
             previousWindows.Remove(previousWindows[previousWindows.Count - 1]); // delete most recently visited window
 
-
             print(previousWindows.Count);
+
+            bool showingPauseMenu = currentWindow == pauseMenu;
+
+            pauseButtonsGroup.interactable = showingPauseMenu;
+            pauseButtonsGroup.blocksRaycasts = showingPauseMenu;
         }
         else
         {

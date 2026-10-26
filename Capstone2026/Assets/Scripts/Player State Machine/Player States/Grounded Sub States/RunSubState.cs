@@ -1,9 +1,11 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 
 public class PlayerRunSubState : PlayerGroundedSuperState
 {
+
     public PlayerRunSubState(PlayerManager player, PlayerStateMachine playerStateMachine, string animationName, Animator animationController) : base(player, playerStateMachine, animationName, animationController)
     {
     }
@@ -13,8 +15,8 @@ public class PlayerRunSubState : PlayerGroundedSuperState
         base.EnterState();
 
         //player.SprintFOVChange(player.settings.FOVslider.value + 10);
-        
-        if(player.isCurrentlyGrounded)
+
+        if (player.isCurrentlyGrounded)
         {
             foreach (ParticleSystem spark in player.sparks)
             {
@@ -61,4 +63,5 @@ public class PlayerRunSubState : PlayerGroundedSuperState
             playerStateMachine.ChangeState(player.IdleSubState);
         }
     }
+
 }
