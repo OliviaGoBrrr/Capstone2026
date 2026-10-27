@@ -4,6 +4,7 @@ using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 
 public class MainMenu : MonoBehaviour
 {
@@ -44,8 +45,8 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private GameObject settingsOptions;
     [SerializeField] private GameObject audioSettingsOptions;
     [SerializeField] private GameObject videoSettingsOptions;
-    [SerializeField] private GameObject gameSettingsOptions;
     [SerializeField] private GameObject controlsSettingsOptions;
+    [SerializeField] private GameObject accessibilitySettingsOptions;
 
     private bool optionsShown = false;
 
@@ -54,6 +55,19 @@ public class MainMenu : MonoBehaviour
 
     [SerializeField] private float settingsFadeOutSpeed = 0.5f;
     [SerializeField] private float settingsZoomOutSpeed = 0.5f;
+
+    [Header("ControllerStuff")]
+    [SerializeField] private CanvasGroup mainMenuGroup;
+    [SerializeField] private CanvasGroup settingsGroup;
+    [SerializeField] private CanvasGroup monitorButtonsGroup;
+    [SerializeField] private GameObject defaultSelection;
+    [SerializeField] private GameObject settingsMenuDefaultSelection;
+    [SerializeField] private GameObject audioMenuDefaultSelection;
+    [SerializeField] private GameObject videoMenuDefaultSelection;
+    [SerializeField] private GameObject accessibilityMenuDefaultSelection;
+    [SerializeField] private GameObject controlsMenuDefaultSelection;
+    [SerializeField] private GameObject mainMenuMenuDefaultSelection;
+    [SerializeField] private GameObject accessibilityButton;
 
     void Awake()
     {
@@ -89,10 +103,13 @@ public class MainMenu : MonoBehaviour
                 OnBackPressed();
             }
         }
+        Debug.Log(optionsShown);
     }
 
     public void SettingsScreenEntered()
     {
+        mainMenuGroup.interactable = false;
+        mainMenuGroup.blocksRaycasts = false;
         if (optionsShown) return; // dont animate again if its already shown
 
         // kill all tweens relating to the camera
@@ -139,7 +156,6 @@ public class MainMenu : MonoBehaviour
 
         optionsShown = true;
         optionsContents.SetActive(true);
-
     }
 
     public void SettingsScreenExited()
@@ -182,14 +198,22 @@ public class MainMenu : MonoBehaviour
                 {
                     titleText.GetComponent<Image>().DOFade(1f, 0.2f);
                     blackScreen.SetActive(false);
+
+                    mainMenuGroup.interactable = true;
+                    mainMenuGroup.blocksRaycasts = true;
+
+                    defaultSelection.SetActive(true);
+                    EventSystem.current.SetSelectedGameObject(mainMenuMenuDefaultSelection);
                 });
 
         optionsShown = false;
+        mainMenuGroup.interactable = true;
+        mainMenuGroup.blocksRaycasts = true;
+
         optionsContents.SetActive(false);
         optionsButton.SetActive(false);
         settingsButton.SetActive(false);
         optionsBg.SetActive(false);
-        
     }
 
     private void HideAllWindows()
@@ -197,7 +221,7 @@ public class MainMenu : MonoBehaviour
         settingsOptions.SetActive(false);
         audioSettingsOptions.SetActive(false);
         videoSettingsOptions.SetActive(false);
-        gameSettingsOptions.SetActive(false);
+        accessibilitySettingsOptions.SetActive(false);
         controlsSettingsOptions.SetActive(false);
     }
 
@@ -258,7 +282,6 @@ public class MainMenu : MonoBehaviour
 
         optionsShown = true;
         optionsContents.SetActive(true);
-        
     }
 
     public void OptionsBackButtonPressed()
@@ -298,24 +321,80 @@ public class MainMenu : MonoBehaviour
 
     public void OnWindowButtonPressed(GameObject window)
     {
-        
+        defaultSelection.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(null);
+        accessibilityButton.SetActive(true);
+
         DOTween.Kill("WindowScale" + window.name);
 
-        // scale set to 0 then tween up
+        // Pick the controller selection for the window being opened.
+        GameObject selectionForWindow = null;
+
+        switch (window)
+        {
+            case var w when w == settingsOptions:
+                selectionForWindow = settingsMenuDefaultSelection;
+                break;
+
+            case var w when w == audioSettingsOptions:
+                selectionForWindow = audioMenuDefaultSelection;
+                break;
+
+            case var w when w == videoSettingsOptions:
+                selectionForWindow = videoMenuDefaultSelection;
+                break;
+
+            case var w when w == accessibilitySettingsOptions:
+                selectionForWindow = accessibilityMenuDefaultSelection;
+                break;
+
+            case var w when w == controlsSettingsOptions:
+                selectionForWindow = controlsMenuDefaultSelection;
+                break;
+        }
+
+        // Animate the window in. It must be active before selecting one of its buttons.
         Sequence windowScaleSequence = DOTween.Sequence().SetId("WindowScale" + window.name);
 
-        windowScaleSequence.Append(window.transform.DOScale(Vector3.zero, 0f).OnComplete(() =>
+        windowScaleSequence.Append(window.transform.DOScale(Vector3.zero, 0f).OnComplete(() => window.SetActive(true)));
+
+        windowScaleSequence.Append(window.transform.DOScale(Vector3.one, 0.25f).SetEase(Ease.OutSine).OnComplete(() =>
+                {
+                    if (selectionForWindow != null && selectionForWindow.activeInHierarchy)
+                    {
+                        EventSystem.current.SetSelectedGameObject(selectionForWindow);
+                    }
+                })
+        );
+
+        if (optionsShown)
         {
-            window.SetActive(true);
-        }));
-        windowScaleSequence.Append(window.transform.DOScale(new Vector3(1, 1, 1), 0.25f).SetEase(Ease.OutSine));
+            mainMenuGroup.interactable = false;
+            mainMenuGroup.blocksRaycasts = false;
+
+            if (window == settingsOptions)
+            {
+                // The Settings page is open, so the TV's monitor buttons should not respond.
+                monitorButtonsGroup.interactable = false;
+                monitorButtonsGroup.blocksRaycasts = false;
+            }
+            else
+            {
+                // A category page is open.
+                settingsGroup.interactable = false;
+                settingsGroup.blocksRaycasts = false;
+
+                if (currentWindow == settingsOptions)
+                {
+                    monitorButtonsGroup.interactable = false;
+                    monitorButtonsGroup.blocksRaycasts = false;
+                }
+            }
+        }
 
         currentWindow = window;
         previousWindows.Add(window);
-
-        //print(previousWindows.Count);
     }
-
 
     public void OnBackPressed()
     {
@@ -343,16 +422,46 @@ public class MainMenu : MonoBehaviour
             }   
             previousWindows.Remove(previousWindows[previousWindows.Count - 1]); // delete most recently visited window
 
-            //print(previousWindows.Count);
+            if (currentWindow == null)
+            {
+                // Back at the monitor. Select its Settings button, not defaultSelection.
+                defaultSelection.SetActive(false);
+
+                if (settingsButton.activeInHierarchy)
+                {
+                    EventSystem.current.SetSelectedGameObject(settingsButton);
+                }
+            }
+            else if (currentWindow == settingsOptions)
+            {
+                // Back at the Settings menu.
+                defaultSelection.SetActive(false);
+                EventSystem.current.SetSelectedGameObject(settingsMenuDefaultSelection);
+            }
+
+
+
+            if (optionsShown && currentWindow == null)
+            {
+                monitorButtonsGroup.interactable = true;
+                monitorButtonsGroup.blocksRaycasts = true;
+
+                // Keep the off-screen main menu buttons disabled while the TV/options screen is open.
+                mainMenuGroup.interactable = false;
+                mainMenuGroup.blocksRaycasts = false;
+            }
+
+            if (currentWindow == settingsOptions)
+            {
+                settingsGroup.interactable = true;
+                settingsGroup.blocksRaycasts = true;
+            }
         }
         else
         {
             SettingsScreenExited();
         }
     }
-
-
-    
 
     public void ExitButtonPressed()
     {

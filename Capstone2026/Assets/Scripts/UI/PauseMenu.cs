@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Unity.VisualScripting;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -17,18 +18,29 @@ public class PauseMenu : MonoBehaviour
     public InputActionAsset playerInputMap;
 
     [SerializeField] private GameObject pauseMenu;
-
     // settings panels
     [SerializeField] private GameObject settingsOptions;
     [SerializeField] private GameObject audioSettingsOptions;
     [SerializeField] private GameObject videoSettingsOptions;
     [SerializeField] private GameObject accessibilitySettingsOptions;
     [SerializeField] private GameObject controlsSettingsOptions;
+    [SerializeField] private GameObject bugReportSettingsOptions;
+
 
     private GameObject currentWindow;
     private List<GameObject> previousWindows = new List<GameObject>();
 
-    [SerializeField] private CanvasGroup pauseButtonsGroup;
+    [Header("Controller Stuff")]
+    [SerializeField] private CanvasGroup pauseMenuGroup;
+    [SerializeField] private CanvasGroup settingsMenuGroup;
+    [SerializeField] private GameObject defaultSelection;
+    [SerializeField] private GameObject pauseMenuDefaultSelection;
+    [SerializeField] private GameObject settingsMenuDefaultSelection;
+    [SerializeField] private GameObject audioMenuDefaultSelection;
+    [SerializeField] private GameObject videoMenuDefaultSelection;
+    [SerializeField] private GameObject accessibilityMenuDefaultSelection;
+    [SerializeField] private GameObject controlsMenuDefaultSelection;
+    [SerializeField] private GameObject bugReportMenuDefaultSelection;
 
 
     void Awake()
@@ -96,6 +108,12 @@ public class PauseMenu : MonoBehaviour
 
     // ---------- Button Press Logic ----------
 
+    //When a Window is Opened, the *previous* window's canvas group should be disabled.
+    //I need to use the previousWindows array/list to do this.
+
+
+
+
     public void OnResumePressed()
     {
         ResumeLogic();
@@ -104,13 +122,13 @@ public class PauseMenu : MonoBehaviour
 
     public void OnWindowButtonPressed(GameObject window)
     {
-        pauseButtonsGroup.interactable = false;
-        pauseButtonsGroup.blocksRaycasts = false;
+        defaultSelection.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(defaultSelection);
 
         DOTween.Kill("WindowScale" + window.name);
 
         // scale set to 0 then tween up
-        Sequence windowScaleSequence = DOTween.Sequence().SetId("WindowScale" + window.name);
+        DG.Tweening.Sequence windowScaleSequence = DOTween.Sequence().SetId("WindowScale" + window.name);
 
         windowScaleSequence.Append(window.transform.DOScale(Vector3.zero, 0f).OnComplete(() =>
         {
@@ -118,10 +136,46 @@ public class PauseMenu : MonoBehaviour
         }));
         windowScaleSequence.Append(window.transform.DOScale(new Vector3(1, 1, 1), 0.25f).SetEase(Ease.OutSine));
 
+        if (currentWindow == pauseMenu)
+        {
+            pauseMenuGroup.interactable = false;
+            pauseMenuGroup.blocksRaycasts = false;
+            EventSystem.current.SetSelectedGameObject(settingsMenuDefaultSelection);
+            defaultSelection.SetActive(false);
+        }
+        else if (currentWindow == settingsOptions)
+        {
+            settingsMenuGroup.interactable = false;
+            settingsMenuGroup.blocksRaycasts = false;
+
+            if (window == audioSettingsOptions)
+            {
+                EventSystem.current.SetSelectedGameObject(audioMenuDefaultSelection);
+                defaultSelection.SetActive(false);
+            }
+            else if (window == videoSettingsOptions)
+            {
+                EventSystem.current.SetSelectedGameObject(videoMenuDefaultSelection);
+                defaultSelection.SetActive(false);
+            }
+            else if (window == accessibilitySettingsOptions)
+            {
+                EventSystem.current.SetSelectedGameObject(accessibilityMenuDefaultSelection);
+                defaultSelection.SetActive(false);
+            }
+            else if (window == controlsSettingsOptions)
+            {
+                EventSystem.current.SetSelectedGameObject(controlsMenuDefaultSelection);
+                defaultSelection.SetActive(false);
+            }
+            else if (window == bugReportSettingsOptions)
+            {
+                EventSystem.current.SetSelectedGameObject(bugReportMenuDefaultSelection);
+                defaultSelection.SetActive(false);
+            }
+        }
         currentWindow = window;
         previousWindows.Add(window);
-
-        print(previousWindows.Count);
     }
 
     public void OnBackPressed()
@@ -132,7 +186,7 @@ public class PauseMenu : MonoBehaviour
             DOTween.Kill("WindowScale" + referenceToCurrentWindow.name);
 
 
-            Sequence windowScaleSequence = DOTween.Sequence().SetId("WindowScale" + referenceToCurrentWindow.name);
+            DG.Tweening.Sequence windowScaleSequence = DOTween.Sequence().SetId("WindowScale" + referenceToCurrentWindow.name);
 
             windowScaleSequence.Append(referenceToCurrentWindow.transform.DOScale(Vector3.zero, 0.25f).SetEase(Ease.OutSine).OnComplete(() =>
             {
@@ -144,12 +198,25 @@ public class PauseMenu : MonoBehaviour
             currentWindow = previousWindows[previousWindows.Count - 2]; // go back to last window
             previousWindows.Remove(previousWindows[previousWindows.Count - 1]); // delete most recently visited window
 
+            defaultSelection.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(defaultSelection);
+
+            if (currentWindow == pauseMenu)
+            {
+                pauseMenuGroup.interactable = true;
+                pauseMenuGroup.blocksRaycasts = true;
+                EventSystem.current.SetSelectedGameObject(pauseMenuDefaultSelection);
+                defaultSelection.SetActive(false);
+            }
+            else if (currentWindow == settingsOptions)
+            {
+                settingsMenuGroup.interactable = true;
+                settingsMenuGroup.blocksRaycasts = true;
+                EventSystem.current.SetSelectedGameObject(settingsMenuDefaultSelection);
+                defaultSelection.SetActive(false);
+            }
             print(previousWindows.Count);
 
-            bool showingPauseMenu = currentWindow == pauseMenu;
-
-            pauseButtonsGroup.interactable = showingPauseMenu;
-            pauseButtonsGroup.blocksRaycasts = showingPauseMenu;
         }
         else
         {
