@@ -40,6 +40,7 @@ public class Settings : MonoBehaviour
             rightShoulder0.gameObject.SetActive(false);
             rightShoulder1.gameObject.SetActive(false);
             leftShoulder.gameObject.SetActive(false);
+            buttonSouth.gameObject.SetActive(false);
             joystick.gameObject.SetActive(false);
             grapple1.gameObject.SetActive(false);
             grapple2.gameObject.SetActive(false);
@@ -51,6 +52,7 @@ public class Settings : MonoBehaviour
             rightShoulder0.gameObject.SetActive(true);
             rightShoulder1.gameObject.SetActive(true);
             leftShoulder.gameObject.SetActive(true);
+            buttonSouth.gameObject.SetActive(true);
             joystick.gameObject.SetActive(true);
             grapple1.gameObject.SetActive(true);
             grapple2.gameObject.SetActive(true);
