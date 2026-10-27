@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Questing")]
     public bool pickedUpCabbages = false;
+    public bool pickedUpMotor = false;
 
     private void Awake()
     {
