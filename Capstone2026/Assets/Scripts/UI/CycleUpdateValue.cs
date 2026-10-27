@@ -7,7 +7,7 @@ public class CycleUpdateValue : MonoBehaviour
     [SerializeField] private GameObject rightButton;
 
     [SerializeField] private string[] displayableTextArr;
-    private int currentDisplayableTextPosition;
+    public int currentDisplayableTextPosition;
 
     [SerializeField] private int posOfInitialText;
 

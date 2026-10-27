@@ -7,6 +7,10 @@ public class GameManager : MonoBehaviour
     bool inCutscene = false;
     public static GameManager gameManager { get; private set; }
 
+    [Header("Settings")]
+    private int fullscreenMode;
+    private int resolutionSelection;
+
     [Header("Questing")]
     public bool pickedUpCabbages = false;
 

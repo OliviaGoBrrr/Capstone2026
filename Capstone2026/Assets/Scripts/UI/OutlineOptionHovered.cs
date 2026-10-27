@@ -33,13 +33,13 @@ public class OutlineOptionHovered : MonoBehaviour, ISelectHandler, IDeselectHand
 
     public void OnSelect(BaseEventData eventData)
     {
-        Debug.Log($"Selected: {gameObject.name}", this);
+        //Debug.Log($"Selected: {gameObject.name}", this);
         backgroundOutline.enabled = true;
     }
 
     public void OnDeselect(BaseEventData eventData)
     {
-        Debug.Log($"Deselected: {gameObject.name}", this);
+        //Debug.Log($"Deselected: {gameObject.name}", this);
         backgroundOutline.enabled = false;
     }
 }

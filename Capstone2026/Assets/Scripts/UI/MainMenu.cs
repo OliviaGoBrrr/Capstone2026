@@ -30,6 +30,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private GameObject optionsButton;
     [SerializeField] private GameObject settingsButton;
     [SerializeField] private GameObject attributionsButton;
+    [SerializeField] private GameObject creditsButton;
 
     [SerializeField] private GameObject optionsBg;
     [SerializeField] private GameObject turnOnEffect; // used for animating the turn on animation
@@ -71,6 +72,11 @@ public class MainMenu : MonoBehaviour
 
     void Awake()
     {
+        if (Gamepad.current == null)
+        {
+            EventSystem.current.firstSelectedGameObject = null;
+        }
+
         PostGameDataLog.listInits();
         
         // kill all tweens relating to the camera
@@ -80,7 +86,8 @@ public class MainMenu : MonoBehaviour
         optionsContents.SetActive(false);
         optionsButton.SetActive(false);
         settingsButton.SetActive(false);
-        //attributionsButton.SetActive(false);
+        attributionsButton.SetActive(false);
+        creditsButton.SetActive(false);
 
         mainCamera.transform.position = cameraNormalPos.position;
         mainCamera.transform.rotation = cameraNormalPos.rotation;
@@ -142,7 +149,8 @@ public class MainMenu : MonoBehaviour
                     optionsBg.SetActive(true);
                     optionsButton.SetActive(true);
                     settingsButton.SetActive(true);
-                    //attributionsButton.SetActive(true);
+                    attributionsButton.SetActive(true);
+                    creditsButton.SetActive(true);
 
                     blackScreen.SetActive(false); // hide the black screen
 
@@ -212,6 +220,8 @@ public class MainMenu : MonoBehaviour
 
         optionsContents.SetActive(false);
         optionsButton.SetActive(false);
+        attributionsButton.SetActive(false);
+        creditsButton.SetActive(false);
         settingsButton.SetActive(false);
         optionsBg.SetActive(false);
     }
@@ -269,7 +279,8 @@ public class MainMenu : MonoBehaviour
                     optionsBg.SetActive(true);
                     optionsButton.SetActive(true);
                     settingsButton.SetActive(true);
-
+                    attributionsButton.SetActive(true);
+                    creditsButton.SetActive(true);
                     //blackScreen.SetActive(false); // hide the black screen
 
                     turnOnEffect.GetComponent<Image>().DOFade(0f, 0.2f).SetId("ScreenOnOff").OnComplete(() =>
@@ -451,7 +462,7 @@ public class MainMenu : MonoBehaviour
                 mainMenuGroup.blocksRaycasts = false;
             }
 
-            if (currentWindow == settingsOptions)
+            if (currentWindow == settingsOptions || currentWindow == null)
             {
                 settingsGroup.interactable = true;
                 settingsGroup.blocksRaycasts = true;
