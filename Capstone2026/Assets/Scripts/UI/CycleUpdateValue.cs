@@ -19,9 +19,7 @@ public class CycleUpdateValue : MonoBehaviour
     void Start()
     {
         displayedText.text = displayableTextArr[posOfInitialText];
-
         currentDisplayableTextPosition = posOfInitialText;
-
 
         if (allowWrapping) return;
 

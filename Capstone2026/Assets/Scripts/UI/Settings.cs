@@ -14,8 +14,6 @@ public class Settings : MonoBehaviour
 
     [Header("UI Objects")]
     [SerializeField] public UnityEngine.UI.Slider FOVslider;
-    [SerializeField] public CycleUpdateValue fullscreenScript;
-    [SerializeField] public CycleUpdateValue resolutionScript;
     [SerializeField] public GameObject WASD, joystick, grapple1, grapple2, grapple3, grapple4;
     [SerializeField] public GameObject space, buttonSouth;
     [SerializeField] public GameObject E1, E2, E3, E4, E5, E6, E7, rightShoulder0, rightShoulder1, leftShoulder;
@@ -26,40 +24,6 @@ public class Settings : MonoBehaviour
     }
     public void Update()
     {
-        switch (fullscreenScript.currentDisplayableTextPosition)
-        {
-            case 0:
-                Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen; //Exclusive Fullscreen
-                break;
-            case 1:
-                Screen.fullScreenMode = FullScreenMode.FullScreenWindow; //Borderless Fullscreen
-                break;
-            case 2:
-                Screen.SetResolution(Screen.width, Screen.height, FullScreenMode.Windowed); //Windowed
-                break;
-            default:
-                break;
-        }
-
-        switch (fullscreenScript.currentDisplayableTextPosition)
-        {
-            case 0:
-                Screen.SetResolution(1280, 720, Screen.fullScreenMode);
-                break;
-            case 1:
-                Screen.SetResolution(1366, 768, Screen.fullScreenMode);
-                break;
-            case 2:
-                Screen.SetResolution(1920, 1080, Screen.fullScreenMode);
-                break;
-            case 3:
-                Screen.SetResolution(2560, 1440, Screen.fullScreenMode);
-                break;
-            default:
-                break;
-        }
-
-
         Scene currentScene = SceneManager.GetActiveScene();
         if (currentScene.name == "_MVPFarmTutorial" && Gamepad.current != null)
         {
