@@ -17,6 +17,8 @@ public class OpenDoorLever : MonoBehaviour, IInteractable
 
     [SerializeField] private bool isOneTime = true;
 
+    public AudioClip BridgeLoweringSFX;
+
     private bool spent = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -28,6 +30,8 @@ public class OpenDoorLever : MonoBehaviour, IInteractable
     public void OnInteract()
     {
         if (spent) return;
+
+        AudioManager.Instance.PlaySFX(BridgeLoweringSFX, transform, 0.4f);
 
         door.transform.DOMove(originalPosition + changeToDoorPosition, timeToMove);
 

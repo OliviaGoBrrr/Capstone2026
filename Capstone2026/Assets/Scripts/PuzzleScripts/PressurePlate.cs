@@ -11,6 +11,8 @@ public class PressurePlate : MonoBehaviour
 
     [SerializeField] private float timeToMove = 1;
 
+    public AudioClip DoorOpeningSFX;
+
     private Vector3 originalPosition;
 
     private int objectsOnPlate = 0;
@@ -32,6 +34,7 @@ public class PressurePlate : MonoBehaviour
         else
         {
             DOTween.Kill("moving door");
+            AudioManager.Instance.PlaySFX(DoorOpeningSFX, transform, 0.4f);
             door.transform.DOMove(originalPosition + changeToDoorPosition, timeToMove).SetId("moving door");
 
             //door.transform.position += changeToDoorPosition;
