@@ -14,6 +14,9 @@ public class ActivateMovingPlatform : MonoBehaviour
 
     public CharacterController player;
 
+    public AudioClip MovingPlatformSFX;
+
+
     private void Awake()
     {
         //platform.transform.position = deactivePosition;
@@ -31,6 +34,9 @@ public class ActivateMovingPlatform : MonoBehaviour
             platform.transform.localPosition -= new Vector3(0, 0, 2 * Time.deltaTime);
             //Vector3.MoveTowards(platform.transform.localPosition, activePosition, 2 * Time.deltaTime);
 
+            //AudioManager.Instance.PlaySFX(MovingPlatformSFX, transform, 0.4f);
+
+
             if (platformScript.isPlayerOn)
             {
                 player.Move(new Vector3(1.285575219f * Time.deltaTime, 0, -1.532088886f * Time.deltaTime));
@@ -39,6 +45,9 @@ public class ActivateMovingPlatform : MonoBehaviour
         else
         {
             if (Vector3.Distance(platform.transform.localPosition, deactivePosition) < 0.1f) return;
+
+            //AudioManager.Instance.PlaySFX(MovingPlatformSFX, transform, 0.4f);
+
 
             //Vector3 localDeactivePos = deactivePosition - platformParent.transform.position;
 
