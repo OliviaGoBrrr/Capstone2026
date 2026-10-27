@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4363537834159910624
+--- !u!1 &2537038198510936255
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,11 +8,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8439896980191205806}
-  - component: {fileID: 776270276534898978}
-  - component: {fileID: 6022369180343934505}
-  - component: {fileID: 3505306247898646978}
-  - component: {fileID: 810925513626435655}
+  - component: {fileID: 7359490067541606680}
+  - component: {fileID: 7683053625770108900}
+  - component: {fileID: 2112593349440782150}
   m_Layer: 0
   m_Name: motor
   m_TagString: Untagged
@@ -20,36 +18,36 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8439896980191205806
+--- !u!4 &7359490067541606680
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4363537834159910624}
+  m_GameObject: {fileID: 2537038198510936255}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.5960666, z: -0, w: 0.80293506}
-  m_LocalPosition: {x: -99.603966, y: 1.9014225, z: 139.34798}
-  m_LocalScale: {x: 258.66458, y: 258.6646, z: 258.66458}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 8439896980191205806}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &776270276534898978
+--- !u!33 &7683053625770108900
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4363537834159910624}
+  m_GameObject: {fileID: 2537038198510936255}
   m_Mesh: {fileID: 8801825067470630422, guid: 7b726cb542aaa5d438c26085b63bfbfa, type: 3}
---- !u!23 &6022369180343934505
+--- !u!23 &2112593349440782150
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4363537834159910624}
+  m_GameObject: {fileID: 2537038198510936255}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -88,6 +86,40 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &4363537834159910624
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8439896980191205806}
+  - component: {fileID: 3505306247898646978}
+  - component: {fileID: 810925513626435655}
+  m_Layer: 0
+  m_Name: motor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8439896980191205806
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4363537834159910624}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.5960666, z: -0, w: 0.80293506}
+  m_LocalPosition: {x: -99.603966, y: 1.9014225, z: 139.34798}
+  m_LocalScale: {x: 258.66458, y: 258.6646, z: 258.66458}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7359490067541606680}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &3505306247898646978
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -104,7 +136,7 @@ MeshCollider:
     m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
-  m_ProvidesContacts: 1
+  m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
   m_Convex: 0
@@ -122,5 +154,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eba694c7a288bfc47a848d242c6d3de1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cabbage: {fileID: 4363537834159910624}
+  isMotor: 1
+  questItem: {fileID: 2537038198510936255}
   gameManager: {fileID: 0}

@@ -3,22 +3,26 @@ using UnityEngine;
 
 public class QuestItem : MonoBehaviour, IInteractable
 {
-    public GameObject cabbage;
+    [SerializeField] private bool isMotor = false;
+
+    public GameObject questItem;
     public GameManager gameManager;
 
     public void OnInteract()
     {
+        print("AAAAA");
         gameManager.pickedUpCabbages = true;
         gameObject.SetActive(false);
     }
 
     public void ActivateOutline() 
     {
-        cabbage.layer = 30;
+        if (isMotor) questItem.layer = 29;
+        else questItem.layer = 30;
     }
 
     public void DeactivateOutline()
     {
-        cabbage.layer = 0;
+        questItem.layer = 0;
     }
 }
