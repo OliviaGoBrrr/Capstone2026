@@ -12,6 +12,8 @@ public class PlayerSolarDetector : MonoBehaviour
     private int interactLayerMask;
     private int crystalLayerMask;
 
+    private int numberOfCollisions = 0;
+
     [SerializeField] private GameObject lightSource;
     [SerializeField] private Transform centreSolarPanel;
     [SerializeField] private float lengthSolarPanel;
@@ -83,9 +85,9 @@ public class PlayerSolarDetector : MonoBehaviour
 
         Color rayColor = Color.blue;
 
-        var numberOfCollisions = 0;
+        numberOfCollisions = 0;
 
-        //print(numberOfCollisions);
+        print(numberOfCollisions);
         
         for (int i = 0; i < rayCastPositions.Length; i++)
         {
@@ -97,9 +99,13 @@ public class PlayerSolarDetector : MonoBehaviour
                 rayColor = Color.red;
                 //Debug.Log(hit.transform.gameObject.name);
             }
-            Debug.DrawRay(rayCastPositions[i].transform.position, lightSource.transform.TransformDirection(lightDirection) * 100, rayColor);
+            else
+            {
+                
+            }
 
             rayColor = Color.blue;
+            Debug.DrawRay(rayCastPositions[i].transform.position, lightSource.transform.TransformDirection(lightDirection) * 100, rayColor);
         }
         //print(numberOfCollisions);
         return (numberOfCollisions);
