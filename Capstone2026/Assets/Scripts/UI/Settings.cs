@@ -47,7 +47,7 @@ public class Settings : MonoBehaviour
             grapple3.gameObject.SetActive(false);
             grapple4.gameObject.SetActive(false);
         }
-        else if (Gamepad.current != null)
+        else if (currentScene.name == "_MVPFarmTutorial" && Gamepad.current != null)
         {
             rightShoulder0.gameObject.SetActive(true);
             rightShoulder1.gameObject.SetActive(true);
