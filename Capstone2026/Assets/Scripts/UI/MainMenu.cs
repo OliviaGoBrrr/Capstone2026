@@ -334,7 +334,7 @@ public class MainMenu : MonoBehaviour
     {
         defaultSelection.SetActive(false);
         EventSystem.current.SetSelectedGameObject(null);
-        accessibilityButton.SetActive(true);
+        //accessibilityButton.SetActive(true);
 
         DOTween.Kill("WindowScale" + window.name);
 
