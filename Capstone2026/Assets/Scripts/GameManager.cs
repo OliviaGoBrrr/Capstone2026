@@ -23,17 +23,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject FarmE3;
     [SerializeField] private GameObject FarmE4;
     [SerializeField] private GameObject FarmE5;
-    [SerializeField] private GameObject FarmE6;
-    [SerializeField] private GameObject FarmE7;
-    [SerializeField] private GameObject FarmE8;
     [SerializeField] private GameObject FarmR1;     
     [SerializeField] private GameObject FarmR2;
     [SerializeField] private GameObject FarmR3;
     [SerializeField] private GameObject FarmR4;
     [SerializeField] private GameObject FarmR5;
-    [SerializeField] private GameObject FarmR6;
-    [SerializeField] private GameObject FarmR7;
-    [SerializeField] private GameObject FarmR8;
 
 
     [Header("Settings")]
