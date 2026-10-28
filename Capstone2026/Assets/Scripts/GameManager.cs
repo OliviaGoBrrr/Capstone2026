@@ -54,46 +54,47 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         Scene currentScene = SceneManager.GetActiveScene(); ///grabs current scene
-        if (currentScene.name == "_MVPDockHub" && Gamepad.current != null) //if controller is connected
-        {
-            DialogueE.SetActive(false);
-            DialogueL1.SetActive(true);
-        }
-        else if (currentScene.name == "_MVPDockHub" && Gamepad.current == null) //if keyboard
-        {
-            DialogueE.SetActive(true);
-            DialogueL1.SetActive(false);
-        }
+        //if (currentScene.name == "_MVPDockHub" && Gamepad.current != null) //if controller is connected
+        //{
+        //    DialogueE.SetActive(false);
+        //    DialogueL1.SetActive(true);
+        //}
+        //else if (currentScene.name == "_MVPDockHub" && Gamepad.current == null) //if keyboard
+        //{
+        //    DialogueE.SetActive(true);
+        //    DialogueL1.SetActive(false);
+        //}
 
-        if (currentScene.name == "_MVPFarmLevel" && Gamepad.current != null) //if controller is connected
-        {
-            FarmR1.SetActive(true);
-            FarmR2.SetActive(true);
-            FarmR3.SetActive(true);
-            FarmR4.SetActive(true);
+        //if (currentScene.name == "_MVPFarmLevel" && Gamepad.current != null) //if controller is connected
+        //{
+        //    FarmR1.SetActive(true);
+        //    FarmR2.SetActive(true);
+        //    FarmR3.SetActive(true);
+        //    FarmR4.SetActive(true);
+        //    FarmR5.SetActive(true);
 
-            FarmE1.SetActive(false);
-            FarmE2.SetActive(false);
-            FarmE3.SetActive(false);
-            FarmE4.SetActive(false);
-            FarmE5.SetActive(false);
+        //    FarmE1.SetActive(false);
+        //    FarmE2.SetActive(false);
+        //    FarmE3.SetActive(false);
+        //    FarmE4.SetActive(false);
+        //    FarmE5.SetActive(false);
 
-        }
-        else if (currentScene.name == "_MVPFarmLevel" && Gamepad.current == null)//if keyboard
-        {
-            FarmE1.SetActive(true);
-            FarmE2.SetActive(true);
-            FarmE3.SetActive(true);
-            FarmE4.SetActive(true);
-            FarmE5.SetActive(true);
+        //}
+        //else if (currentScene.name == "_MVPFarmLevel" && Gamepad.current == null)//if keyboard
+        //{
+        //    FarmE1.SetActive(true);
+        //    FarmE2.SetActive(true);
+        //    FarmE3.SetActive(true);
+        //    FarmE4.SetActive(true);
+        //    FarmE5.SetActive(true);
 
-            FarmR1.SetActive(false);
-            FarmR2.SetActive(false);
-            FarmR3.SetActive(false);
-            FarmR4.SetActive(false);
-            FarmR5.SetActive(false);
+        //    FarmR1.SetActive(false);
+        //    FarmR2.SetActive(false);
+        //    FarmR3.SetActive(false);
+        //    FarmR4.SetActive(false);
+        //    FarmR5.SetActive(false);
 
-        }
+        //}
 
 
         if (currentScene.name == "MainMenu") ///if in main menu, set the "fullscreenMode" int to the choice set in the main menu.
